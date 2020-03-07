@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <title>Flipper</title>
+   <link rel="icon" href="icon.png" type="image/gif">
+</head>
+<body>
+<style>
+input {
+  margin-right: 5px;
+}
+</style>
+
+<textarea id="console" rows="8" cols="50" id="console" disabled style="resize: none; margin-right: 10px; width:45%; float:right">
+</textarea>
+<div style="margin-top: 10px; margin-left:10px; width:45%; max-width: 370px; height: 241px; border-style: solid; border-width: 1px; padding: 5px">
+Tier:
+<select id="tier">
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+</select>
+Enchantment:
+<select id="enchantment">
+  <option value="0">0</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+</select>
+Quality:
+<select id="quality">
+  <option value="0" selected>All</option>
+  <option value="1">Normal</option>
+  <option value="2">Good</option>
+  <option value="3">Outstanding</option>
+  <option value="4">Excellent</option>
+  <option value="5">Masterpiece</option>
+</select>
+<br>
+<fieldset id="cities" style="margin-top: 10px; margin-bottom: 10px">
+  <div style="float:left;margin-top: 10px;">
+    <input type="checkbox" value="Fort Sterling" checked>Fort Sterling<br>
+    <input type="checkbox" value="Thetford">Thetford<br>
+    <input type="checkbox" value="Lymhurst">Lymhurst<br>
+  </div>
+  <img src="Flipper.png" width="150px" style="float:right; position:block;">
+  <div style="margin-left: 100px;margin-top: 10px;">
+    <input type="checkbox" value="Bridgewatch">Bridgewatch<br>
+    <input type="checkbox" value="Martlock">Martlock<br>
+    <input type="checkbox" value="Caerleon">Caerleon <br>
+  </div>
+</fieldset>
+<div style="width:100%;">
+  <div style="width:50%; position:block;float:left;">
+    <label for="Min Profit">Min Profit</label><br>
+    <input style="width: 90%;" type="number" id="minProfit" name="Min Profit" value=0>
+    <button onclick="getPrices()" style="margin-top: 10px; width: 90%; padding-top:8px; padding-bottom:8px">Get Prices</button>
+  </div>
+  <div style="width:50%; position:block;float:right;">
+    <label for="Max BM Age">Max BM Age</label><br>
+    <input style="width: 90%;" type="number" id="maxAgeBM" name="Max BM Age" value=60><br>
+    <label for="Max City Age">Max City Age</label><br>
+    <input style="width: 90%;" type="number" id="maxAgeCity" name="Max City Age" value=60><br>
+  </div>
+</div>
+<br>
+</div>
+<br>
+<table id="flipper" style="width:100%; margin-left:10px; margin-right: 10px;">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Quality</th>
+      <th>Profit</th>
+      <th>BM Age</th>
+      <th>City Age</th>
+      <th>City</th>
+    </tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<br>
+<script>
+const items = getAllItems();
+//Takes the raw items string and converts it into array of an objects
+function getAllItems() {
+  var raw_items = "T4_HEAD_PLATE_SET1:0:Adept's Soldier Helmet;T4_HEAD_PLATE_SET1:1:Adept's Soldier Helmet;T4_HEAD_PLATE_SET1:2:Adept's Soldier Helmet;T4_HEAD_PLATE_SET1:3:Adept's Soldier Helmet;T5_HEAD_PLATE_SET1:0:Expert's Soldier Helmet;T5_HEAD_PLATE_SET1:1:Expert's Soldier Helmet;T5_HEAD_PLATE_SET1:2:Expert's Soldier Helmet;T5_HEAD_PLATE_SET1:3:Expert's Soldier Helmet;T6_HEAD_PLATE_SET1:0:Master's Soldier Helmet;T6_HEAD_PLATE_SET1:1:Master's Soldier Helmet;T6_HEAD_PLATE_SET1:2:Master's Soldier Helmet;T6_HEAD_PLATE_SET1:3:Master's Soldier Helmet;T7_HEAD_PLATE_SET1:0:Grandmaster's Soldier Helmet;T7_HEAD_PLATE_SET1:1:Grandmaster's Soldier Helmet;T7_HEAD_PLATE_SET1:2:Grandmaster's Soldier Helmet;T7_HEAD_PLATE_SET1:3:Grandmaster's Soldier Helmet;T8_HEAD_PLATE_SET1:0:Elder's Soldier Helmet;T8_HEAD_PLATE_SET1:1:Elder's Soldier Helmet;T8_HEAD_PLATE_SET1:2:Elder's Soldier Helmet;T8_HEAD_PLATE_SET1:3:Elder's Soldier Helmet;T4_ARMOR_PLATE_SET1:0:Adept's Soldier Armor;T4_ARMOR_PLATE_SET1:1:Adept's Soldier Armor;T4_ARMOR_PLATE_SET1:2:Adept's Soldier Armor;T4_ARMOR_PLATE_SET1:3:Adept's Soldier Armor;T5_ARMOR_PLATE_SET1:0:Expert's Soldier Armor;T5_ARMOR_PLATE_SET1:1:Expert's Soldier Armor;T5_ARMOR_PLATE_SET1:2:Expert's Soldier Armor;T5_ARMOR_PLATE_SET1:3:Expert's Soldier Armor;T6_ARMOR_PLATE_SET1:0:Master's Soldier Armor;T6_ARMOR_PLATE_SET1:1:Master's Soldier Armor;T6_ARMOR_PLATE_SET1:2:Master's Soldier Armor;T6_ARMOR_PLATE_SET1:3:Master's Soldier Armor;T7_ARMOR_PLATE_SET1:0:Grandmaster's Soldier Armor;T7_ARMOR_PLATE_SET1:1:Grandmaster's Soldier Armor;T7_ARMOR_PLATE_SET1:2:Grandmaster's Soldier Armor;T7_ARMOR_PLATE_SET1:3:Grandmaster's Soldier Armor;T8_ARMOR_PLATE_SET1:0:Elder's Soldier Armor;T8_ARMOR_PLATE_SET1:1:Elder's Soldier Armor;T8_ARMOR_PLATE_SET1:2:Elder's Soldier Armor;T8_ARMOR_PLATE_SET1:3:Elder's Soldier Armor;T4_SHOES_PLATE_SET1:0:Adept's Soldier Boots;T4_SHOES_PLATE_SET1:1:Adept's Soldier Boots;T4_SHOES_PLATE_SET1:2:Adept's Soldier Boots;T4_SHOES_PLATE_SET1:3:Adept's Soldier Boots;T5_SHOES_PLATE_SET1:0:Expert's Soldier Boots;T5_SHOES_PLATE_SET1:1:Expert's Soldier Boots;T5_SHOES_PLATE_SET1:2:Expert's Soldier Boots;T5_SHOES_PLATE_SET1:3:Expert's Soldier Boots;T6_SHOES_PLATE_SET1:0:Master's Soldier Boots;T6_SHOES_PLATE_SET1:1:Master's Soldier Boots;T6_SHOES_PLATE_SET1:2:Master's Soldier Boots;T6_SHOES_PLATE_SET1:3:Master's Soldier Boots;T7_SHOES_PLATE_SET1:0:Grandmaster's Soldier Boots;T7_SHOES_PLATE_SET1:1:Grandmaster's Soldier Boots;T7_SHOES_PLATE_SET1:2:Grandmaster's Soldier Boots;T7_SHOES_PLATE_SET1:3:Grandmaster's Soldier Boots;T8_SHOES_PLATE_SET1:0:Elder's Soldier Boots;T8_SHOES_PLATE_SET1:1:Elder's Soldier Boots;T8_SHOES_PLATE_SET1:2:Elder's Soldier Boots;T8_SHOES_PLATE_SET1:3:Elder's Soldier Boots;T4_HEAD_PLATE_UNDEAD:0:Adept's Graveguard Helmet;T4_HEAD_PLATE_UNDEAD:1:Adept's Graveguard Helmet;T4_HEAD_PLATE_UNDEAD:2:Adept's Graveguard Helmet;T4_HEAD_PLATE_UNDEAD:3:Adept's Graveguard Helmet;T5_HEAD_PLATE_UNDEAD:0:Expert's Graveguard Helmet;T5_HEAD_PLATE_UNDEAD:1:Expert's Graveguard Helmet;T5_HEAD_PLATE_UNDEAD:2:Expert's Graveguard Helmet;T5_HEAD_PLATE_UNDEAD:3:Expert's Graveguard Helmet;T6_HEAD_PLATE_UNDEAD:0:Master's Graveguard Helmet;T6_HEAD_PLATE_UNDEAD:1:Master's Graveguard Helmet;T6_HEAD_PLATE_UNDEAD:2:Master's Graveguard Helmet;T6_HEAD_PLATE_UNDEAD:3:Master's Graveguard Helmet;T7_HEAD_PLATE_UNDEAD:0:Grandmaster's Graveguard Helmet;T7_HEAD_PLATE_UNDEAD:1:Grandmaster's Graveguard Helmet;T7_HEAD_PLATE_UNDEAD:2:Grandmaster's Graveguard Helmet;T7_HEAD_PLATE_UNDEAD:3:Grandmaster's Graveguard Helmet;T8_HEAD_PLATE_UNDEAD:0:Elder's Graveguard Helmet;T8_HEAD_PLATE_UNDEAD:1:Elder's Graveguard Helmet;T8_HEAD_PLATE_UNDEAD:2:Elder's Graveguard Helmet;T8_HEAD_PLATE_UNDEAD:3:Elder's Graveguard Helmet;T4_ARMOR_PLATE_UNDEAD:0:Adept's Graveguard Armor;T4_ARMOR_PLATE_UNDEAD:1:Adept's Graveguard Armor;T4_ARMOR_PLATE_UNDEAD:2:Adept's Graveguard Armor;T4_ARMOR_PLATE_UNDEAD:3:Adept's Graveguard Armor;T5_ARMOR_PLATE_UNDEAD:0:Expert's Graveguard Armor;T5_ARMOR_PLATE_UNDEAD:1:Expert's Graveguard Armor;T5_ARMOR_PLATE_UNDEAD:2:Expert's Graveguard Armor;T5_ARMOR_PLATE_UNDEAD:3:Expert's Graveguard Armor;T6_ARMOR_PLATE_UNDEAD:0:Master's Graveguard Armor;T6_ARMOR_PLATE_UNDEAD:1:Master's Graveguard Armor;T6_ARMOR_PLATE_UNDEAD:2:Master's Graveguard Armor;T6_ARMOR_PLATE_UNDEAD:3:Master's Graveguard Armor;T7_ARMOR_PLATE_UNDEAD:0:Grandmaster's Graveguard Armor;T7_ARMOR_PLATE_UNDEAD:1:Grandmaster's Graveguard Armor;T7_ARMOR_PLATE_UNDEAD:2:Grandmaster's Graveguard Armor;T7_ARMOR_PLATE_UNDEAD:3:Grandmaster's Graveguard Armor;T8_ARMOR_PLATE_UNDEAD:0:Elder's Graveguard Armor;T8_ARMOR_PLATE_UNDEAD:1:Elder's Graveguard Armor;T8_ARMOR_PLATE_UNDEAD:2:Elder's Graveguard Armor;T8_ARMOR_PLATE_UNDEAD:3:Elder's Graveguard Armor;T4_SHOES_PLATE_UNDEAD:0:Adept's Graveguard Boots;T4_SHOES_PLATE_UNDEAD:1:Adept's Graveguard Boots;T4_SHOES_PLATE_UNDEAD:2:Adept's Graveguard Boots;T4_SHOES_PLATE_UNDEAD:3:Adept's Graveguard Boots;T5_SHOES_PLATE_UNDEAD:0:Expert's Graveguard Boots;T5_SHOES_PLATE_UNDEAD:1:Expert's Graveguard Boots;T5_SHOES_PLATE_UNDEAD:2:Expert's Graveguard Boots;T5_SHOES_PLATE_UNDEAD:3:Expert's Graveguard Boots;T6_SHOES_PLATE_UNDEAD:0:Master's Graveguard Boots;T6_SHOES_PLATE_UNDEAD:1:Master's Graveguard Boots;T6_SHOES_PLATE_UNDEAD:2:Master's Graveguard Boots;T6_SHOES_PLATE_UNDEAD:3:Master's Graveguard Boots;T7_SHOES_PLATE_UNDEAD:0:Grandmaster's Graveguard Boots;T7_SHOES_PLATE_UNDEAD:1:Grandmaster's Graveguard Boots;T7_SHOES_PLATE_UNDEAD:2:Grandmaster's Graveguard Boots;T7_SHOES_PLATE_UNDEAD:3:Grandmaster's Graveguard Boots;T8_SHOES_PLATE_UNDEAD:0:Elder's Graveguard Boots;T8_SHOES_PLATE_UNDEAD:1:Elder's Graveguard Boots;T8_SHOES_PLATE_UNDEAD:2:Elder's Graveguard Boots;T8_SHOES_PLATE_UNDEAD:3:Elder's Graveguard Boots;T4_HEAD_PLATE_HELL:0:Adept's Demon Helmet;T4_HEAD_PLATE_HELL:1:Adept's Demon Helmet;T4_HEAD_PLATE_HELL:2:Adept's Demon Helmet;T4_HEAD_PLATE_HELL:3:Adept's Demon Helmet;T5_HEAD_PLATE_HELL:0:Expert's Demon Helmet;T5_HEAD_PLATE_HELL:1:Expert's Demon Helmet;T5_HEAD_PLATE_HELL:2:Expert's Demon Helmet;T5_HEAD_PLATE_HELL:3:Expert's Demon Helmet;T6_HEAD_PLATE_HELL:0:Master's Demon Helmet;T6_HEAD_PLATE_HELL:1:Master's Demon Helmet;T6_HEAD_PLATE_HELL:2:Master's Demon Helmet;T6_HEAD_PLATE_HELL:3:Master's Demon Helmet;T7_HEAD_PLATE_HELL:0:Grandmaster's Demon Helmet;T7_HEAD_PLATE_HELL:1:Grandmaster's Demon Helmet;T7_HEAD_PLATE_HELL:2:Grandmaster's Demon Helmet;T7_HEAD_PLATE_HELL:3:Grandmaster's Demon Helmet;T8_HEAD_PLATE_HELL:0:Elder's Demon Helmet;T8_HEAD_PLATE_HELL:1:Elder's Demon Helmet;T8_HEAD_PLATE_HELL:2:Elder's Demon Helmet;T8_HEAD_PLATE_HELL:3:Elder's Demon Helmet;T4_ARMOR_PLATE_HELL:0:Adept's Demon Armor;T4_ARMOR_PLATE_HELL:1:Adept's Demon Armor;T4_ARMOR_PLATE_HELL:2:Adept's Demon Armor;T4_ARMOR_PLATE_HELL:3:Adept's Demon Armor;T5_ARMOR_PLATE_HELL:0:Expert's Demon Armor;T5_ARMOR_PLATE_HELL:1:Expert's Demon Armor;T5_ARMOR_PLATE_HELL:2:Expert's Demon Armor;T5_ARMOR_PLATE_HELL:3:Expert's Demon Armor;T6_ARMOR_PLATE_HELL:0:Master's Demon Armor;T6_ARMOR_PLATE_HELL:1:Master's Demon Armor;T6_ARMOR_PLATE_HELL:2:Master's Demon Armor;T6_ARMOR_PLATE_HELL:3:Master's Demon Armor;T7_ARMOR_PLATE_HELL:0:Grandmaster's Demon Armor;T7_ARMOR_PLATE_HELL:1:Grandmaster's Demon Armor;T7_ARMOR_PLATE_HELL:2:Grandmaster's Demon Armor;T7_ARMOR_PLATE_HELL:3:Grandmaster's Demon Armor;T8_ARMOR_PLATE_HELL:0:Elder's Demon Armor;T8_ARMOR_PLATE_HELL:1:Elder's Demon Armor;T8_ARMOR_PLATE_HELL:2:Elder's Demon Armor;T8_ARMOR_PLATE_HELL:3:Elder's Demon Armor;T4_SHOES_PLATE_HELL:0:Adept's Demon Boots;T4_SHOES_PLATE_HELL:1:Adept's Demon Boots;T4_SHOES_PLATE_HELL:2:Adept's Demon Boots;T4_SHOES_PLATE_HELL:3:Adept's Demon Boots;T5_SHOES_PLATE_HELL:0:Expert's Demon Boots;T5_SHOES_PLATE_HELL:1:Expert's Demon Boots;T5_SHOES_PLATE_HELL:2:Expert's Demon Boots;T5_SHOES_PLATE_HELL:3:Expert's Demon Boots;T6_SHOES_PLATE_HELL:0:Master's Demon Boots;T6_SHOES_PLATE_HELL:1:Master's Demon Boots;T6_SHOES_PLATE_HELL:2:Master's Demon Boots;T6_SHOES_PLATE_HELL:3:Master's Demon Boots;T7_SHOES_PLATE_HELL:0:Grandmaster's Demon Boots;T7_SHOES_PLATE_HELL:1:Grandmaster's Demon Boots;T7_SHOES_PLATE_HELL:2:Grandmaster's Demon Boots;T7_SHOES_PLATE_HELL:3:Grandmaster's Demon Boots;T8_SHOES_PLATE_HELL:0:Elder's Demon Boots;T8_SHOES_PLATE_HELL:1:Elder's Demon Boots;T8_SHOES_PLATE_HELL:2:Elder's Demon Boots;T8_SHOES_PLATE_HELL:3:Elder's Demon Boots;T4_HEAD_PLATE_KEEPER:0:Adept's Judicator Helmet;T4_HEAD_PLATE_KEEPER:1:Adept's Judicator Helmet;T4_HEAD_PLATE_KEEPER:2:Adept's Judicator Helmet;T4_HEAD_PLATE_KEEPER:3:Adept's Judicator Helmet;T5_HEAD_PLATE_KEEPER:0:Expert's Judicator Helmet;T5_HEAD_PLATE_KEEPER:1:Expert's Judicator Helmet;T5_HEAD_PLATE_KEEPER:2:Expert's Judicator Helmet;T5_HEAD_PLATE_KEEPER:3:Expert's Judicator Helmet;T6_HEAD_PLATE_KEEPER:0:Master's Judicator Helmet;T6_HEAD_PLATE_KEEPER:1:Master's Judicator Helmet;T6_HEAD_PLATE_KEEPER:2:Master's Judicator Helmet;T6_HEAD_PLATE_KEEPER:3:Master's Judicator Helmet;T7_HEAD_PLATE_KEEPER:0:Grandmaster's Judicator Helmet;T7_HEAD_PLATE_KEEPER:1:Grandmaster's Judicator Helmet;T7_HEAD_PLATE_KEEPER:2:Grandmaster's Judicator Helmet;T7_HEAD_PLATE_KEEPER:3:Grandmaster's Judicator Helmet;T8_HEAD_PLATE_KEEPER:0:Elder's Judicator Helmet;T8_HEAD_PLATE_KEEPER:1:Elder's Judicator Helmet;T8_HEAD_PLATE_KEEPER:2:Elder's Judicator Helmet;T8_HEAD_PLATE_KEEPER:3:Elder's Judicator Helmet;T4_ARMOR_PLATE_KEEPER:0:Adept's Judicator Armor;T4_ARMOR_PLATE_KEEPER:1:Adept's Judicator Armor;T4_ARMOR_PLATE_KEEPER:2:Adept's Judicator Armor;T4_ARMOR_PLATE_KEEPER:3:Adept's Judicator Armor;T5_ARMOR_PLATE_KEEPER:0:Expert's Judicator Armor;T5_ARMOR_PLATE_KEEPER:1:Expert's Judicator Armor;T5_ARMOR_PLATE_KEEPER:2:Expert's Judicator Armor;T5_ARMOR_PLATE_KEEPER:3:Expert's Judicator Armor;T6_ARMOR_PLATE_KEEPER:0:Master's Judicator Armor;T6_ARMOR_PLATE_KEEPER:1:Master's Judicator Armor;T6_ARMOR_PLATE_KEEPER:2:Master's Judicator Armor;T6_ARMOR_PLATE_KEEPER:3:Master's Judicator Armor;T7_ARMOR_PLATE_KEEPER:0:Grandmaster's Judicator Armor;T7_ARMOR_PLATE_KEEPER:1:Grandmaster's Judicator Armor;T7_ARMOR_PLATE_KEEPER:2:Grandmaster's Judicator Armor;T7_ARMOR_PLATE_KEEPER:3:Grandmaster's Judicator Armor;T8_ARMOR_PLATE_KEEPER:0:Elder's Judicator Armor;T8_ARMOR_PLATE_KEEPER:1:Elder's Judicator Armor;T8_ARMOR_PLATE_KEEPER:2:Elder's Judicator Armor;T8_ARMOR_PLATE_KEEPER:3:Elder's Judicator Armor;T4_SHOES_PLATE_KEEPER:0:Adept's Judicator Boots;T4_SHOES_PLATE_KEEPER:1:Adept's Judicator Boots;T4_SHOES_PLATE_KEEPER:2:Adept's Judicator Boots;T4_SHOES_PLATE_KEEPER:3:Adept's Judicator Boots;T5_SHOES_PLATE_KEEPER:0:Expert's Judicator Boots;T5_SHOES_PLATE_KEEPER:1:Expert's Judicator Boots;T5_SHOES_PLATE_KEEPER:2:Expert's Judicator Boots;T5_SHOES_PLATE_KEEPER:3:Expert's Judicator Boots;T6_SHOES_PLATE_KEEPER:0:Master's Judicator Boots;T6_SHOES_PLATE_KEEPER:1:Master's Judicator Boots;T6_SHOES_PLATE_KEEPER:2:Master's Judicator Boots;T6_SHOES_PLATE_KEEPER:3:Master's Judicator Boots;T7_SHOES_PLATE_KEEPER:0:Grandmaster's Judicator Boots;T7_SHOES_PLATE_KEEPER:1:Grandmaster's Judicator Boots;T7_SHOES_PLATE_KEEPER:2:Grandmaster's Judicator Boots;T7_SHOES_PLATE_KEEPER:3:Grandmaster's Judicator Boots;T8_SHOES_PLATE_KEEPER:0:Elder's Judicator Boots;T8_SHOES_PLATE_KEEPER:1:Elder's Judicator Boots;T8_SHOES_PLATE_KEEPER:2:Elder's Judicator Boots;T8_SHOES_PLATE_KEEPER:3:Elder's Judicator Boots;T4_HEAD_PLATE_AVALON:0:Adept's Helmet of Valor;T4_HEAD_PLATE_AVALON:1:Adept's Helmet of Valor;T4_HEAD_PLATE_AVALON:2:Adept's Helmet of Valor;T4_HEAD_PLATE_AVALON:3:Adept's Helmet of Valor;T5_HEAD_PLATE_AVALON:0:Expert's Helmet of Valor;T5_HEAD_PLATE_AVALON:1:Expert's Helmet of Valor;T5_HEAD_PLATE_AVALON:2:Expert's Helmet of Valor;T5_HEAD_PLATE_AVALON:3:Expert's Helmet of Valor;T6_HEAD_PLATE_AVALON:0:Master's Helmet of Valor;T6_HEAD_PLATE_AVALON:1:Master's Helmet of Valor;T6_HEAD_PLATE_AVALON:2:Master's Helmet of Valor;T6_HEAD_PLATE_AVALON:3:Master's Helmet of Valor;T7_HEAD_PLATE_AVALON:0:Grandmaster's Helmet of Valor;T7_HEAD_PLATE_AVALON:1:Grandmaster's Helmet of Valor;T7_HEAD_PLATE_AVALON:2:Grandmaster's Helmet of Valor;T7_HEAD_PLATE_AVALON:3:Grandmaster's Helmet of Valor;T8_HEAD_PLATE_AVALON:0:Elder's Helmet of Valor;T8_HEAD_PLATE_AVALON:1:Elder's Helmet of Valor;T8_HEAD_PLATE_AVALON:2:Elder's Helmet of Valor;T8_HEAD_PLATE_AVALON:3:Elder's Helmet of Valor;T4_ARMOR_PLATE_AVALON:0:Adept's Armor of Valor;T4_ARMOR_PLATE_AVALON:1:Adept's Armor of Valor;T4_ARMOR_PLATE_AVALON:2:Adept's Armor of Valor;T4_ARMOR_PLATE_AVALON:3:Adept's Armor of Valor;T5_ARMOR_PLATE_AVALON:0:Expert's Armor of Valor;T5_ARMOR_PLATE_AVALON:1:Expert's Armor of Valor;T5_ARMOR_PLATE_AVALON:2:Expert's Armor of Valor;T5_ARMOR_PLATE_AVALON:3:Expert's Armor of Valor;T6_ARMOR_PLATE_AVALON:0:Master's Armor of Valor;T6_ARMOR_PLATE_AVALON:1:Master's Armor of Valor;T6_ARMOR_PLATE_AVALON:2:Master's Armor of Valor;T6_ARMOR_PLATE_AVALON:3:Master's Armor of Valor;T7_ARMOR_PLATE_AVALON:0:Grandmaster's Armor of Valor;T7_ARMOR_PLATE_AVALON:1:Grandmaster's Armor of Valor;T7_ARMOR_PLATE_AVALON:2:Grandmaster's Armor of Valor;T7_ARMOR_PLATE_AVALON:3:Grandmaster's Armor of Valor;T8_ARMOR_PLATE_AVALON:0:Elder's Armor of Valor;T8_ARMOR_PLATE_AVALON:1:Elder's Armor of Valor;T8_ARMOR_PLATE_AVALON:2:Elder's Armor of Valor;T8_ARMOR_PLATE_AVALON:3:Elder's Armor of Valor;T4_SHOES_PLATE_AVALON:0:Adept's Boots of Valor;T4_SHOES_PLATE_AVALON:1:Adept's Boots of Valor;T4_SHOES_PLATE_AVALON:2:Adept's Boots of Valor;T4_SHOES_PLATE_AVALON:3:Adept's Boots of Valor;T5_SHOES_PLATE_AVALON:0:Expert's Boots of Valor;T5_SHOES_PLATE_AVALON:1:Expert's Boots of Valor;T5_SHOES_PLATE_AVALON:2:Expert's Boots of Valor;T5_SHOES_PLATE_AVALON:3:Expert's Boots of Valor;T6_SHOES_PLATE_AVALON:0:Master's Boots of Valor;T6_SHOES_PLATE_AVALON:1:Master's Boots of Valor;T6_SHOES_PLATE_AVALON:2:Master's Boots of Valor;T6_SHOES_PLATE_AVALON:3:Master's Boots of Valor;T7_SHOES_PLATE_AVALON:0:Grandmaster's Boots of Valor;T7_SHOES_PLATE_AVALON:1:Grandmaster's Boots of Valor;T7_SHOES_PLATE_AVALON:2:Grandmaster's Boots of Valor;T7_SHOES_PLATE_AVALON:3:Grandmaster's Boots of Valor;T8_SHOES_PLATE_AVALON:0:Elder's Boots of Valor;T8_SHOES_PLATE_AVALON:1:Elder's Boots of Valor;T8_SHOES_PLATE_AVALON:2:Elder's Boots of Valor;T8_SHOES_PLATE_AVALON:3:Elder's Boots of Valor;T1_HEAD_LEATHER_SET1:0:Beginner's Mercenary Hood;T4_HEAD_LEATHER_SET1:0:Adept's Mercenary Hood;T4_HEAD_LEATHER_SET1:1:Adept's Mercenary Hood;T4_HEAD_LEATHER_SET1:2:Adept's Mercenary Hood;T4_HEAD_LEATHER_SET1:3:Adept's Mercenary Hood;T5_HEAD_LEATHER_SET1:0:Expert's Mercenary Hood;T5_HEAD_LEATHER_SET1:1:Expert's Mercenary Hood;T5_HEAD_LEATHER_SET1:2:Expert's Mercenary Hood;T5_HEAD_LEATHER_SET1:3:Expert's Mercenary Hood;T6_HEAD_LEATHER_SET1:0:Master's Mercenary Hood;T6_HEAD_LEATHER_SET1:1:Master's Mercenary Hood;T6_HEAD_LEATHER_SET1:2:Master's Mercenary Hood;T6_HEAD_LEATHER_SET1:3:Master's Mercenary Hood;T7_HEAD_LEATHER_SET1:0:Grandmaster's Mercenary Hood;T7_HEAD_LEATHER_SET1:1:Grandmaster's Mercenary Hood;T7_HEAD_LEATHER_SET1:2:Grandmaster's Mercenary Hood;T7_HEAD_LEATHER_SET1:3:Grandmaster's Mercenary Hood;T8_HEAD_LEATHER_SET1:0:Elder's Mercenary Hood;T8_HEAD_LEATHER_SET1:1:Elder's Mercenary Hood;T8_HEAD_LEATHER_SET1:2:Elder's Mercenary Hood;T8_HEAD_LEATHER_SET1:3:Elder's Mercenary Hood;T1_ARMOR_LEATHER_SET1:0:Beginner's Mercenary Jacket;T4_ARMOR_LEATHER_SET1:0:Adept's Mercenary Jacket;T4_ARMOR_LEATHER_SET1:1:Adept's Mercenary Jacket;T4_ARMOR_LEATHER_SET1:2:Adept's Mercenary Jacket;T4_ARMOR_LEATHER_SET1:3:Adept's Mercenary Jacket;T5_ARMOR_LEATHER_SET1:0:Expert's Mercenary Jacket;T5_ARMOR_LEATHER_SET1:1:Expert's Mercenary Jacket;T5_ARMOR_LEATHER_SET1:2:Expert's Mercenary Jacket;T5_ARMOR_LEATHER_SET1:3:Expert's Mercenary Jacket;T6_ARMOR_LEATHER_SET1:0:Master's Mercenary Jacket;T6_ARMOR_LEATHER_SET1:1:Master's Mercenary Jacket;T6_ARMOR_LEATHER_SET1:2:Master's Mercenary Jacket;T6_ARMOR_LEATHER_SET1:3:Master's Mercenary Jacket;T7_ARMOR_LEATHER_SET1:0:Grandmaster's Mercenary Jacket;T7_ARMOR_LEATHER_SET1:1:Grandmaster's Mercenary Jacket;T7_ARMOR_LEATHER_SET1:2:Grandmaster's Mercenary Jacket;T7_ARMOR_LEATHER_SET1:3:Grandmaster's Mercenary Jacket;T8_ARMOR_LEATHER_SET1:0:Elder's Mercenary Jacket;T8_ARMOR_LEATHER_SET1:1:Elder's Mercenary Jacket;T8_ARMOR_LEATHER_SET1:2:Elder's Mercenary Jacket;T8_ARMOR_LEATHER_SET1:3:Elder's Mercenary Jacket;T1_SHOES_LEATHER_SET1:0:Beginner's Mercenary Shoes;T4_SHOES_LEATHER_SET1:0:Adept's Mercenary Shoes;T4_SHOES_LEATHER_SET1:1:Adept's Mercenary Shoes;T4_SHOES_LEATHER_SET1:2:Adept's Mercenary Shoes;T4_SHOES_LEATHER_SET1:3:Adept's Mercenary Shoes;T5_SHOES_LEATHER_SET1:0:Expert's Mercenary Shoes;T5_SHOES_LEATHER_SET1:1:Expert's Mercenary Shoes;T5_SHOES_LEATHER_SET1:2:Expert's Mercenary Shoes;T5_SHOES_LEATHER_SET1:3:Expert's Mercenary Shoes;T6_SHOES_LEATHER_SET1:0:Master's Mercenary Shoes;T6_SHOES_LEATHER_SET1:1:Master's Mercenary Shoes;T6_SHOES_LEATHER_SET1:2:Master's Mercenary Shoes;T6_SHOES_LEATHER_SET1:3:Master's Mercenary Shoes;T7_SHOES_LEATHER_SET1:0:Grandmaster's Mercenary Shoes;T7_SHOES_LEATHER_SET1:1:Grandmaster's Mercenary Shoes;T7_SHOES_LEATHER_SET1:2:Grandmaster's Mercenary Shoes;T7_SHOES_LEATHER_SET1:3:Grandmaster's Mercenary Shoes;T8_SHOES_LEATHER_SET1:0:Elder's Mercenary Shoes;T8_SHOES_LEATHER_SET1:1:Elder's Mercenary Shoes;T8_SHOES_LEATHER_SET1:2:Elder's Mercenary Shoes;T8_SHOES_LEATHER_SET1:3:Elder's Mercenary Shoes;T4_HEAD_LEATHER_MORGANA:0:Adept's Stalker Hood;T4_HEAD_LEATHER_MORGANA:1:Adept's Stalker Hood;T4_HEAD_LEATHER_MORGANA:2:Adept's Stalker Hood;T4_HEAD_LEATHER_MORGANA:3:Adept's Stalker Hood;T5_HEAD_LEATHER_MORGANA:0:Expert's Stalker Hood;T5_HEAD_LEATHER_MORGANA:1:Expert's Stalker Hood;T5_HEAD_LEATHER_MORGANA:2:Expert's Stalker Hood;T5_HEAD_LEATHER_MORGANA:3:Expert's Stalker Hood;T6_HEAD_LEATHER_MORGANA:0:Master's Stalker Hood;T6_HEAD_LEATHER_MORGANA:1:Master's Stalker Hood;T6_HEAD_LEATHER_MORGANA:2:Master's Stalker Hood;T6_HEAD_LEATHER_MORGANA:3:Master's Stalker Hood;T7_HEAD_LEATHER_MORGANA:0:Grandmaster's Stalker Hood;T7_HEAD_LEATHER_MORGANA:1:Grandmaster's Stalker Hood;T7_HEAD_LEATHER_MORGANA:2:Grandmaster's Stalker Hood;T7_HEAD_LEATHER_MORGANA:3:Grandmaster's Stalker Hood;T8_HEAD_LEATHER_MORGANA:0:Elder's Stalker Hood;T8_HEAD_LEATHER_MORGANA:1:Elder's Stalker Hood;T8_HEAD_LEATHER_MORGANA:2:Elder's Stalker Hood;T8_HEAD_LEATHER_MORGANA:3:Elder's Stalker Hood;T4_ARMOR_LEATHER_MORGANA:0:Adept's Stalker Jacket;T4_ARMOR_LEATHER_MORGANA:1:Adept's Stalker Jacket;T4_ARMOR_LEATHER_MORGANA:2:Adept's Stalker Jacket;T4_ARMOR_LEATHER_MORGANA:3:Adept's Stalker Jacket;T5_ARMOR_LEATHER_MORGANA:0:Expert's Stalker Jacket;T5_ARMOR_LEATHER_MORGANA:1:Expert's Stalker Jacket;T5_ARMOR_LEATHER_MORGANA:2:Expert's Stalker Jacket;T5_ARMOR_LEATHER_MORGANA:3:Expert's Stalker Jacket;T6_ARMOR_LEATHER_MORGANA:0:Master's Stalker Jacket;T6_ARMOR_LEATHER_MORGANA:1:Master's Stalker Jacket;T6_ARMOR_LEATHER_MORGANA:2:Master's Stalker Jacket;T6_ARMOR_LEATHER_MORGANA:3:Master's Stalker Jacket;T7_ARMOR_LEATHER_MORGANA:0:Grandmaster's Stalker Jacket;T7_ARMOR_LEATHER_MORGANA:1:Grandmaster's Stalker Jacket;T7_ARMOR_LEATHER_MORGANA:2:Grandmaster's Stalker Jacket;T7_ARMOR_LEATHER_MORGANA:3:Grandmaster's Stalker Jacket;T8_ARMOR_LEATHER_MORGANA:0:Elder's Stalker Jacket;T8_ARMOR_LEATHER_MORGANA:1:Elder's Stalker Jacket;T8_ARMOR_LEATHER_MORGANA:2:Elder's Stalker Jacket;T8_ARMOR_LEATHER_MORGANA:3:Elder's Stalker Jacket;T4_SHOES_LEATHER_MORGANA:0:Adept's Stalker Shoes;T4_SHOES_LEATHER_MORGANA:1:Adept's Stalker Shoes;T4_SHOES_LEATHER_MORGANA:2:Adept's Stalker Shoes;T4_SHOES_LEATHER_MORGANA:3:Adept's Stalker Shoes;T5_SHOES_LEATHER_MORGANA:0:Expert's Stalker Shoes;T5_SHOES_LEATHER_MORGANA:1:Expert's Stalker Shoes;T5_SHOES_LEATHER_MORGANA:2:Expert's Stalker Shoes;T5_SHOES_LEATHER_MORGANA:3:Expert's Stalker Shoes;T6_SHOES_LEATHER_MORGANA:0:Master's Stalker Shoes;T6_SHOES_LEATHER_MORGANA:1:Master's Stalker Shoes;T6_SHOES_LEATHER_MORGANA:2:Master's Stalker Shoes;T6_SHOES_LEATHER_MORGANA:3:Master's Stalker Shoes;T7_SHOES_LEATHER_MORGANA:0:Grandmaster's Stalker Shoes;T7_SHOES_LEATHER_MORGANA:1:Grandmaster's Stalker Shoes;T7_SHOES_LEATHER_MORGANA:2:Grandmaster's Stalker Shoes;T7_SHOES_LEATHER_MORGANA:3:Grandmaster's Stalker Shoes;T8_SHOES_LEATHER_MORGANA:0:Elder's Stalker Shoes;T8_SHOES_LEATHER_MORGANA:1:Elder's Stalker Shoes;T8_SHOES_LEATHER_MORGANA:2:Elder's Stalker Shoes;T8_SHOES_LEATHER_MORGANA:3:Elder's Stalker Shoes;T4_HEAD_LEATHER_HELL:0:Adept's Hellion Hood;T4_HEAD_LEATHER_HELL:1:Adept's Hellion Hood;T4_HEAD_LEATHER_HELL:2:Adept's Hellion Hood;T4_HEAD_LEATHER_HELL:3:Adept's Hellion Hood;T5_HEAD_LEATHER_HELL:0:Expert's Hellion Hood;T5_HEAD_LEATHER_HELL:1:Expert's Hellion Hood;T5_HEAD_LEATHER_HELL:2:Expert's Hellion Hood;T5_HEAD_LEATHER_HELL:3:Expert's Hellion Hood;T6_HEAD_LEATHER_HELL:0:Master's Hellion Hood;T6_HEAD_LEATHER_HELL:1:Master's Hellion Hood;T6_HEAD_LEATHER_HELL:2:Master's Hellion Hood;T6_HEAD_LEATHER_HELL:3:Master's Hellion Hood;T7_HEAD_LEATHER_HELL:0:Grandmaster's Hellion Hood;T7_HEAD_LEATHER_HELL:1:Grandmaster's Hellion Hood;T7_HEAD_LEATHER_HELL:2:Grandmaster's Hellion Hood;T7_HEAD_LEATHER_HELL:3:Grandmaster's Hellion Hood;T8_HEAD_LEATHER_HELL:0:Elder's Hellion Hood;T8_HEAD_LEATHER_HELL:1:Elder's Hellion Hood;T8_HEAD_LEATHER_HELL:2:Elder's Hellion Hood;T8_HEAD_LEATHER_HELL:3:Elder's Hellion Hood;T4_ARMOR_LEATHER_HELL:0:Adept's Hellion Jacket;T4_ARMOR_LEATHER_HELL:1:Adept's Hellion Jacket;T4_ARMOR_LEATHER_HELL:2:Adept's Hellion Jacket;T4_ARMOR_LEATHER_HELL:3:Adept's Hellion Jacket;T5_ARMOR_LEATHER_HELL:0:Expert's Hellion Jacket;T5_ARMOR_LEATHER_HELL:1:Expert's Hellion Jacket;T5_ARMOR_LEATHER_HELL:2:Expert's Hellion Jacket;T5_ARMOR_LEATHER_HELL:3:Expert's Hellion Jacket;T6_ARMOR_LEATHER_HELL:0:Master's Hellion Jacket;T6_ARMOR_LEATHER_HELL:1:Master's Hellion Jacket;T6_ARMOR_LEATHER_HELL:2:Master's Hellion Jacket;T6_ARMOR_LEATHER_HELL:3:Master's Hellion Jacket;T7_ARMOR_LEATHER_HELL:0:Grandmaster's Hellion Jacket;T7_ARMOR_LEATHER_HELL:1:Grandmaster's Hellion Jacket;T7_ARMOR_LEATHER_HELL:2:Grandmaster's Hellion Jacket;T7_ARMOR_LEATHER_HELL:3:Grandmaster's Hellion Jacket;T8_ARMOR_LEATHER_HELL:0:Elder's Hellion Jacket;T8_ARMOR_LEATHER_HELL:1:Elder's Hellion Jacket;T8_ARMOR_LEATHER_HELL:2:Elder's Hellion Jacket;T8_ARMOR_LEATHER_HELL:3:Elder's Hellion Jacket;T4_SHOES_LEATHER_HELL:0:Adept's Hellion Shoes;T4_SHOES_LEATHER_HELL:1:Adept's Hellion Shoes;T4_SHOES_LEATHER_HELL:2:Adept's Hellion Shoes;T4_SHOES_LEATHER_HELL:3:Adept's Hellion Shoes;T5_SHOES_LEATHER_HELL:0:Expert's Hellion Shoes;T5_SHOES_LEATHER_HELL:1:Expert's Hellion Shoes;T5_SHOES_LEATHER_HELL:2:Expert's Hellion Shoes;T5_SHOES_LEATHER_HELL:3:Expert's Hellion Shoes;T6_SHOES_LEATHER_HELL:0:Master's Hellion Shoes;T6_SHOES_LEATHER_HELL:1:Master's Hellion Shoes;T6_SHOES_LEATHER_HELL:2:Master's Hellion Shoes;T6_SHOES_LEATHER_HELL:3:Master's Hellion Shoes;T7_SHOES_LEATHER_HELL:0:Grandmaster's Hellion Shoes;T7_SHOES_LEATHER_HELL:1:Grandmaster's Hellion Shoes;T7_SHOES_LEATHER_HELL:2:Grandmaster's Hellion Shoes;T7_SHOES_LEATHER_HELL:3:Grandmaster's Hellion Shoes;T8_SHOES_LEATHER_HELL:0:Elder's Hellion Shoes;T8_SHOES_LEATHER_HELL:1:Elder's Hellion Shoes;T8_SHOES_LEATHER_HELL:2:Elder's Hellion Shoes;T8_SHOES_LEATHER_HELL:3:Elder's Hellion Shoes;T4_HEAD_LEATHER_UNDEAD:0:Adept's Specter Hood;T4_HEAD_LEATHER_UNDEAD:1:Adept's Specter Hood;T4_HEAD_LEATHER_UNDEAD:2:Adept's Specter Hood;T4_HEAD_LEATHER_UNDEAD:3:Adept's Specter Hood;T5_HEAD_LEATHER_UNDEAD:0:Expert's Specter Hood;T5_HEAD_LEATHER_UNDEAD:1:Expert's Specter Hood;T5_HEAD_LEATHER_UNDEAD:2:Expert's Specter Hood;T5_HEAD_LEATHER_UNDEAD:3:Expert's Specter Hood;T6_HEAD_LEATHER_UNDEAD:0:Master's Specter Hood;T6_HEAD_LEATHER_UNDEAD:1:Master's Specter Hood;T6_HEAD_LEATHER_UNDEAD:2:Master's Specter Hood;T6_HEAD_LEATHER_UNDEAD:3:Master's Specter Hood;T7_HEAD_LEATHER_UNDEAD:0:Grandmaster's Specter Hood;T7_HEAD_LEATHER_UNDEAD:1:Grandmaster's Specter Hood;T7_HEAD_LEATHER_UNDEAD:2:Grandmaster's Specter Hood;T7_HEAD_LEATHER_UNDEAD:3:Grandmaster's Specter Hood;T8_HEAD_LEATHER_UNDEAD:0:Elder's Specter Hood;T8_HEAD_LEATHER_UNDEAD:1:Elder's Specter Hood;T8_HEAD_LEATHER_UNDEAD:2:Elder's Specter Hood;T8_HEAD_LEATHER_UNDEAD:3:Elder's Specter Hood;T4_ARMOR_LEATHER_UNDEAD:0:Adept's Specter Jacket;T4_ARMOR_LEATHER_UNDEAD:1:Adept's Specter Jacket;T4_ARMOR_LEATHER_UNDEAD:2:Adept's Specter Jacket;T4_ARMOR_LEATHER_UNDEAD:3:Adept's Specter Jacket;T5_ARMOR_LEATHER_UNDEAD:0:Expert's Specter Jacket;T5_ARMOR_LEATHER_UNDEAD:1:Expert's Specter Jacket;T5_ARMOR_LEATHER_UNDEAD:2:Expert's Specter Jacket;T5_ARMOR_LEATHER_UNDEAD:3:Expert's Specter Jacket;T6_ARMOR_LEATHER_UNDEAD:0:Master's Specter Jacket;T6_ARMOR_LEATHER_UNDEAD:1:Master's Specter Jacket;T6_ARMOR_LEATHER_UNDEAD:2:Master's Specter Jacket;T6_ARMOR_LEATHER_UNDEAD:3:Master's Specter Jacket;T7_ARMOR_LEATHER_UNDEAD:0:Grandmaster's Specter Jacket;T7_ARMOR_LEATHER_UNDEAD:1:Grandmaster's Specter Jacket;T7_ARMOR_LEATHER_UNDEAD:2:Grandmaster's Specter Jacket;T7_ARMOR_LEATHER_UNDEAD:3:Grandmaster's Specter Jacket;T8_ARMOR_LEATHER_UNDEAD:0:Elder's Specter Jacket;T8_ARMOR_LEATHER_UNDEAD:1:Elder's Specter Jacket;T8_ARMOR_LEATHER_UNDEAD:2:Elder's Specter Jacket;T8_ARMOR_LEATHER_UNDEAD:3:Elder's Specter Jacket;T4_SHOES_LEATHER_UNDEAD:0:Adept's Specter Shoes;T4_SHOES_LEATHER_UNDEAD:1:Adept's Specter Shoes;T4_SHOES_LEATHER_UNDEAD:2:Adept's Specter Shoes;T4_SHOES_LEATHER_UNDEAD:3:Adept's Specter Shoes;T5_SHOES_LEATHER_UNDEAD:0:Expert's Specter Shoes;T5_SHOES_LEATHER_UNDEAD:1:Expert's Specter Shoes;T5_SHOES_LEATHER_UNDEAD:2:Expert's Specter Shoes;T5_SHOES_LEATHER_UNDEAD:3:Expert's Specter Shoes;T6_SHOES_LEATHER_UNDEAD:0:Master's Specter Shoes;T6_SHOES_LEATHER_UNDEAD:1:Master's Specter Shoes;T6_SHOES_LEATHER_UNDEAD:2:Master's Specter Shoes;T6_SHOES_LEATHER_UNDEAD:3:Master's Specter Shoes;T7_SHOES_LEATHER_UNDEAD:0:Grandmaster's Specter Shoes;T7_SHOES_LEATHER_UNDEAD:1:Grandmaster's Specter Shoes;T7_SHOES_LEATHER_UNDEAD:2:Grandmaster's Specter Shoes;T7_SHOES_LEATHER_UNDEAD:3:Grandmaster's Specter Shoes;T8_SHOES_LEATHER_UNDEAD:0:Elder's Specter Shoes;T8_SHOES_LEATHER_UNDEAD:1:Elder's Specter Shoes;T8_SHOES_LEATHER_UNDEAD:2:Elder's Specter Shoes;T8_SHOES_LEATHER_UNDEAD:3:Elder's Specter Shoes;T4_HEAD_LEATHER_AVALON:0:Adept's Hood of Tenacity;T4_HEAD_LEATHER_AVALON:1:Adept's Hood of Tenacity;T4_HEAD_LEATHER_AVALON:2:Adept's Hood of Tenacity;T4_HEAD_LEATHER_AVALON:3:Adept's Hood of Tenacity;T5_HEAD_LEATHER_AVALON:0:Expert's Hood of Tenacity;T5_HEAD_LEATHER_AVALON:1:Expert's Hood of Tenacity;T5_HEAD_LEATHER_AVALON:2:Expert's Hood of Tenacity;T5_HEAD_LEATHER_AVALON:3:Expert's Hood of Tenacity;T6_HEAD_LEATHER_AVALON:0:Master's Hood of Tenacity;T6_HEAD_LEATHER_AVALON:1:Master's Hood of Tenacity;T6_HEAD_LEATHER_AVALON:2:Master's Hood of Tenacity;T6_HEAD_LEATHER_AVALON:3:Master's Hood of Tenacity;T7_HEAD_LEATHER_AVALON:0:Grandmaster's Hood of Tenacity;T7_HEAD_LEATHER_AVALON:1:Grandmaster's Hood of Tenacity;T7_HEAD_LEATHER_AVALON:2:Grandmaster's Hood of Tenacity;T7_HEAD_LEATHER_AVALON:3:Grandmaster's Hood of Tenacity;T8_HEAD_LEATHER_AVALON:0:Elder's Hood of Tenacity;T8_HEAD_LEATHER_AVALON:1:Elder's Hood of Tenacity;T8_HEAD_LEATHER_AVALON:2:Elder's Hood of Tenacity;T8_HEAD_LEATHER_AVALON:3:Elder's Hood of Tenacity;T4_ARMOR_LEATHER_AVALON:0:Adept's Jacket of Tenacity;T4_ARMOR_LEATHER_AVALON:1:Adept's Jacket of Tenacity;T4_ARMOR_LEATHER_AVALON:2:Adept's Jacket of Tenacity;T4_ARMOR_LEATHER_AVALON:3:Adept's Jacket of Tenacity;T5_ARMOR_LEATHER_AVALON:0:Expert's Jacket of Tenacity;T5_ARMOR_LEATHER_AVALON:1:Expert's Jacket of Tenacity;T5_ARMOR_LEATHER_AVALON:2:Expert's Jacket of Tenacity;T5_ARMOR_LEATHER_AVALON:3:Expert's Jacket of Tenacity;T6_ARMOR_LEATHER_AVALON:0:Master's Jacket of Tenacity;T6_ARMOR_LEATHER_AVALON:1:Master's Jacket of Tenacity;T6_ARMOR_LEATHER_AVALON:2:Master's Jacket of Tenacity;T6_ARMOR_LEATHER_AVALON:3:Master's Jacket of Tenacity;T7_ARMOR_LEATHER_AVALON:0:Grandmaster's Jacket of Tenacity;T7_ARMOR_LEATHER_AVALON:1:Grandmaster's Jacket of Tenacity;T7_ARMOR_LEATHER_AVALON:2:Grandmaster's Jacket of Tenacity;T7_ARMOR_LEATHER_AVALON:3:Grandmaster's Jacket of Tenacity;T8_ARMOR_LEATHER_AVALON:0:Elder's Jacket of Tenacity;T8_ARMOR_LEATHER_AVALON:1:Elder's Jacket of Tenacity;T8_ARMOR_LEATHER_AVALON:2:Elder's Jacket of Tenacity;T8_ARMOR_LEATHER_AVALON:3:Elder's Jacket of Tenacity;T4_SHOES_LEATHER_AVALON:0:Adept's Shoes of Tenacity;T4_SHOES_LEATHER_AVALON:1:Adept's Shoes of Tenacity;T4_SHOES_LEATHER_AVALON:2:Adept's Shoes of Tenacity;T4_SHOES_LEATHER_AVALON:3:Adept's Shoes of Tenacity;T5_SHOES_LEATHER_AVALON:0:Expert's Shoes of Tenacity;T5_SHOES_LEATHER_AVALON:1:Expert's Shoes of Tenacity;T5_SHOES_LEATHER_AVALON:2:Expert's Shoes of Tenacity;T5_SHOES_LEATHER_AVALON:3:Expert's Shoes of Tenacity;T6_SHOES_LEATHER_AVALON:0:Master's Shoes of Tenacity;T6_SHOES_LEATHER_AVALON:1:Master's Shoes of Tenacity;T6_SHOES_LEATHER_AVALON:2:Master's Shoes of Tenacity;T6_SHOES_LEATHER_AVALON:3:Master's Shoes of Tenacity;T7_SHOES_LEATHER_AVALON:0:Grandmaster's Shoes of Tenacity;T7_SHOES_LEATHER_AVALON:1:Grandmaster's Shoes of Tenacity;T7_SHOES_LEATHER_AVALON:2:Grandmaster's Shoes of Tenacity;T7_SHOES_LEATHER_AVALON:3:Grandmaster's Shoes of Tenacity;T8_SHOES_LEATHER_AVALON:0:Elder's Shoes of Tenacity;T8_SHOES_LEATHER_AVALON:1:Elder's Shoes of Tenacity;T8_SHOES_LEATHER_AVALON:2:Elder's Shoes of Tenacity;T8_SHOES_LEATHER_AVALON:3:Elder's Shoes of Tenacity;T4_HEAD_CLOTH_SET1:0:Adept's Scholar Cowl;T4_HEAD_CLOTH_SET1:1:Adept's Scholar Cowl;T4_HEAD_CLOTH_SET1:2:Adept's Scholar Cowl;T4_HEAD_CLOTH_SET1:3:Adept's Scholar Cowl;T5_HEAD_CLOTH_SET1:0:Expert's Scholar Cowl;T5_HEAD_CLOTH_SET1:1:Expert's Scholar Cowl;T5_HEAD_CLOTH_SET1:2:Expert's Scholar Cowl;T5_HEAD_CLOTH_SET1:3:Expert's Scholar Cowl;T6_HEAD_CLOTH_SET1:0:Master's Scholar Cowl;T6_HEAD_CLOTH_SET1:1:Master's Scholar Cowl;T6_HEAD_CLOTH_SET1:2:Master's Scholar Cowl;T6_HEAD_CLOTH_SET1:3:Master's Scholar Cowl;T7_HEAD_CLOTH_SET1:0:Grandmaster's Scholar Cowl;T7_HEAD_CLOTH_SET1:1:Grandmaster's Scholar Cowl;T7_HEAD_CLOTH_SET1:2:Grandmaster's Scholar Cowl;T7_HEAD_CLOTH_SET1:3:Grandmaster's Scholar Cowl;T8_HEAD_CLOTH_SET1:0:Elder's Scholar Cowl;T8_HEAD_CLOTH_SET1:1:Elder's Scholar Cowl;T8_HEAD_CLOTH_SET1:2:Elder's Scholar Cowl;T8_HEAD_CLOTH_SET1:3:Elder's Scholar Cowl;T4_ARMOR_CLOTH_SET1:0:Adept's Scholar Robe;T4_ARMOR_CLOTH_SET1:1:Adept's Scholar Robe;T4_ARMOR_CLOTH_SET1:2:Adept's Scholar Robe;T4_ARMOR_CLOTH_SET1:3:Adept's Scholar Robe;T5_ARMOR_CLOTH_SET1:0:Expert's Scholar Robe;T5_ARMOR_CLOTH_SET1:1:Expert's Scholar Robe;T5_ARMOR_CLOTH_SET1:2:Expert's Scholar Robe;T5_ARMOR_CLOTH_SET1:3:Expert's Scholar Robe;T6_ARMOR_CLOTH_SET1:0:Master's Scholar Robe;T6_ARMOR_CLOTH_SET1:1:Master's Scholar Robe;T6_ARMOR_CLOTH_SET1:2:Master's Scholar Robe;T6_ARMOR_CLOTH_SET1:3:Master's Scholar Robe;T7_ARMOR_CLOTH_SET1:0:Grandmaster's Scholar Robe;T7_ARMOR_CLOTH_SET1:1:Grandmaster's Scholar Robe;T7_ARMOR_CLOTH_SET1:2:Grandmaster's Scholar Robe;T7_ARMOR_CLOTH_SET1:3:Grandmaster's Scholar Robe;T8_ARMOR_CLOTH_SET1:0:Elder's Scholar Robe;T8_ARMOR_CLOTH_SET1:1:Elder's Scholar Robe;T8_ARMOR_CLOTH_SET1:2:Elder's Scholar Robe;T8_ARMOR_CLOTH_SET1:3:Elder's Scholar Robe;T4_SHOES_CLOTH_SET1:0:Adept's Scholar Sandals;T4_SHOES_CLOTH_SET1:1:Adept's Scholar Sandals;T4_SHOES_CLOTH_SET1:2:Adept's Scholar Sandals;T4_SHOES_CLOTH_SET1:3:Adept's Scholar Sandals;T5_SHOES_CLOTH_SET1:0:Expert's Scholar Sandals;T5_SHOES_CLOTH_SET1:1:Expert's Scholar Sandals;T5_SHOES_CLOTH_SET1:2:Expert's Scholar Sandals;T5_SHOES_CLOTH_SET1:3:Expert's Scholar Sandals;T6_SHOES_CLOTH_SET1:0:Master's Scholar Sandals;T6_SHOES_CLOTH_SET1:1:Master's Scholar Sandals;T6_SHOES_CLOTH_SET1:2:Master's Scholar Sandals;T6_SHOES_CLOTH_SET1:3:Master's Scholar Sandals;T7_SHOES_CLOTH_SET1:0:Grandmaster's Scholar Sandals;T7_SHOES_CLOTH_SET1:1:Grandmaster's Scholar Sandals;T7_SHOES_CLOTH_SET1:2:Grandmaster's Scholar Sandals;T7_SHOES_CLOTH_SET1:3:Grandmaster's Scholar Sandals;T8_SHOES_CLOTH_SET1:0:Elder's Scholar Sandals;T8_SHOES_CLOTH_SET1:1:Elder's Scholar Sandals;T8_SHOES_CLOTH_SET1:2:Elder's Scholar Sandals;T8_SHOES_CLOTH_SET1:3:Elder's Scholar Sandals;T4_HEAD_CLOTH_KEEPER:0:Adept's Druid Cowl;T4_HEAD_CLOTH_KEEPER:1:Adept's Druid Cowl;T4_HEAD_CLOTH_KEEPER:2:Adept's Druid Cowl;T4_HEAD_CLOTH_KEEPER:3:Adept's Druid Cowl;T5_HEAD_CLOTH_KEEPER:0:Expert's Druid Cowl;T5_HEAD_CLOTH_KEEPER:1:Expert's Druid Cowl;T5_HEAD_CLOTH_KEEPER:2:Expert's Druid Cowl;T5_HEAD_CLOTH_KEEPER:3:Expert's Druid Cowl;T6_HEAD_CLOTH_KEEPER:0:Master's Druid Cowl;T6_HEAD_CLOTH_KEEPER:1:Master's Druid Cowl;T6_HEAD_CLOTH_KEEPER:2:Master's Druid Cowl;T6_HEAD_CLOTH_KEEPER:3:Master's Druid Cowl;T7_HEAD_CLOTH_KEEPER:0:Grandmaster's Druid Cowl;T7_HEAD_CLOTH_KEEPER:1:Grandmaster's Druid Cowl;T7_HEAD_CLOTH_KEEPER:2:Grandmaster's Druid Cowl;T7_HEAD_CLOTH_KEEPER:3:Grandmaster's Druid Cowl;T8_HEAD_CLOTH_KEEPER:0:Elder's Druid Cowl;T8_HEAD_CLOTH_KEEPER:1:Elder's Druid Cowl;T8_HEAD_CLOTH_KEEPER:2:Elder's Druid Cowl;T8_HEAD_CLOTH_KEEPER:3:Elder's Druid Cowl;T4_ARMOR_CLOTH_KEEPER:0:Adept's Druid Robe;T4_ARMOR_CLOTH_KEEPER:1:Adept's Druid Robe;T4_ARMOR_CLOTH_KEEPER:2:Adept's Druid Robe;T4_ARMOR_CLOTH_KEEPER:3:Adept's Druid Robe;T5_ARMOR_CLOTH_KEEPER:0:Expert's Druid Robe;T5_ARMOR_CLOTH_KEEPER:1:Expert's Druid Robe;T5_ARMOR_CLOTH_KEEPER:2:Expert's Druid Robe;T5_ARMOR_CLOTH_KEEPER:3:Expert's Druid Robe;T6_ARMOR_CLOTH_KEEPER:0:Master's Druid Robe;T6_ARMOR_CLOTH_KEEPER:1:Master's Druid Robe;T6_ARMOR_CLOTH_KEEPER:2:Master's Druid Robe;T6_ARMOR_CLOTH_KEEPER:3:Master's Druid Robe;T7_ARMOR_CLOTH_KEEPER:0:Grandmaster's Druid Robe;T7_ARMOR_CLOTH_KEEPER:1:Grandmaster's Druid Robe;T7_ARMOR_CLOTH_KEEPER:2:Grandmaster's Druid Robe;T7_ARMOR_CLOTH_KEEPER:3:Grandmaster's Druid Robe;T8_ARMOR_CLOTH_KEEPER:0:Elder's Druid Robe;T8_ARMOR_CLOTH_KEEPER:1:Elder's Druid Robe;T8_ARMOR_CLOTH_KEEPER:2:Elder's Druid Robe;T8_ARMOR_CLOTH_KEEPER:3:Elder's Druid Robe;T4_SHOES_CLOTH_KEEPER:0:Adept's Druid Sandals;T4_SHOES_CLOTH_KEEPER:1:Adept's Druid Sandals;T4_SHOES_CLOTH_KEEPER:2:Adept's Druid Sandals;T4_SHOES_CLOTH_KEEPER:3:Adept's Druid Sandals;T5_SHOES_CLOTH_KEEPER:0:Expert's Druid Sandals;T5_SHOES_CLOTH_KEEPER:1:Expert's Druid Sandals;T5_SHOES_CLOTH_KEEPER:2:Expert's Druid Sandals;T5_SHOES_CLOTH_KEEPER:3:Expert's Druid Sandals;T6_SHOES_CLOTH_KEEPER:0:Master's Druid Sandals;T6_SHOES_CLOTH_KEEPER:1:Master's Druid Sandals;T6_SHOES_CLOTH_KEEPER:2:Master's Druid Sandals;T6_SHOES_CLOTH_KEEPER:3:Master's Druid Sandals;T7_SHOES_CLOTH_KEEPER:0:Grandmaster's Druid Sandals;T7_SHOES_CLOTH_KEEPER:1:Grandmaster's Druid Sandals;T7_SHOES_CLOTH_KEEPER:2:Grandmaster's Druid Sandals;T7_SHOES_CLOTH_KEEPER:3:Grandmaster's Druid Sandals;T8_SHOES_CLOTH_KEEPER:0:Elder's Druid Sandals;T8_SHOES_CLOTH_KEEPER:1:Elder's Druid Sandals;T8_SHOES_CLOTH_KEEPER:2:Elder's Druid Sandals;T8_SHOES_CLOTH_KEEPER:3:Elder's Druid Sandals;T4_HEAD_CLOTH_HELL:0:Adept's Fiend Cowl;T4_HEAD_CLOTH_HELL:1:Adept's Fiend Cowl;T4_HEAD_CLOTH_HELL:2:Adept's Fiend Cowl;T4_HEAD_CLOTH_HELL:3:Adept's Fiend Cowl;T5_HEAD_CLOTH_HELL:0:Expert's Fiend Cowl;T5_HEAD_CLOTH_HELL:1:Expert's Fiend Cowl;T5_HEAD_CLOTH_HELL:2:Expert's Fiend Cowl;T5_HEAD_CLOTH_HELL:3:Expert's Fiend Cowl;T6_HEAD_CLOTH_HELL:0:Master's Fiend Cowl;T6_HEAD_CLOTH_HELL:1:Master's Fiend Cowl;T6_HEAD_CLOTH_HELL:2:Master's Fiend Cowl;T6_HEAD_CLOTH_HELL:3:Master's Fiend Cowl;T7_HEAD_CLOTH_HELL:0:Grandmaster's Fiend Cowl;T7_HEAD_CLOTH_HELL:1:Grandmaster's Fiend Cowl;T7_HEAD_CLOTH_HELL:2:Grandmaster's Fiend Cowl;T7_HEAD_CLOTH_HELL:3:Grandmaster's Fiend Cowl;T8_HEAD_CLOTH_HELL:0:Elder's Fiend Cowl;T8_HEAD_CLOTH_HELL:1:Elder's Fiend Cowl;T8_HEAD_CLOTH_HELL:2:Elder's Fiend Cowl;T8_HEAD_CLOTH_HELL:3:Elder's Fiend Cowl;T4_ARMOR_CLOTH_HELL:0:Adept's Fiend Robe;T4_ARMOR_CLOTH_HELL:1:Adept's Fiend Robe;T4_ARMOR_CLOTH_HELL:2:Adept's Fiend Robe;T4_ARMOR_CLOTH_HELL:3:Adept's Fiend Robe;T5_ARMOR_CLOTH_HELL:0:Expert's Fiend Robe;T5_ARMOR_CLOTH_HELL:1:Expert's Fiend Robe;T5_ARMOR_CLOTH_HELL:2:Expert's Fiend Robe;T5_ARMOR_CLOTH_HELL:3:Expert's Fiend Robe;T6_ARMOR_CLOTH_HELL:0:Master's Fiend Robe;T6_ARMOR_CLOTH_HELL:1:Master's Fiend Robe;T6_ARMOR_CLOTH_HELL:2:Master's Fiend Robe;T6_ARMOR_CLOTH_HELL:3:Master's Fiend Robe;T7_ARMOR_CLOTH_HELL:0:Grandmaster's Fiend Robe;T7_ARMOR_CLOTH_HELL:1:Grandmaster's Fiend Robe;T7_ARMOR_CLOTH_HELL:2:Grandmaster's Fiend Robe;T7_ARMOR_CLOTH_HELL:3:Grandmaster's Fiend Robe;T8_ARMOR_CLOTH_HELL:0:Elder's Fiend Robe;T8_ARMOR_CLOTH_HELL:1:Elder's Fiend Robe;T8_ARMOR_CLOTH_HELL:2:Elder's Fiend Robe;T8_ARMOR_CLOTH_HELL:3:Elder's Fiend Robe;T4_SHOES_CLOTH_HELL:0:Adept's Fiend Sandals;T4_SHOES_CLOTH_HELL:1:Adept's Fiend Sandals;T4_SHOES_CLOTH_HELL:2:Adept's Fiend Sandals;T4_SHOES_CLOTH_HELL:3:Adept's Fiend Sandals;T5_SHOES_CLOTH_HELL:0:Expert's Fiend Sandals;T5_SHOES_CLOTH_HELL:1:Expert's Fiend Sandals;T5_SHOES_CLOTH_HELL:2:Expert's Fiend Sandals;T5_SHOES_CLOTH_HELL:3:Expert's Fiend Sandals;T6_SHOES_CLOTH_HELL:0:Master's Fiend Sandals;T6_SHOES_CLOTH_HELL:1:Master's Fiend Sandals;T6_SHOES_CLOTH_HELL:2:Master's Fiend Sandals;T6_SHOES_CLOTH_HELL:3:Master's Fiend Sandals;T7_SHOES_CLOTH_HELL:0:Grandmaster's Fiend Sandals;T7_SHOES_CLOTH_HELL:1:Grandmaster's Fiend Sandals;T7_SHOES_CLOTH_HELL:2:Grandmaster's Fiend Sandals;T7_SHOES_CLOTH_HELL:3:Grandmaster's Fiend Sandals;T8_SHOES_CLOTH_HELL:0:Elder's Fiend Sandals;T8_SHOES_CLOTH_HELL:1:Elder's Fiend Sandals;T8_SHOES_CLOTH_HELL:2:Elder's Fiend Sandals;T8_SHOES_CLOTH_HELL:3:Elder's Fiend Sandals;T4_HEAD_CLOTH_MORGANA:0:Adept's Cultist Cowl;T4_HEAD_CLOTH_MORGANA:1:Adept's Cultist Cowl;T4_HEAD_CLOTH_MORGANA:2:Adept's Cultist Cowl;T4_HEAD_CLOTH_MORGANA:3:Adept's Cultist Cowl;T5_HEAD_CLOTH_MORGANA:0:Expert's Cultist Cowl;T5_HEAD_CLOTH_MORGANA:1:Expert's Cultist Cowl;T5_HEAD_CLOTH_MORGANA:2:Expert's Cultist Cowl;T5_HEAD_CLOTH_MORGANA:3:Expert's Cultist Cowl;T6_HEAD_CLOTH_MORGANA:0:Master's Cultist Cowl;T6_HEAD_CLOTH_MORGANA:1:Master's Cultist Cowl;T6_HEAD_CLOTH_MORGANA:2:Master's Cultist Cowl;T6_HEAD_CLOTH_MORGANA:3:Master's Cultist Cowl;T7_HEAD_CLOTH_MORGANA:0:Grandmaster's Cultist Cowl;T7_HEAD_CLOTH_MORGANA:1:Grandmaster's Cultist Cowl;T7_HEAD_CLOTH_MORGANA:2:Grandmaster's Cultist Cowl;T7_HEAD_CLOTH_MORGANA:3:Grandmaster's Cultist Cowl;T8_HEAD_CLOTH_MORGANA:0:Elder's Cultist Cowl;T8_HEAD_CLOTH_MORGANA:1:Elder's Cultist Cowl;T8_HEAD_CLOTH_MORGANA:2:Elder's Cultist Cowl;T8_HEAD_CLOTH_MORGANA:3:Elder's Cultist Cowl;T4_ARMOR_CLOTH_MORGANA:0:Adept's Cultist Robe;T4_ARMOR_CLOTH_MORGANA:1:Adept's Cultist Robe;T4_ARMOR_CLOTH_MORGANA:2:Adept's Cultist Robe;T4_ARMOR_CLOTH_MORGANA:3:Adept's Cultist Robe;T5_ARMOR_CLOTH_MORGANA:0:Expert's Cultist Robe;T5_ARMOR_CLOTH_MORGANA:1:Expert's Cultist Robe;T5_ARMOR_CLOTH_MORGANA:2:Expert's Cultist Robe;T5_ARMOR_CLOTH_MORGANA:3:Expert's Cultist Robe;T6_ARMOR_CLOTH_MORGANA:0:Master's Cultist Robe;T6_ARMOR_CLOTH_MORGANA:1:Master's Cultist Robe;T6_ARMOR_CLOTH_MORGANA:2:Master's Cultist Robe;T6_ARMOR_CLOTH_MORGANA:3:Master's Cultist Robe;T7_ARMOR_CLOTH_MORGANA:0:Grandmaster's Cultist Robe;T7_ARMOR_CLOTH_MORGANA:1:Grandmaster's Cultist Robe;T7_ARMOR_CLOTH_MORGANA:2:Grandmaster's Cultist Robe;T7_ARMOR_CLOTH_MORGANA:3:Grandmaster's Cultist Robe;T8_ARMOR_CLOTH_MORGANA:0:Elder's Cultist Robe;T8_ARMOR_CLOTH_MORGANA:1:Elder's Cultist Robe;T8_ARMOR_CLOTH_MORGANA:2:Elder's Cultist Robe;T8_ARMOR_CLOTH_MORGANA:3:Elder's Cultist Robe;T4_SHOES_CLOTH_MORGANA:0:Adept's Cultist Sandals;T4_SHOES_CLOTH_MORGANA:1:Adept's Cultist Sandals;T4_SHOES_CLOTH_MORGANA:2:Adept's Cultist Sandals;T4_SHOES_CLOTH_MORGANA:3:Adept's Cultist Sandals;T5_SHOES_CLOTH_MORGANA:0:Expert's Cultist Sandals;T5_SHOES_CLOTH_MORGANA:1:Expert's Cultist Sandals;T5_SHOES_CLOTH_MORGANA:2:Expert's Cultist Sandals;T5_SHOES_CLOTH_MORGANA:3:Expert's Cultist Sandals;T6_SHOES_CLOTH_MORGANA:0:Master's Cultist Sandals;T6_SHOES_CLOTH_MORGANA:1:Master's Cultist Sandals;T6_SHOES_CLOTH_MORGANA:2:Master's Cultist Sandals;T6_SHOES_CLOTH_MORGANA:3:Master's Cultist Sandals;T7_SHOES_CLOTH_MORGANA:0:Grandmaster's Cultist Sandals;T7_SHOES_CLOTH_MORGANA:1:Grandmaster's Cultist Sandals;T7_SHOES_CLOTH_MORGANA:2:Grandmaster's Cultist Sandals;T7_SHOES_CLOTH_MORGANA:3:Grandmaster's Cultist Sandals;T8_SHOES_CLOTH_MORGANA:0:Elder's Cultist Sandals;T8_SHOES_CLOTH_MORGANA:1:Elder's Cultist Sandals;T8_SHOES_CLOTH_MORGANA:2:Elder's Cultist Sandals;T8_SHOES_CLOTH_MORGANA:3:Elder's Cultist Sandals;T4_HEAD_CLOTH_AVALON:0:Adept's Cowl of Purity;T4_HEAD_CLOTH_AVALON:1:Adept's Cowl of Purity;T4_HEAD_CLOTH_AVALON:2:Adept's Cowl of Purity;T4_HEAD_CLOTH_AVALON:3:Adept's Cowl of Purity;T5_HEAD_CLOTH_AVALON:0:Expert's Cowl of Purity;T5_HEAD_CLOTH_AVALON:1:Expert's Cowl of Purity;T5_HEAD_CLOTH_AVALON:2:Expert's Cowl of Purity;T5_HEAD_CLOTH_AVALON:3:Expert's Cowl of Purity;T6_HEAD_CLOTH_AVALON:0:Master's Cowl of Purity;T6_HEAD_CLOTH_AVALON:1:Master's Cowl of Purity;T6_HEAD_CLOTH_AVALON:2:Master's Cowl of Purity;T6_HEAD_CLOTH_AVALON:3:Master's Cowl of Purity;T7_HEAD_CLOTH_AVALON:0:Grandmaster's Cowl of Purity;T7_HEAD_CLOTH_AVALON:1:Grandmaster's Cowl of Purity;T7_HEAD_CLOTH_AVALON:2:Grandmaster's Cowl of Purity;T7_HEAD_CLOTH_AVALON:3:Grandmaster's Cowl of Purity;T8_HEAD_CLOTH_AVALON:0:Elder's Cowl of Purity;T8_HEAD_CLOTH_AVALON:1:Elder's Cowl of Purity;T8_HEAD_CLOTH_AVALON:2:Elder's Cowl of Purity;T8_HEAD_CLOTH_AVALON:3:Elder's Cowl of Purity;T4_ARMOR_CLOTH_AVALON:0:Adept's Robe of Purity;T4_ARMOR_CLOTH_AVALON:1:Adept's Robe of Purity;T4_ARMOR_CLOTH_AVALON:2:Adept's Robe of Purity;T4_ARMOR_CLOTH_AVALON:3:Adept's Robe of Purity;T5_ARMOR_CLOTH_AVALON:0:Expert's Robe of Purity;T5_ARMOR_CLOTH_AVALON:1:Expert's Robe of Purity;T5_ARMOR_CLOTH_AVALON:2:Expert's Robe of Purity;T5_ARMOR_CLOTH_AVALON:3:Expert's Robe of Purity;T6_ARMOR_CLOTH_AVALON:0:Master's Robe of Purity;T6_ARMOR_CLOTH_AVALON:1:Master's Robe of Purity;T6_ARMOR_CLOTH_AVALON:2:Master's Robe of Purity;T6_ARMOR_CLOTH_AVALON:3:Master's Robe of Purity;T7_ARMOR_CLOTH_AVALON:0:Grandmaster's Robe of Purity;T7_ARMOR_CLOTH_AVALON:1:Grandmaster's Robe of Purity;T7_ARMOR_CLOTH_AVALON:2:Grandmaster's Robe of Purity;T7_ARMOR_CLOTH_AVALON:3:Grandmaster's Robe of Purity;T8_ARMOR_CLOTH_AVALON:0:Elder's Robe of Purity;T8_ARMOR_CLOTH_AVALON:1:Elder's Robe of Purity;T8_ARMOR_CLOTH_AVALON:2:Elder's Robe of Purity;T8_ARMOR_CLOTH_AVALON:3:Elder's Robe of Purity;T4_SHOES_CLOTH_AVALON:0:Adept's Sandals of Purity;T4_SHOES_CLOTH_AVALON:1:Adept's Sandals of Purity;T4_SHOES_CLOTH_AVALON:2:Adept's Sandals of Purity;T4_SHOES_CLOTH_AVALON:3:Adept's Sandals of Purity;T5_SHOES_CLOTH_AVALON:0:Expert's Sandals of Purity;T5_SHOES_CLOTH_AVALON:1:Expert's Sandals of Purity;T5_SHOES_CLOTH_AVALON:2:Expert's Sandals of Purity;T5_SHOES_CLOTH_AVALON:3:Expert's Sandals of Purity;T6_SHOES_CLOTH_AVALON:0:Master's Sandals of Purity;T6_SHOES_CLOTH_AVALON:1:Master's Sandals of Purity;T6_SHOES_CLOTH_AVALON:2:Master's Sandals of Purity;T6_SHOES_CLOTH_AVALON:3:Master's Sandals of Purity;T7_SHOES_CLOTH_AVALON:0:Grandmaster's Sandals of Purity;T7_SHOES_CLOTH_AVALON:1:Grandmaster's Sandals of Purity;T7_SHOES_CLOTH_AVALON:2:Grandmaster's Sandals of Purity;T7_SHOES_CLOTH_AVALON:3:Grandmaster's Sandals of Purity;T8_SHOES_CLOTH_AVALON:0:Elder's Sandals of Purity;T8_SHOES_CLOTH_AVALON:1:Elder's Sandals of Purity;T8_SHOES_CLOTH_AVALON:2:Elder's Sandals of Purity;T8_SHOES_CLOTH_AVALON:3:Elder's Sandals of Purity;T4_HEAD_CLOTH_ROYAL:0:Adept's Royal Cowl;T4_HEAD_CLOTH_ROYAL:1:Adept's Royal Cowl;T4_HEAD_CLOTH_ROYAL:2:Adept's Royal Cowl;T4_HEAD_CLOTH_ROYAL:3:Adept's Royal Cowl;T5_HEAD_CLOTH_ROYAL:0:Expert's Royal Cowl;T5_HEAD_CLOTH_ROYAL:1:Expert's Royal Cowl;T5_HEAD_CLOTH_ROYAL:2:Expert's Royal Cowl;T5_HEAD_CLOTH_ROYAL:3:Expert's Royal Cowl;T6_HEAD_CLOTH_ROYAL:0:Master's Royal Cowl;T6_HEAD_CLOTH_ROYAL:1:Master's Royal Cowl;T6_HEAD_CLOTH_ROYAL:2:Master's Royal Cowl;T6_HEAD_CLOTH_ROYAL:3:Master's Royal Cowl;T7_HEAD_CLOTH_ROYAL:0:Grandmaster's Royal Cowl;T7_HEAD_CLOTH_ROYAL:1:Grandmaster's Royal Cowl;T7_HEAD_CLOTH_ROYAL:2:Grandmaster's Royal Cowl;T7_HEAD_CLOTH_ROYAL:3:Grandmaster's Royal Cowl;T8_HEAD_CLOTH_ROYAL:0:Elder's Royal Cowl;T8_HEAD_CLOTH_ROYAL:1:Elder's Royal Cowl;T8_HEAD_CLOTH_ROYAL:2:Elder's Royal Cowl;T8_HEAD_CLOTH_ROYAL:3:Elder's Royal Cowl;T4_ARMOR_CLOTH_ROYAL:0:Adept's Royal Robe;T4_ARMOR_CLOTH_ROYAL:1:Adept's Royal Robe;T4_ARMOR_CLOTH_ROYAL:2:Adept's Royal Robe;T4_ARMOR_CLOTH_ROYAL:3:Adept's Royal Robe;T5_ARMOR_CLOTH_ROYAL:0:Expert's Royal Robe;T5_ARMOR_CLOTH_ROYAL:1:Expert's Royal Robe;T5_ARMOR_CLOTH_ROYAL:2:Expert's Royal Robe;T5_ARMOR_CLOTH_ROYAL:3:Expert's Royal Robe;T6_ARMOR_CLOTH_ROYAL:0:Master's Royal Robe;T6_ARMOR_CLOTH_ROYAL:1:Master's Royal Robe;T6_ARMOR_CLOTH_ROYAL:2:Master's Royal Robe;T6_ARMOR_CLOTH_ROYAL:3:Master's Royal Robe;T7_ARMOR_CLOTH_ROYAL:0:Grandmaster's Royal Robe;T7_ARMOR_CLOTH_ROYAL:1:Grandmaster's Royal Robe;T7_ARMOR_CLOTH_ROYAL:2:Grandmaster's Royal Robe;T7_ARMOR_CLOTH_ROYAL:3:Grandmaster's Royal Robe;T8_ARMOR_CLOTH_ROYAL:0:Elder's Royal Robe;T8_ARMOR_CLOTH_ROYAL:1:Elder's Royal Robe;T8_ARMOR_CLOTH_ROYAL:2:Elder's Royal Robe;T8_ARMOR_CLOTH_ROYAL:3:Elder's Royal Robe;T4_SHOES_CLOTH_ROYAL:0:Adept's Royal Sandals;T4_SHOES_CLOTH_ROYAL:1:Adept's Royal Sandals;T4_SHOES_CLOTH_ROYAL:2:Adept's Royal Sandals;T4_SHOES_CLOTH_ROYAL:3:Adept's Royal Sandals;T5_SHOES_CLOTH_ROYAL:0:Expert's Royal Sandals;T5_SHOES_CLOTH_ROYAL:1:Expert's Royal Sandals;T5_SHOES_CLOTH_ROYAL:2:Expert's Royal Sandals;T5_SHOES_CLOTH_ROYAL:3:Expert's Royal Sandals;T6_SHOES_CLOTH_ROYAL:0:Master's Royal Sandals;T6_SHOES_CLOTH_ROYAL:1:Master's Royal Sandals;T6_SHOES_CLOTH_ROYAL:2:Master's Royal Sandals;T6_SHOES_CLOTH_ROYAL:3:Master's Royal Sandals;T7_SHOES_CLOTH_ROYAL:0:Grandmaster's Royal Sandals;T7_SHOES_CLOTH_ROYAL:1:Grandmaster's Royal Sandals;T7_SHOES_CLOTH_ROYAL:2:Grandmaster's Royal Sandals;T7_SHOES_CLOTH_ROYAL:3:Grandmaster's Royal Sandals;T8_SHOES_CLOTH_ROYAL:0:Elder's Royal Sandals;T8_SHOES_CLOTH_ROYAL:1:Elder's Royal Sandals;T8_SHOES_CLOTH_ROYAL:2:Elder's Royal Sandals;T8_SHOES_CLOTH_ROYAL:3:Elder's Royal Sandals;T4_HEAD_LEATHER_ROYAL:0:Adept's Royal Hood;T4_HEAD_LEATHER_ROYAL:1:Adept's Royal Hood;T4_HEAD_LEATHER_ROYAL:2:Adept's Royal Hood;T4_HEAD_LEATHER_ROYAL:3:Adept's Royal Hood;T5_HEAD_LEATHER_ROYAL:0:Expert's Royal Hood;T5_HEAD_LEATHER_ROYAL:1:Expert's Royal Hood;T5_HEAD_LEATHER_ROYAL:2:Expert's Royal Hood;T5_HEAD_LEATHER_ROYAL:3:Expert's Royal Hood;T6_HEAD_LEATHER_ROYAL:0:Master's Royal Hood;T6_HEAD_LEATHER_ROYAL:1:Master's Royal Hood;T6_HEAD_LEATHER_ROYAL:2:Master's Royal Hood;T6_HEAD_LEATHER_ROYAL:3:Master's Royal Hood;T7_HEAD_LEATHER_ROYAL:0:Grandmaster's Royal Hood;T7_HEAD_LEATHER_ROYAL:1:Grandmaster's Royal Hood;T7_HEAD_LEATHER_ROYAL:2:Grandmaster's Royal Hood;T7_HEAD_LEATHER_ROYAL:3:Grandmaster's Royal Hood;T8_HEAD_LEATHER_ROYAL:0:Elder's Royal Hood;T8_HEAD_LEATHER_ROYAL:1:Elder's Royal Hood;T8_HEAD_LEATHER_ROYAL:2:Elder's Royal Hood;T8_HEAD_LEATHER_ROYAL:3:Elder's Royal Hood;T4_ARMOR_LEATHER_ROYAL:0:Adept's Royal Jacket;T4_ARMOR_LEATHER_ROYAL:1:Adept's Royal Jacket;T4_ARMOR_LEATHER_ROYAL:2:Adept's Royal Jacket;T4_ARMOR_LEATHER_ROYAL:3:Adept's Royal Jacket;T5_ARMOR_LEATHER_ROYAL:0:Expert's Royal Jacket;T5_ARMOR_LEATHER_ROYAL:1:Expert's Royal Jacket;T5_ARMOR_LEATHER_ROYAL:2:Expert's Royal Jacket;T5_ARMOR_LEATHER_ROYAL:3:Expert's Royal Jacket;T6_ARMOR_LEATHER_ROYAL:0:Master's Royal Jacket;T6_ARMOR_LEATHER_ROYAL:1:Master's Royal Jacket;T6_ARMOR_LEATHER_ROYAL:2:Master's Royal Jacket;T6_ARMOR_LEATHER_ROYAL:3:Master's Royal Jacket;T7_ARMOR_LEATHER_ROYAL:0:Grandmaster's Royal Jacket;T7_ARMOR_LEATHER_ROYAL:1:Grandmaster's Royal Jacket;T7_ARMOR_LEATHER_ROYAL:2:Grandmaster's Royal Jacket;T7_ARMOR_LEATHER_ROYAL:3:Grandmaster's Royal Jacket;T8_ARMOR_LEATHER_ROYAL:0:Elder's Royal Jacket;T8_ARMOR_LEATHER_ROYAL:1:Elder's Royal Jacket;T8_ARMOR_LEATHER_ROYAL:2:Elder's Royal Jacket;T8_ARMOR_LEATHER_ROYAL:3:Elder's Royal Jacket;T4_SHOES_LEATHER_ROYAL:0:Adept's Royal Shoes;T4_SHOES_LEATHER_ROYAL:1:Adept's Royal Shoes;T4_SHOES_LEATHER_ROYAL:2:Adept's Royal Shoes;T4_SHOES_LEATHER_ROYAL:3:Adept's Royal Shoes;T5_SHOES_LEATHER_ROYAL:0:Expert's Royal Shoes;T5_SHOES_LEATHER_ROYAL:1:Expert's Royal Shoes;T5_SHOES_LEATHER_ROYAL:2:Expert's Royal Shoes;T5_SHOES_LEATHER_ROYAL:3:Expert's Royal Shoes;T6_SHOES_LEATHER_ROYAL:0:Master's Royal Shoes;T6_SHOES_LEATHER_ROYAL:1:Master's Royal Shoes;T6_SHOES_LEATHER_ROYAL:2:Master's Royal Shoes;T6_SHOES_LEATHER_ROYAL:3:Master's Royal Shoes;T7_SHOES_LEATHER_ROYAL:0:Grandmaster's Royal Shoes;T7_SHOES_LEATHER_ROYAL:1:Grandmaster's Royal Shoes;T7_SHOES_LEATHER_ROYAL:2:Grandmaster's Royal Shoes;T7_SHOES_LEATHER_ROYAL:3:Grandmaster's Royal Shoes;T8_SHOES_LEATHER_ROYAL:0:Elder's Royal Shoes;T8_SHOES_LEATHER_ROYAL:1:Elder's Royal Shoes;T8_SHOES_LEATHER_ROYAL:2:Elder's Royal Shoes;T8_SHOES_LEATHER_ROYAL:3:Elder's Royal Shoes;T4_HEAD_PLATE_ROYAL:0:Adept's Royal Helmet;T4_HEAD_PLATE_ROYAL:1:Adept's Royal Helmet;T4_HEAD_PLATE_ROYAL:2:Adept's Royal Helmet;T4_HEAD_PLATE_ROYAL:3:Adept's Royal Helmet;T5_HEAD_PLATE_ROYAL:0:Expert's Royal Helmet;T5_HEAD_PLATE_ROYAL:1:Expert's Royal Helmet;T5_HEAD_PLATE_ROYAL:2:Expert's Royal Helmet;T5_HEAD_PLATE_ROYAL:3:Expert's Royal Helmet;T6_HEAD_PLATE_ROYAL:0:Master's Royal Helmet;T6_HEAD_PLATE_ROYAL:1:Master's Royal Helmet;T6_HEAD_PLATE_ROYAL:2:Master's Royal Helmet;T6_HEAD_PLATE_ROYAL:3:Master's Royal Helmet;T7_HEAD_PLATE_ROYAL:0:Grandmaster's Royal Helmet;T7_HEAD_PLATE_ROYAL:1:Grandmaster's Royal Helmet;T7_HEAD_PLATE_ROYAL:2:Grandmaster's Royal Helmet;T7_HEAD_PLATE_ROYAL:3:Grandmaster's Royal Helmet;T8_HEAD_PLATE_ROYAL:0:Elder's Royal Helmet;T8_HEAD_PLATE_ROYAL:1:Elder's Royal Helmet;T8_HEAD_PLATE_ROYAL:2:Elder's Royal Helmet;T8_HEAD_PLATE_ROYAL:3:Elder's Royal Helmet;T4_ARMOR_PLATE_ROYAL:0:Adept's Royal Armor;T4_ARMOR_PLATE_ROYAL:1:Adept's Royal Armor;T4_ARMOR_PLATE_ROYAL:2:Adept's Royal Armor;T4_ARMOR_PLATE_ROYAL:3:Adept's Royal Armor;T5_ARMOR_PLATE_ROYAL:0:Expert's Royal Armor;T5_ARMOR_PLATE_ROYAL:1:Expert's Royal Armor;T5_ARMOR_PLATE_ROYAL:2:Expert's Royal Armor;T5_ARMOR_PLATE_ROYAL:3:Expert's Royal Armor;T6_ARMOR_PLATE_ROYAL:0:Master's Royal Armor;T6_ARMOR_PLATE_ROYAL:1:Master's Royal Armor;T6_ARMOR_PLATE_ROYAL:2:Master's Royal Armor;T6_ARMOR_PLATE_ROYAL:3:Master's Royal Armor;T7_ARMOR_PLATE_ROYAL:0:Grandmaster's Royal Armor;T7_ARMOR_PLATE_ROYAL:1:Grandmaster's Royal Armor;T7_ARMOR_PLATE_ROYAL:2:Grandmaster's Royal Armor;T7_ARMOR_PLATE_ROYAL:3:Grandmaster's Royal Armor;T8_ARMOR_PLATE_ROYAL:0:Elder's Royal Armor;T8_ARMOR_PLATE_ROYAL:1:Elder's Royal Armor;T8_ARMOR_PLATE_ROYAL:2:Elder's Royal Armor;T8_ARMOR_PLATE_ROYAL:3:Elder's Royal Armor;T4_SHOES_PLATE_ROYAL:0:Adept's Royal Boots;T4_SHOES_PLATE_ROYAL:1:Adept's Royal Boots;T4_SHOES_PLATE_ROYAL:2:Adept's Royal Boots;T4_SHOES_PLATE_ROYAL:3:Adept's Royal Boots;T5_SHOES_PLATE_ROYAL:0:Expert's Royal Boots;T5_SHOES_PLATE_ROYAL:1:Expert's Royal Boots;T5_SHOES_PLATE_ROYAL:2:Expert's Royal Boots;T5_SHOES_PLATE_ROYAL:3:Expert's Royal Boots;T6_SHOES_PLATE_ROYAL:0:Master's Royal Boots;T6_SHOES_PLATE_ROYAL:1:Master's Royal Boots;T6_SHOES_PLATE_ROYAL:2:Master's Royal Boots;T6_SHOES_PLATE_ROYAL:3:Master's Royal Boots;T7_SHOES_PLATE_ROYAL:0:Grandmaster's Royal Boots;T7_SHOES_PLATE_ROYAL:1:Grandmaster's Royal Boots;T7_SHOES_PLATE_ROYAL:2:Grandmaster's Royal Boots;T7_SHOES_PLATE_ROYAL:3:Grandmaster's Royal Boots;T8_SHOES_PLATE_ROYAL:0:Elder's Royal Boots;T8_SHOES_PLATE_ROYAL:1:Elder's Royal Boots;T8_SHOES_PLATE_ROYAL:2:Elder's Royal Boots;T8_SHOES_PLATE_ROYAL:3:Elder's Royal Boots";
+
+  var a = raw_items.split(";");
+  var items = new Array(a.length - 1);
+  for(var i  = 0; i < a.length - 1; i++) {
+      items[i] = {item_id:a[i].split(":")[0],tier:a[i].split(":")[0][1],enchantment:a[i].split(":")[1],name:a[i].split(":")[2]};
+  }
+  return items;
+}
+
+// Main function (Called when "Get Prices" button is pressed)
+function getPrices() {
+    var tier = document.getElementById("tier").value;
+    var enchantment = document.getElementById("enchantment").value;
+    var quality = document.getElementById("quality").value;
+    var maxAgeBM = document.getElementById("maxAgeBM").value;
+    var maxAgeCity = document.getElementById("maxAgeCity").value;
+    var minProfit = document.getElementById("minProfit").value;
+
+    var city = [];
+    var checkboxes = document.getElementById("cities").elements;
+    for(var i = 0; i < checkboxes.length; i++) {
+      if(checkboxes[i].checked)
+        city.push(checkboxes[i].value);
+    }
+
+    var selected_items = getItems(tier, enchantment);
+
+    fetchData("Prices", city, selected_items, quality, function() {
+        printToConsole("API data received!");
+        // Begin accessing JSON data here
+        var data = JSON.parse(this.response);
+        console.log('API object response: ');
+        console.log(data);
+
+        br();
+        profits = getItemProfits(data, maxAgeBM, maxAgeCity, minProfit);
+        if(profits == undefined)
+         return;
+
+        console.log("Profits:");
+        console.log(profits);
+        console.log("All Items:");
+        console.log(items);
+
+        for(var i = profits.length < 10 ? profits.length - 1 : 9; i >= 0; i--) {
+          // if profits is bigger than 10 then we return the top 10 and if it smaller then we return all of them
+          // goes through the 10 first elements in profits to find in-game name of the profitable items
+          for(var j = 0; j < items.length; j++) {
+              if(profits[i].item_id == getId(items[j])) {
+                  addToTable("flipper", items[j].name, qualityToString(profits[i].quality), profits[i].profit, profits[i].age_bm, profits[i].age_city, profits[i].city);
+              }
+          }
+        }
+        br();
+        br();
+    });
+}
+
+// Returns the item id's in a string array
+
+function getItems(tier, enchantment) {
+  var selected_items = [];
+  for(var i = 0; i < items.length; i++) {
+    // the user chosen items are pulled from the
+    // raw_items and stored in pulled_items
+      if(items[i].tier == tier && items[i].enchantment == enchantment) {
+          selected_items.push(getId(items[i]));
+      }
+  }
+  return selected_items;
+}
+
+function qualityToString(num) {
+  var names = ["Normal", "Good", "Outstanding", "Excellent", "Masterpiece"];
+  return names[num-1];
+}
+
+function getItemProfits(data, maxAgeBM, maxAgeCity, minProfit) {
+    // returns profits object from the given data object
+
+    // --- City Arrays ---
+    var blackMarket = [];
+    var fortSterling = [];
+    var thetford = [];
+    var lymhurst = [];
+    var bridgewatch = [];
+    var martlock = [];
+    var caerleon = [];
+
+    for (var i = 0; i <data.length; i++) {
+      switch (data[i].city) {
+        case "Black Market":
+          blackMarket.push(data[i]);
+          break;
+        case "Fort Sterling":
+          fortSterling.push(data[i]);
+          break;
+        case "Thetford":
+          thetford.push(data[i]);
+          break;
+        case "Lymhurst":
+          lymhurst.push(data[i]);
+          break;
+        case "Bridgewatch":
+          bridgewatch.push(data[i]);
+          break;
+        case "Martlock":
+          martlock.push(data[i]);
+          break;
+        case "Caerleon":
+          caerleon.push(data[i]);
+          break;
+        default:
+      }
+    }
+
+    var priceDifference = []; //BM - city
+    for (var i = 0; i<blackMarket.length; i++) {
+      //BM - city
+      priceDifference.push({
+        //length is zero if the city has not been selected
+        bm_fo: fortSterling.length != 0 ? (blackMarket[i].buy_price_max - fortSterling[i].sell_price_min) : -1,
+        bm_th: thetford.length != 0 ? (blackMarket[i].buy_price_max - thetford[i].sell_price_min) : -1,
+        bm_ly: lymhurst.length != 0 ? (blackMarket[i].buy_price_max - lymhurst[i].sell_price_min) : -1,
+        bm_br: bridgewatch.length != 0 ? (blackMarket[i].buy_price_max - bridgewatch[i].sell_price_min) : -1,
+        bm_ma: martlock.length != 0 ? (blackMarket[i].buy_price_max - martlock[i].sell_price_min) : -1,
+        bm_ca: caerleon.length != 0 ? (blackMarket[i].buy_price_max - caerleon[i].sell_price_min) : -1
+      });
+    }
+
+    var topPriceDifference = [];
+    for (var i = 0; i < blackMarket.length; i++) {
+      // picks the biggest priceDifference from the cities
+      // if it is below maxAgeBM
+      if (getAge(blackMarket[i].buy_price_max_date) <= maxAgeBM) {
+        var priceDiff_bm_fo = -1;
+        var priceDiff_bm_th = -1;
+        var priceDiff_bm_ly = -1;
+        var priceDiff_bm_br = -1;
+        var priceDiff_bm_ma = -1;
+        var priceDiff_bm_ca = -1;
+
+        if (fortSterling.length != 0 && getAge(fortSterling[i].sell_price_min_date) <= maxAgeCity) {
+          priceDiff_bm_fo = priceDifference[i].bm_fo;
+        }
+        if (thetford.length != 0 && getAge(thetford[i].sell_price_min_date) <= maxAgeCity) {
+          priceDiff_bm_th = priceDifference[i].bm_fo;
+        }
+        if (lymhurst.length != 0 && getAge(lymhurst[i].sell_price_min_date) <= maxAgeCity) {
+          priceDiff_bm_ly = priceDifference[i].bm_fo;
+        }
+        if (bridgewatch.length != 0 && getAge(bridgewatch[i].sell_price_min_date) <= maxAgeCity) {
+          priceDiff_bm_br = priceDifference[i].bm_fo;
+        }
+        if (martlock.length != 0 && getAge(martlock[i].sell_price_min_date) <= maxAgeCity) {
+          priceDiff_bm_ma = priceDifference[i].bm_fo;
+        }
+        if (caerleon.length != 0 && getAge(caerleon[i].sell_price_min_date) <= maxAgeCity) {
+          priceDiff_bm_ca = priceDifference[i].bm_fo;
+        }
+
+        var biggestDifference = Math.max(priceDiff_bm_fo, priceDiff_bm_th, priceDiff_bm_ly, priceDiff_bm_br, priceDiff_bm_ma, priceDiff_bm_ca);
+
+        var biggestDifferenceCity;
+        var biggestDifferenceCityTime;
+        var biggestDifferenceQuality;
+        // find WHICH city has the biggest difference
+        if (priceDifference[i].bm_fo == biggestDifference && fortSterling.length != 0) {
+          biggestDifferenceCity = "Fort Sterling";
+          biggestDifferenceCityTime = fortSterling[i].sell_price_min_date;
+          biggestDifferenceQuality = fortSterling[i].quality;
+        }
+        else if (priceDifference[i].bm_th == biggestDifference && thetford.length != 0) {
+          biggestDifferenceCity = "Thetford";
+          biggestDifferenceCityTime = thetford[i].sell_price_min_date;
+          biggestDifferenceQuality = thetford[i].quality;
+        }
+        else if (priceDifference[i].bm_ly == biggestDifference && lymhurst.length != 0) {
+          biggestDifferenceCity = "Lymhurst";
+          biggestDifferenceCityTime = lymhurst[i].sell_price_min_date;
+          biggestDifferenceQuality = lymhurst[i].quality;
+        }
+        else if (priceDifference[i].bm_br == biggestDifference && bridgewatch.length != 0) {
+          biggestDifferenceCity = "Bridgewatch";
+          biggestDifferenceCityTime = bridgewatch[i].sell_price_min_date;
+          biggestDifferenceQuality = bridgewatch[i].quality;
+        }
+        else if (priceDifference[i].bm_ma == biggestDifference && martlock.length != 0) {
+          biggestDifferenceCity = "Martlock";
+          biggestDifferenceCityTime = martlock[i].sell_price_min_date;
+          biggestDifferenceQuality = martlock[i].quality;
+        }
+        else if (priceDifference[i].bm_ca == biggestDifference && caerleon.length != 0) {
+          biggestDifferenceCity = "Caerleon";
+          biggestDifferenceCityTime = caerleon[i].sell_price_min_date;
+          biggestDifferenceQuality = caerleon[i].quality;
+        }
+        else {
+          biggestDifferenceCity = "None";
+          biggestDifferenceCityTime = 9999;
+          biggestDifferenceQuality = 0;
+        }
+
+        if (biggestDifference >= minProfit) {
+          // if biggestDifference is smaller than the min profit it will not be added to the array
+          topPriceDifference.push({
+            item_id: blackMarket[i].item_id,
+            profit: biggestDifference,
+            city: biggestDifferenceCity,
+            age_bm: getAge(blackMarket[i].buy_price_max_date),
+            age_city: getAge(biggestDifferenceCityTime),
+            quality: biggestDifferenceQuality,
+            cityArrayIndex: i
+          });
+        }
+      }
+    }
+
+  topPriceDifference.sort(function(a, b){
+    // sort the profits by ascending
+      return b.profit-a.profit;
+  });
+
+  if (topPriceDifference.length == 0)
+    printToConsole("Data too old (pick bigger time intervall or update the market via the Data Client).\n");
+  else {
+    printToConsole("Data fetched.");
+    return topPriceDifference;
+  }
+}
+
+
+function printToConsole(text) {
+  document.getElementById("console").append(text + "\n");
+  document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+}
+
+function getAge(age) {
+  return Math.round((Date.now()-(new Date(age)).getTime())/60000) - 60; // -60 since of time difference
+}
+
+// Returns the parsed json response from the API
+//
+// Type: has following different types {Charts, history, Gold, View, Prices} should be a string
+// City: array of cities names to fetch from
+// Selected_Items: array of items to fetch (max about 300)
+// Quality: {0,1,2,3,4,5} if 0 will fetch all qualities 1 = Normal and so on
+function fetchData(type, cities, selected_items, quality, callback) {
+  // Create a request variable and assign a new XMLHttpRequest object to it.
+  var request = new XMLHttpRequest();
+
+  var url = "https://www.albion-online-data.com/";
+  var view = "api/v2/stats/"+type+"/";
+  var locations = [cities.join(",") , "Black Market"]
+  var link = url+view+selected_items.join(",")+"?locations="+locations.join(",")+"&qualities="+quality;
+  //console.log("API link is "+link);
+  printToConsole("Requesting API for " + type + " with " + selected_items.length + " items" + " with quality " + quality);
+  // Open a new connection, using the GET request on the URL endpoint
+  request.open('GET', link, true)
+
+  request.onload = callback;
+
+  // Send request
+  request.send();
+
+  printToConsole("Fetching data from API...");
+}
+
+// Add a row of data to the id table
+function addToTable(id, ...cells) {
+    var table = document.getElementById(id).getElementsByTagName('tbody')[0];
+    var row = table.insertRow(0);
+    for(var i = 0; i < cells.length; i++) {
+      var cell = row.insertCell(i);
+      cell.innerHTML = cells[i];
+    }
+}
+
+// Appends a new row to the body
+function br() {
+    document.getElementById('console').append(document.createElement("br"));
+}
+
+// Returns the id of a item object. matching the raw items data
+function getId(item) {
+  // gets the id of an item
+    return item.enchantment == 0 ? item.item_id : item.item_id + "@" + item.enchantment;
+}
+
+</script>
+</body>
+</html>
