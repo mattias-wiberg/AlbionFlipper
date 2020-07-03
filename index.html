@@ -474,12 +474,19 @@ function addToTable(id, ...cells) {
     //var row = table.insertRow(0);
     var append = "<tr>";
     for(var i = 0; i < cells.length; i++) {
-      append += '<td copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + (cells[i]+"").replaceAll(" ", "") + '">' + cells[i] + '</td>';
+      append += '<td copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
       //var cell = row.insertCell(i);
       //cell.innerHTML = cells[i];
     }
     append += "</tr>";
     $('#table').append(append);
+}
+
+function replaceAll(str, needle, replace) {
+  while(str != str.replace(needle, replace)) {
+    str = str.replace(needle, replace)
+  }
+  return str
 }
 
 // Appends a new row to the body
