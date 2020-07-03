@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+  </body>
+  <script>
+
+    var request = new XMLHttpRequest();
+
+    var corsBypass = "https://cors-anywhere.herokuapp.com/";
+    var url = "https://www.tiktok.com/";
+    var name = "loverscats162";
+    var link = corsBypass+url+"@"+name;
+    var htmlDoc;
+    var resp;
+    console.log("API link is "+link);
+
+    // Open a new connection, using the GET request on the URL endpoint
+    request.open('GET', link, true);
+
+    request.onload = function() {
+        console.log("Loaded " + name + ":")
+        var parser = new DOMParser();
+        htmlDoc = parser.parseFromString(this.response, 'text/html');
+        resp = this.response;
+        //console.log(htmlDoc);
+        // Data index 0: following, 1: followers, 2: likes
+        // to get value call .innerHTML
+        //var data = htmlDoc.getElementsByClassName("count-infos")[0].getElementsByClassName("number");
+
+        // Description example "Titta på de bästa kortvideorna från catslovers(@loverscats162). 836.5K personer gillar den. 121.9K fans. 64 följer. "
+        var data = [];
+        var count = 0;
+        var words = htmlDoc.getElementsByName("description")[0].attributes[1].value.split(" "); // Words in the description
+        console.log(words);
+        for(var i = 0; i < words.length; i++) {
+          if(!isNaN(parseFloat(words[i]))) {
+            data[count] = toNumber(words[i]);
+
+            count++;
+          }
+        }
+
+
+        console.log("\tFollowing: \t" + data[2]);
+        console.log("\tFollowers: \t" + data[1]);
+        console.log("\tLikes: \t\t" +     data[0]);
+        console.log();
+    }
+
+    request.onprogress = function(e) {
+      if (e.lengthComputable) {
+        var str = "<";
+        for(var i = 0; i < 50 /*Size of points*/; i++) {
+          if(i < (e.loaded/e.total)*50)
+            str += "=";
+          else
+            str += "-";
+        }
+        console.log(str + ">");
+      }
+    }
+
+    // Send request
+    request.send();
+    console.log("Fetching data from API...");
+
+    function toNumber(string) {
+      if(string.includes("B"))
+        return parseFloat(string)*1000*1000*1000;
+      else if(string.includes("M"))
+        return parseFloat(string)*1000*1000;
+      else if(string.includes("K")) // Has thousands
+        return parseFloat(string)*1000;
+      else
+        return parseFloat(string);
+    }
+  </script>
+</html>

@@ -1,123 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <!-- MDBootstrap Datatables  -->
-  <title>Flipper</title>
-   <link rel="icon" href="icon.png" type="image/gif">
-</head>
-<body>
-<style>
-table.dataTable thead .sorting:after,
-table.dataTable thead .sorting:before,
-table.dataTable thead .sorting_asc:after,
-table.dataTable thead .sorting_asc:before,
-table.dataTable thead .sorting_asc_disabled:after,
-table.dataTable thead .sorting_asc_disabled:before,
-table.dataTable thead .sorting_desc:after,
-table.dataTable thead .sorting_desc:before,
-table.dataTable thead .sorting_desc_disabled:after,
-table.dataTable thead .sorting_desc_disabled:before {
-bottom: .5em;
-}
-
-input {
-  margin-right: 5px !important;
-}
-</style>
-<div style="float:right;width:45%;margin-right: 10px; ">
-<textarea id="console" rows="8" cols="50" id="console" disabled style="resize: none;width: 100%">
-</textarea>
-<div class="progress">
-  <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-</div>
-</div>
-<div style="margin-top: 10px; margin-left:10px; width: 385px; height: 264px; border-style: solid; border-width: 1px; padding: 5px">
-Tier:
-<select id="tier">
-  <option value="-1">All</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8" selected>8</option>
-</select>
-Enchantment:
-<select id="enchantment">
-  <option value="-1" selected>All</option>
-  <option value="0">0</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-</select>
-Quality:
-<select id="quality">
-  <option value="0" selected>All</option>
-  <option value="1">Normal</option>
-  <option value="2">Good</option>
-  <option value="3">Outstanding</option>
-  <option value="4">Excellent</option>
-  <option value="5">Masterpiece</option>
-</select>
-<br>
-<fieldset id="cities" style="margin-top: 10px;">
-  <div style="float:left;margin-top: 10px;">
-    <input type="checkbox" value="Fort Sterling" checked>Fort Sterling<br>
-    <input type="checkbox" value="Thetford" checked>Thetford<br>
-    <input type="checkbox" value="Lymhurst" checked>Lymhurst<br>
-  </div>
-  <img src="Flipper.png" width="150px" style="float:right; position:block;">
-  <div style="margin-left: 100px;margin-top: 10px;">
-    <input type="checkbox" value="Bridgewatch" checked>Bridgewatch<br>
-    <input type="checkbox" value="Martlock" checked>Martlock<br>
-    <input type="checkbox" value="Caerleon" style="display:none" checked disabled> <br>
-  </div>
-</fieldset>
-<input id="premium" type="checkbox" checked><img src="crown.png" height="30px"></img><br>
-<div style="width:100%;">
-  <div style="width:50%; position:block;float:left;">
-    <label for="Min Profit">Min Profit</label><br>
-    <input style="width: 90%;" type="number" id="minProfit" name="Min Profit" value=0>
-    <button onclick="getPrices()" style="margin-top: 10px; width: 90%; padding-top:8px; padding-bottom:8px">Get Prices</button>
-  </div>
-  <div style="width:50%; position:block;float:right;">
-    <label for="Max BM Age">Max BM Age</label><br>
-    <input style="width: 90%;" type="number" id="maxAgeBM" name="Max BM Age" value=60><br>
-    <label for="Max City Age">Max City Age</label><br>
-    <input style="width: 90%;" type="number" id="maxAgeCity" name="Max City Age" value=60><br>
-  </div>
-</div>
-<br>
-</div>
-<br>
-<table id="table" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
-  <thead>
-    <tr>
-      <th>Tier</th>
-      <th>Quality</th>
-      <th>Name</th>
-      <th>Profit (with tax)</th>
-      <th>% Profit</th>
-      <th>BM Price</th>
-      <th>BM Age</th>
-      <th>City Price</th>
-      <th>City Age</th>
-      <th>City</th>
-      <th>Profit in Caerleon</th>
-    </tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-<br>
-<script type="text/javascript" src="bootstrap-sortable.js"></script>
-<script type="text/javascript" src="moment.js"></script>
-<script>
 //Global values
 const items = getAllItems();
 var totalProgress = 0; //All fetches add to this a value of 0.0-1.0 for their progress in fetching.
@@ -194,19 +74,7 @@ function getPrices() {
               for(var j = 0; j < cities[i].length; j++) {
                 item = cities[i][j];
                 addItemProperties(item);
-                addToTable("table",
-                  (item.tier+"."+item.enchantment),
-                  qualityToString(item.quality),
-                  item.name,
-                  formatMoney(item.profit),
-                  item.percentileProfit,
-                  formatMoney(item.bmPrice),
-                  item.bm_age,
-                  formatMoney(item.cityPrice),
-                  item.city_age,
-                  item.city,
-                  profitableInCaerleon(item, maxAgeCity)
-                );
+                addToTable("table", (item.tier+"."+item.enchantment), qualityToString(item.quality), item.name, formatMoney(item.profit), item.percentileProfit, item.bm_age, item.city_age, item.city, profitableInCaerleon(item, maxAgeCity));
               }
             }
         });
@@ -345,9 +213,6 @@ function calculateProfits(cities, premium) {
   for(var i = 1; i < cities.length; i++) { // Loop through all the cities starting with fortSterling
     for(var j = 0; j < cities[i].length; j++) { // Loop throught all the items in a city
       item = cities[i][j];
-      item.bmPrice = cities[0][j].buy_price_max;
-      item.cityPrice = item.sell_price_min;
-
       item.profit = cities[0][j].buy_price_max - item.sell_price_min;
       if (cities[6].length != 0) {  // check if it is caerleon is even checked
         item.caerleonProfit = cities[0][j].buy_price_max - cities[6][j].sell_price_min;
@@ -474,19 +339,12 @@ function addToTable(id, ...cells) {
     //var row = table.insertRow(0);
     var append = "<tr>";
     for(var i = 0; i < cells.length; i++) {
-      append += '<td copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
+      append += "<td data-value=\""+(cells[i]+"").replace(" ", "")+"\">" + cells[i] + "</td>";
       //var cell = row.insertCell(i);
       //cell.innerHTML = cells[i];
     }
     append += "</tr>";
     $('#table').append(append);
-}
-
-function replaceAll(str, needle, replace) {
-  while(str != str.replace(needle, replace)) {
-    str = str.replace(needle, replace)
-  }
-  return str
 }
 
 // Appends a new row to the body
@@ -499,20 +357,3 @@ function getId(item) {
   // gets the id of an item
     return item.enchantment == 0 ? item.item_id : item.item_id + "@" + item.enchantment;
 }
-
-// Sets the copy for the user to the copy-data of the element when clicked
-function copyToClipboard() {
-  const el = document.createElement('textarea');
-  el.value = event.target.getAttribute('copy-data');
-  el.setAttribute('readonly', '');
-  el.style.position = 'absolute';
-  el.style.left = '-9999px';
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
-}
-
-</script>
-</body>
-</html>
