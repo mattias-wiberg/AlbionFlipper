@@ -540,8 +540,19 @@ function printToConsole(text) {
   document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
 }
 
+// returns minutes since 01/01/1970 00:00:00 UTC and age
+function get_UTC_time_since(age) {
+  return Math.round(Date.parse(new Date(age).toISOString()))/60000 - new Date().getTimezoneOffset();
+}
+
+// returns minutes since 01/01/1970 00:00:00 UTC and now
+function get_UTC_time_current() {
+  return Math.round(new Date().getTime()/60000);
+}
+
+// returns minutes since now and age
 function getAge(age) {
-  return Math.round(( ((new Date().getTime() - Date.parse(age))/60000) - 120));
+  return get_UTC_time_current() - get_UTC_time_since(age);
 }
 
 // Returns the parsed json response from the API
