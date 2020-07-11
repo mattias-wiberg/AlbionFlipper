@@ -378,7 +378,7 @@ function calculateProfits(cities) {
       if (cities[6].length != 0 && cities[6][0].city=="Caerleon") { // check if Caerleon is checked
         item.caerleonProfit = cities[6][j].profit;
         item.caerleonAge = cities[6][j].highestProfitBM_Age == 696969 ? cities[6][j].city_age : cities[6][j].highestProfitBM_Age;
-        item.caerleonQuality = cities[6][j].highestProfitBM_Quality;
+        item.caerleonQuality = cities[6][j].quality;
       }
 
     }
