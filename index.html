@@ -40,15 +40,15 @@ input {
 
 }
 </style>
+
 <div style="float:right;margin-right: 10px; width: 400px; height: 234px;">
   <a style="position: absolute;  margin-right: 34px;right: 0;margin-top: 5px;color:grey;" onclick="clearConsole()"  href="#"><span class="glyphicon glyphicon-erase"></span></a>
-<textarea id="console" rows="8" cols="50" id="console" disabled style="resize: none;width: 100%; height:100%;overflow-y: scroll;">
-</textarea>
-<div class="progress">
-  <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; "></div>
+  <textarea id="console" rows="8" cols="50" id="console" disabled style="resize: none;width: 100%; height:100%;overflow-y: scroll;">
+  </textarea>
+  <div class="progress">
+    <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; "></div>
+  </div>
 </div>
-</div>
-
 <!-- Info modal -->
 <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
@@ -181,6 +181,10 @@ Quality:
 <button type="button" style="float:right;margin-right: 10px;" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#infoModal">
   <span class="glyphicon glyphicon-question-sign"></span> Tutorial
 </button>
+<div style="position: absolute;margin-top: 10px;margin-left: 10px;">
+Got any suggestions or bugs that you would like to report? Send us an email
+<a href="mailto:info@flipper.tk?subject=Info/Bug%20Report">info@flipper.tk</a>
+</div>
 <br>
 <br>
 <table id="table" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
@@ -693,10 +697,10 @@ function fetchData(type, cities, selected_items, quality, callback) {
 function addToTable(id, ...cells) {
     //var table = document.getElementById(id).getElementsByTagName('tbody')[0];
     //var row = table.insertRow(0);
-    var colColors = []
+    var colColors = ["", "", "", "", "#E5FFCD","#E5FFCD","#E5FFCD", "#CDFFF3","#CDFFF3","#CDFFF3","#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
     var append = "<tr>";
     for(var i = 0; i < cells.length; i++) {
-      append += '<td copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
+      append += '<td style="background-color:'+colColors[i]+'" copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
       //var cell = row.insertCell(i);
       //cell.innerHTML = cells[i];
     }
