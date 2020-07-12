@@ -49,8 +49,29 @@ input {
 </div>
 </div>
 
+<!-- Info modal -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="float:left;" id="exampleModalLabel">Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-primary">
+          Let's Go!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Shopping modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -84,8 +105,7 @@ input {
         </table>
       </div>
       <div class="modal-footer">
-
-        <button onclick="clearTable('cart')" type="button" class="btn btn-secondary">
+        <button onclick="clearTable('cart')" type="button" class="btn btn-danger btn-sm">
           <span class="glyphicon glyphicon-trash"></span> Clear
         </button>
       </div>
@@ -151,11 +171,14 @@ Quality:
 <br>
 </div>
 <!-- Shopping trigger -->
-<button type="button" style="float:right;margin-right: 10px;" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModal">
+<button type="button" style="float:right;margin-right: 10px;" class="btn btn-info btn-sm" data-toggle="modal" data-target="#cartModal">
   <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
 </button>
-<button onclick="clearTable('table')" type="button" style="float:right;margin-right: 10px;" class="btn btn-default btn-sm">
+<button onclick="clearTable('table')" type="button" style="float:right;margin-right: 10px;" class="btn btn-danger btn-sm">
   <span class="glyphicon glyphicon-trash"></span> Clear
+</button>
+<button type="button" style="float:right;margin-right: 10px;" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#infoModal">
+  <span class="glyphicon glyphicon-question-sign"></span> Tutorial
 </button>
 <br>
 <br>
