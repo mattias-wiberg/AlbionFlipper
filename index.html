@@ -49,8 +49,8 @@ Tier:
 </select>
 Enchantment:
 <select id="enchantment">
-  <option value="-1" selected>All</option>
-  <option value="0">0</option>
+  <option value="-1">All</option>
+  <option value="0" selected>0</option>
   <option value="1">1</option>
   <option value="2">2</option>
   <option value="3">3</option>
@@ -98,6 +98,7 @@ Quality:
 <table id="table" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
   <thead>
     <tr>
+      <th>Test Case</th>
       <th>Tier</th>
       <th>Name</th>
       <th>Profit (with tax)</th>
@@ -105,6 +106,8 @@ Quality:
       <th>BM Buy Price</th>
       <th>BM Quality</th>
       <th>BM Age</th>
+      <th>BM Order Difference</th>
+      <th>BM Order Difference Age</th>
       <th>City Sell Price</th>
       <th>City Quality</th>
       <th>City Age</th>
@@ -186,8 +189,7 @@ function getPrices() {
             printToConsole("API data received!\n");
             // Begin accessing JSON data here
             var data = JSON.parse(this.response);
-            console.log('API object response: ');
-            console.log(data);
+            intercept_API_response(data);
 
             br();
             var cities = splitDataByCity(data);
@@ -204,6 +206,7 @@ function getPrices() {
                 item = cities[i][j];
                 addItemProperties(item);
                 addToTable("table",
+                  "1",
                   (item.tier+"."+item.enchantment),
                   item.name,
                   formatMoney(item.profit),
@@ -211,13 +214,15 @@ function getPrices() {
                   formatMoney(item.highestProfitBM_Price==-696969 ? item.bmPrice : item.highestProfitBM_Price),
                   qualityToString(item.highestProfitBM_Quality==-696969 ? item.quality : item.highestProfitBM_Quality),
                   item.highestProfitBM_Age != 696969 ? item.highestProfitBM_Age: item.bm_age,
+                  item.highestProfitBM_order_difference > 0 && item.highestProfitBM_order_difference != 696969 ? formatMoney(item.highestProfitBM_order_difference) : "Outdated",
+                  item.highestProfitBM_order_difference_age > maxAgeCity*10 && item.highestProfitBM_order_difference_age != 696969 ? "Very Old" : item.highestProfitBM_order_difference_age,
                   formatMoney(item.cityPrice),
                   qualityToString(item.quality),
                   item.city_age,
                   item.city,
                   profitableInCaerleon(item, maxAgeCity),
                   qualityToString(item.caerleonQuality==-696969 ? item.quality : item.caerleonQuality),
-                  item.caerleonAge > maxAgeCity*10 ? "Very Old" : item.caerleonAge
+                  item.caerleonAge > maxAgeCity*10 && item.caerleonAge != 696969 ? "Very Old" : item.caerleonAge
                 );
               }
             }
@@ -233,8 +238,6 @@ function addProgress(progress) {
   document.getElementById("progress").attributes[3] = Math.round(overallProgress * 100);
   if(Math.round(overallProgress*100)/100 == 1) //it can be a little bit over and under cause of calculation errors
     document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped"; //Turn of active
-  console.log(totalProgress);
-  console.log(overallProgress);
 }
 
 function resetProgress() {
@@ -448,6 +451,8 @@ function compareQualities(cities, i, j) {
         item.highestProfitBM_Quality = -696969;  // has to always be <= item.quality since you can only sell higher quality items to lower quality buy orders in BM
         item.highestProfitBM_Price = -696969;
         item.highestProfitBM_Age = 696969;
+        item.highestProfitBM_order_difference = 696969;
+        item.highestProfitBM_order_difference_age = 696969;
             for (var k = 0; k < item.quality; k++) {
               /*
               Assuming item.quality == 5 (masterpiece):
@@ -465,6 +470,8 @@ function compareQualities(cities, i, j) {
                 item.highestProfitBM_Quality = item.quality - k;
                 item.highestProfitBM_Price = cities[0][j-k].buy_price_max;
                 item.highestProfitBM_Age = cities[i][j-k].bm_age;
+                item.highestProfitBM_order_difference = cities[0][j-k].sell_price_min - item.highestProfitBM_Price;
+                item.highestProfitBM_order_difference_age = getAge(cities[0][j-k].sell_price_min_date);
               }
             }
 }
@@ -649,6 +656,20 @@ function copyToClipboard() {
   document.execCommand('copy');
   document.body.removeChild(el);
 }
+
+/* ----------- CASE TESTING ----------- */
+
+function intercept_API_response(data) {
+  console.log(data);
+}
+
+
+
+
+
+
+
+
 
 </script>
 </body>
