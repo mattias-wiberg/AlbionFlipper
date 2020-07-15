@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="jquery.csv.js"></script>
   <!-- MDBootstrap Datatables  -->
   <title>Flipper</title>
    <link rel="icon" href="icon.png" type="image/gif">
@@ -69,12 +70,12 @@ Quality:
   <div style="float:left;margin-top: 10px;">
     <input type="checkbox" value="Fort Sterling" checked>Fort Sterling<br>
     <input type="checkbox" value="Thetford" checked>Thetford<br>
-    <input type="checkbox" value="Lymhurst" checked>Lymhurst<br>
+    <input type="checkbox" value="Lymhurst" unchecked>Lymhurst<br>
   </div>
   <img src="Flipper.png" width="150px" style="float:right; position:block;">
   <div style="margin-left: 100px;margin-top: 10px;">
-    <input type="checkbox" value="Bridgewatch" checked>Bridgewatch<br>
-    <input type="checkbox" value="Martlock" checked>Martlock<br>
+    <input type="checkbox" value="Bridgewatch" unchecked>Bridgewatch<br>
+    <input type="checkbox" value="Martlock" unchecked>Martlock<br>
     <input type="checkbox" value="Caerleon" style="display:none" checked disabled> <br>
   </div>
 </fieldset>
@@ -123,6 +124,7 @@ Quality:
 <br>
 <script type="text/javascript" src="bootstrap-sortable.js"></script>
 <script type="text/javascript" src="moment.js"></script>
+<script type="text/javascript" src="test_cases_csv.js"></script>
 <script>
 //Global values
 const items = getAllItems();
@@ -206,7 +208,7 @@ function getPrices() {
                 item = cities[i][j];
                 addItemProperties(item);
                 addToTable("table",
-                  "1",
+                  item.test_case,
                   (item.tier+"."+item.enchantment),
                   item.name,
                   formatMoney(item.profit),
@@ -661,6 +663,46 @@ function copyToClipboard() {
 
 function intercept_API_response(data) {
   console.log(data);
+
+  var test_cases = $.csv.toObjects(test_cases_csv);
+  console.log(test_cases)
+
+  replace_API_response(data, test_cases);
+
+}
+
+function interpret_date(date) {
+  var current_time = new Date().getUTCFullYear().toString() + "-" +
+                  ( (new Date().getUTCMonth()+1).toString().length == 1 ? "0"+(new Date().getUTCMonth()+1).toString() : (new Date().getUTCMonth()+1).toString()) + "-" +
+                  (new Date().getUTCDate().toString().length == 1 ? "0"+new Date().getUTCDate().toString() : new Date().getUTCDate().toString()) +
+                  "T" +
+                  (new Date().getUTCHours().toString().length == 1 ? "0"+new Date().getUTCHours().toString() : new Date().getUTCHours().toString()) + ":" +
+                  (new Date().getUTCMinutes().toString().length == 1 ? "0"+new Date().getUTCMinutes().toString() : new Date().getUTCMinutes().toString()) + ":" +
+                  "00";
+
+  switch (date) {
+    case "old":
+      return "0001-01-01T00:00:00";
+    case "fresh":
+      return current_time;
+    default:
+      return date;
+  }
+}
+
+function replace_API_response(api_data, test_data) {
+  api_data.splice(test_data.length, api_data.length-test_data.length);
+  for (var i = 0; i < test_data.length; i++) {
+    var api = api_data[i];
+    var test = test_data[i];
+    api_data[i].test_case = parseInt(test_data[i].test_case,10);
+    api_data[i].buy_price_max = parseInt(test_data[i].buy_price_max,10);
+    api_data[i].buy_price_max_date = interpret_date(test_data[i].buy_price_max_date.toString());
+    api_data[i].city = test_data[i].city.toString();
+    api_data[i].quality = parseInt(test_data[i].quality,10);
+    api_data[i].sell_price_min = parseInt(test_data[i].sell_price_min,10);
+    api_data[i].sell_price_min_date = interpret_date(test_data[i].sell_price_min_date.toString());
+  }
 }
 
 
