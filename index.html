@@ -199,7 +199,7 @@ Got any suggestions or bugs that you would like to report? Send us an email
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Quality</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Age</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Difference</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Difference Age<</th>
+      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Difference Age</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Sell Price</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Quality</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Age</th>
@@ -216,7 +216,6 @@ Got any suggestions or bugs that you would like to report? Send us an email
 <br>
 <script type="text/javascript" src="bootstrap-sortable.js"></script>
 <script type="text/javascript" src="moment.js"></script>
-<script type="text/javascript" src="test_cases_csv.js"></script>
 <script type="text/javascript" src="items.js"></script>
 <script>
 //Global values
@@ -315,15 +314,11 @@ function getPrices() {
                     item.BM_order_difference = "Outdated";
                 }
 
-
                 addToTable("table",
                   (item.tier+"."+item.enchantment),
                   item.name,
                   formatMoney(item.profit),
                   item.percentileProfit,
-                  formatMoney(item.highestProfitBM_Price==-696969 ? item.bmPrice : item.highestProfitBM_Price),
-                  qualityToString(item.highestProfitBM_Quality==-696969 ? item.quality : item.highestProfitBM_Quality),
-                  item.highestProfitBM_Age != 696969 ? item.highestProfitBM_Age: item.bm_age,
                   formatMoney(item.highestProfitBM_Price),
                   qualityToString(item.highestProfitBM_Quality),
                   item.highestProfitBM_Age,
@@ -333,9 +328,6 @@ function getPrices() {
                   qualityToString(item.quality),
                   item.city_age,
                   item.city,
-                  profitableInCaerleon(item, maxAgeCity),
-                  qualityToString(item.caerleonQuality==-696969 ? item.quality : item.caerleonQuality),
-                  item.caerleonAge > maxAgeCity*10 ? "Very Old" : item.caerleonAge
                   item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
                   item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
                   item.caerleonProfit < 1 ? "-" : item.caerleonAge  // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
@@ -804,7 +796,7 @@ function fetchData(type, cities, selected_items, quality, callback) {
 function addToTable(id, ...cells) {
     //var table = document.getElementById(id).getElementsByTagName('tbody')[0];
     //var row = table.insertRow(0);
-    var colColors = ["", "", "", "", "#E5FFCD","#E5FFCD","#E5FFCD", "#CDFFF3","#CDFFF3","#CDFFF3","#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
+    var colColors = ["", "", "", "", "#E5FFCD","#E5FFCD","#E5FFCD","#E5FFCD","#E5FFCD", "#CDFFF3","#CDFFF3","#CDFFF3","#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
     var append = "<tr>";
     for(var i = 0; i < cells.length; i++) {
       append += '<td style="background-color:'+colColors[i]+'" copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
