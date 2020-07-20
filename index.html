@@ -50,8 +50,8 @@ Tier:
 </select>
 Enchantment:
 <select id="enchantment">
-  <option value="-1">All</option>
-  <option value="0" selected>0</option>
+  <option value="-1" selected>All</option>
+  <option value="0">0</option>
   <option value="1">1</option>
   <option value="2">2</option>
   <option value="3">3</option>
@@ -99,7 +99,6 @@ Quality:
 <table id="table" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th>Test Case</th>
       <th>Tier</th>
       <th>Name</th>
       <th>Profit (with tax)</th>
@@ -197,7 +196,6 @@ function getPrices() {
             printToConsole("API data received!\n");
             // Begin accessing JSON data here
             var data = JSON.parse(this.response);
-            intercept_API_response(data);
 
             br();
             var cities = splitDataByCity(data);
@@ -223,7 +221,6 @@ function getPrices() {
                 }
 
                 addToTable("table",
-                  item.test_case,
                   (item.tier+"."+item.enchantment),
                   item.name,
                   formatMoney(item.profit),
