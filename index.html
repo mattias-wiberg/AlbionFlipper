@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script src="jquery.csv.js"></script>
   <!-- MDBootstrap Datatables  -->
   <title>Flipper</title>
    <link rel="icon" href="icon.png" type="image/gif">
@@ -725,7 +724,7 @@ function filterDataByParameters(cities) {
     } else if(profitableTrades == 0) {
       printToConsole("No profitable trades found. Try decreasing Min Profit.\n");
     } else if (profitableTrades != 0 && freshTrades != 0) {
-      printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.")
+      printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
     }
   } else {
     printToConsole("Profitable and fresh items found!\n");
