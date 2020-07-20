@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="jquery.csv.js"></script>
   <!-- MDBootstrap Datatables  -->
   <title>Flipper</title>
    <link rel="icon" href="icon.png" type="image/gif">
@@ -159,14 +160,14 @@ Quality:
 <div style="width:100%;">
   <div style="width:50%; position:block;float:left;">
     <label for="Min Profit">Min Profit</label><br>
-    <input style="width: 90%;" type="number" id="minProfit" name="Min Profit" value=0>
+    <input style="width: 90%;" type="number" id="minProfit" name="Min Profit" value=1>
     <button onclick="getPrices()" style="margin-top: 10px; width: 90%; padding-top:8px; padding-bottom:8px">Get Prices</button>
   </div>
   <div style="width:50%; position:block;float:right;">
     <label for="Max BM Age">Max BM Age</label><br>
-    <input style="width: 90%;" type="number" id="maxAgeBM" name="Max BM Age" value=60><br>
+    <input style="width: 90%;" type="number" id="maxAgeBM" name="Max BM Age" value=20><br>
     <label for="Max City Age">Max City Age</label><br>
-    <input style="width: 90%;" type="number" id="maxAgeCity" name="Max City Age" value=60><br>
+    <input style="width: 90%;" type="number" id="maxAgeCity" name="Max City Age" value=20><br>
   </div>
 </div>
 <br>
@@ -197,6 +198,8 @@ Got any suggestions or bugs that you would like to report? Send us an email
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Buy Price</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Quality</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Difference</th>
+      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Difference Age<</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Sell Price</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Quality</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Age</th>
@@ -213,6 +216,7 @@ Got any suggestions or bugs that you would like to report? Send us an email
 <br>
 <script type="text/javascript" src="bootstrap-sortable.js"></script>
 <script type="text/javascript" src="moment.js"></script>
+<script type="text/javascript" src="test_cases_csv.js"></script>
 <script type="text/javascript" src="items.js"></script>
 <script>
 //Global values
@@ -225,6 +229,13 @@ var quality;
 var maxAgeBM;
 var maxAgeCity;
 var minProfit;
+const POSITIVE_VALUE_LARGE = 696969;
+const NEGATIVE_VALUE_LARGE = -696969;
+const ONE_WEEK = 10080; // change this to maxAgeCity if you don't want Caerleon properties to ignore maxAgeCity
+var profitableTrades = 0;
+var freshTrades = 0;
+var totalApprovedTrades = 0;
+
 
 //Takes the raw items string and converts it into array of an objects
 function getAllItems() {
@@ -295,6 +306,16 @@ function getPrices() {
               for(var j = 0; j < cities[i].length; j++) {
                 item = cities[i][j];
                 addItemProperties(item);
+
+                if (item.BM_order_difference > 0 && item.BM_order_difference_age > maxAgeCity) {
+                    item.BM_order_difference = formatMoney(item.BM_order_difference) +  " (Outdated)";
+                } else if (item.BM_order_difference > 0) {
+                    item.BM_order_difference = formatMoney(item.BM_order_difference);
+                } else {
+                    item.BM_order_difference = "Outdated";
+                }
+
+
                 addToTable("table",
                   (item.tier+"."+item.enchantment),
                   item.name,
@@ -303,6 +324,11 @@ function getPrices() {
                   formatMoney(item.highestProfitBM_Price==-696969 ? item.bmPrice : item.highestProfitBM_Price),
                   qualityToString(item.highestProfitBM_Quality==-696969 ? item.quality : item.highestProfitBM_Quality),
                   item.highestProfitBM_Age != 696969 ? item.highestProfitBM_Age: item.bm_age,
+                  formatMoney(item.highestProfitBM_Price),
+                  qualityToString(item.highestProfitBM_Quality),
+                  item.highestProfitBM_Age,
+                  item.BM_order_difference,
+                  item.BM_order_difference_age > maxAgeCity*10 ? "Very Old" : item.BM_order_difference_age,
                   formatMoney(item.cityPrice),
                   qualityToString(item.quality),
                   item.city_age,
@@ -310,6 +336,9 @@ function getPrices() {
                   profitableInCaerleon(item, maxAgeCity),
                   qualityToString(item.caerleonQuality==-696969 ? item.quality : item.caerleonQuality),
                   item.caerleonAge > maxAgeCity*10 ? "Very Old" : item.caerleonAge
+                  item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
+                  item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
+                  item.caerleonProfit < 1 ? "-" : item.caerleonAge  // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
                 );
               }
             }
@@ -433,9 +462,9 @@ function profitableInCaerleon(item, maxAgeCity) {
   }
 
   if (item.caerleonAge <= maxAgeCity) {
-    return item.caerleonProfit>0 ? formatMoney(item.caerleonProfit) : "No";
+    return item.caerleonProfit > 0 ? formatMoney(item.caerleonProfit) : "No";
   } else {
-    return item.caerleonProfit>0 ? formatMoney(item.caerleonProfit) + " (outdated)" : "No (outdated)";
+    return item.caerleonProfit > 0 ? formatMoney(item.caerleonProfit) + " (outdated)" : "No (outdated)";
   }
 }
 
@@ -457,20 +486,15 @@ function calculateProfits(cities) {
       */
       item = cities[i][j];
 
-      // adds profit parameters for most profitable quality buy orders to the item object
-      compareQualities(cities, i, j);
+      compareQualities(cities, i, j, ignore_maxAgeCity=false);
+      if (item.city == "Caerleon")  // for later Caerleon properties comparison
+        compareQualities(cities, i, j, ignore_maxAgeCity=true);
 
-      item.percentileProfit = Math.round(1000*(item.profit / item.cityPrice))/10;
-
+      // needs to calculate profit arrays for all qualities before it can find the optimal combination and add the Caerleon properties
       if (item.quality == 5) {
-        removeDuplicateQualities(cities, i, j);
-      }
-
-      // adds the Caerleon properties to the items
-      if (cities[6].length != 0 && cities[6][0].city=="Caerleon") { // check if Caerleon is checked
-        item.caerleonProfit = cities[6][j].profit;
-        item.caerleonAge = cities[6][j].highestProfitBM_Age == 696969 ? cities[6][j].city_age : cities[6][j].highestProfitBM_Age;
-        item.caerleonQuality = cities[6][j].quality;
+        findOptimalCombination(cities, i, j);
+        assignOptimalCombination(cities, i, j);
+        addCaerleonProperties(cities, i, j);
       }
 
     }
@@ -478,68 +502,148 @@ function calculateProfits(cities) {
   return true;
 }
 
+
 /*
-  changes the profit parameter of the less profitable duplicate qualities to -969696.
-  OBS: THE FUNCTION IS POORLY IMPLEMENTED BECAUSE OF SEVERAL FOR LOOPS AND SHOULD BE IMPROVED IF POSSIBLE
+  if the same buy order can be filled by Caerleon the user is warned through the Caerleon properties.
+  maxAgeCity for Caerleon properties is increased to ONE_WEEK since the prices don't fluctuate that much.
 */
-function removeDuplicateQualities(cities, i, j) {
-  var item = cities[i][j];
+function addCaerleonProperties(cities, i, j) {
+  for (var m = 0; m < cities[i][j].quality; m++) {  // loop through every item quality
+    cities[i][j-4+m].caerleonProfit = NEGATIVE_VALUE_LARGE;
+    cities[i][j-4+m].caerleonAge = POSITIVE_VALUE_LARGE;
+    cities[i][j-4+m].caerleonQuality = NEGATIVE_VALUE_LARGE;
 
-  // loops through all the different qualities and stores their highestProfitBM_Quality:
-  // [masterpiece, excellent, outstanding, good, normal]
-  var highestProfitBMQualities = [];
-  for (var k = 0; k < item.quality; k++) {
-    highestProfitBMQualities.push(cities[i][j-k].highestProfitBM_Quality);
-  }
+    if (cities[i][j-4+m].highestProfitBM_Quality == NEGATIVE_VALUE_LARGE) // if the item isn't going to be displayed then it doesn't need to be compared either
+      continue;
 
-  // finds the duplicates
-  var duplicates = Object.entries(highestProfitBMQualities.getDuplicates());
-
-  // loops through the duplicates
-  for (var z = 0; z < duplicates.length; z++) {
-
-    if (duplicates[z][0]!="-696969") {  // z is the different duplicates arrays and 0 is the key
-
-      // if a duplicate has other value than -696969 stores the indices and executes the code below
-      var duplicateIndices = duplicates[z][1];  // 1 is the array of the duplicate indices
-
-      // loops to find the highestProfit and highestProfitIndex using the duplicateIndices array
-      var highestProfit = -999999;
-      var highestProfitIndex = -999999;
-        for (var a = 0; a < duplicateIndices.length; a++) {
-          if (cities[i][j-duplicateIndices[a]].profit > highestProfit) {
-            highestProfit = cities[i][j-duplicateIndices[a]].profit;
-            highestProfitIndex = duplicateIndices[a];
-          }
-      }
-
-      // loops another time to "remove" all the duplicate highestProfitBM_Quality
-      for (var b = 0; b < duplicateIndices.length; b++) {
-        if (cities[i][j-duplicateIndices[b]].profit < highestProfit) {
-          cities[i][j-duplicateIndices[b]].profit = -969696;
-        }
+    for (var n = cities[i][j-4+m].highestProfitBM_Quality-1; n < cities[i][j].quality; n++) { // loop through all the higher qualities
+      // if any profit for the same quality as highestProfitBM_Quality is bigger than caerleonProfit, reassign Caerleon properties as that item in Caerleon can be sold to the same buy order
+      if (cities[i][j-4+m].caerleonProfit < cities[6][j-4+n].profits_array_ignored_maxAgeCity[cities[i][j-4+m].highestProfitBM_Quality-1]) {
+        cities[i][j-4+m].caerleonProfit = cities[6][j-4+n].profits_array_ignored_maxAgeCity[cities[i][j-4+m].highestProfitBM_Quality-1];
+        cities[i][j-4+m].caerleonQuality = cities[6][j-4+n].quality;
+        cities[i][j-4+m].caerleonAge = cities[6][j-4+n].city_age;
       }
     }
   }
 }
 
-/*
-  finds which quality in BM gives the best profit and sets the profit parameter to that.
-  also sets highestProfitBM_Quality to the most profitable quality and highestProfitBM_Price
-  to the price of that quality in the BM.
 
-  when comparing qualities only "fresh" items are compared, so if the item is "old" or has a profit
-  below -696969, its parameters will be set to -696969 (default)
+/*
+  assigns various new properties based on the result of the optimal_combination property
+  cities[i][j] is the masterpiece version of the item
 */
-function compareQualities(cities, i, j) {
+function assignOptimalCombination(cities, i, j) {
+
+  for (var k = 0; k < cities[i][j].optimal_combination.length; k++) {
+    var item = cities[i][j-4+k];
+
+    // if it is equal to itself's quality then it means that the item is not sold (indices start at 0
+    // whereas qualities start at 1, look at "findOptimalCombination()" function for more info)
+    if (cities[i][j].optimal_combination[k] == item.quality) {
+      item.highestProfitBM_Quality = NEGATIVE_VALUE_LARGE;
+      item.highestProfitBM_Price = NEGATIVE_VALUE_LARGE;
+      item.highestProfitBM_Age = POSITIVE_VALUE_LARGE;
+      item.profit = NEGATIVE_VALUE_LARGE;
+      item.BM_order_difference = NEGATIVE_VALUE_LARGE;
+      item.BM_order_difference_age = POSITIVE_VALUE_LARGE;
+      item.percentileProfit = NEGATIVE_VALUE_LARGE;
+    } else {
+      item.highestProfitBM_Quality = cities[i][j].optimal_combination[k]+1; // indices start at 0 but qualities at 1, so need to add 1
+      item.highestProfitBM_Price = cities[i][j-5+item.highestProfitBM_Quality].bmPrice; // indices start at 0 but qualities at 1, so need to subtract 1
+      item.highestProfitBM_Age = cities[i][j-5+item.highestProfitBM_Quality].bm_age;
+      item.profit = Math.round(item.profits_array[item.highestProfitBM_Quality-1]);
+      item.BM_order_difference = cities[0][j-5+item.highestProfitBM_Quality].sell_price_min - cities[0][j-5+item.highestProfitBM_Quality].buy_price_max;
+      item.BM_order_difference_age = getAge(cities[0][j-5+item.highestProfitBM_Quality].sell_price_min_date);
+      item.percentileProfit = Math.round(1000*(item.profit / item.cityPrice))/10;
+    }
+
+  }
+
+}
+
+
+/*
+  finds the combination of orders that would give the biggest net profit if all the trades are executed
+  and sets the optimal_combination property to the optimal combination
+  cities[i][j].optimal_combination format:
+  [normal, good, outstanding, excellent, masterpiece]
+  the number tells to which index to sell to. if highers than itself's index then no trade should be made, eg.:
+  optimal_combination = [0, 2, 3, 2, 1]
+  optimal_combination[0] == 0: normal-normal
+  optimal_combination[1] == 2: good-nothing (2 is higher than itself's index, 1)
+  optimal_combination[2] == 3: outstanding-nothing (3 is higher than itself's index, 2)
+  optimal_combination[3] == 2: excellent-outstanding
+  optimal_combination[4] == 1: masterpiece-good
+*/
+function findOptimalCombination(cities, i, j) {
+
+  var m_profits = cities[i][j].profits_array;
+  var e_profits = cities[i][j-1].profits_array;
+  var o_profits = cities[i][j-2].profits_array;
+  var g_profits = cities[i][j-3].profits_array;
+  var n_profits = cities[i][j-4].profits_array;
+
+  var biggest_sum = 0;
+  var optimal_combination = [0,0,0,0,0];
+
+  var new_sum;
+
+  for (var m = 0; m < m_profits.length; m++) {
+
+    for (var e = 0; e < e_profits.length; e++) {
+
+      for (var o = 0; o < o_profits.length; o++) {
+
+        for (var g = 0; g < g_profits.length; g++) {
+
+          for (var n = 0; n < n_profits.length; n++) {
+
+            new_sum = m_profits[m] + e_profits[e] + o_profits[o] + g_profits[g] + n_profits[n];
+
+            if (
+                (new_sum > biggest_sum) &&
+                ( (m!=e || e==4) && (m!=o || o==3) && (m!=g || g==2) && (m!=n || n==1) ) &&
+                ( (e!=o || o==3) && (e!=g || g==2) && (e!=n || n==1) ) &&
+                ( (o!=g || g==2) && (o!=n || n==1) ) &&
+                ( (g!=n || n==1) )
+              ) {
+              biggest_sum = new_sum;
+              optimal_combination[4] = m;
+              optimal_combination[3] = e;
+              optimal_combination[2] = o;
+              optimal_combination[1] = g;
+              optimal_combination[0] = n;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  cities[i][j].optimal_combination = optimal_combination;
+
+}
+
+
+/*
+  puts all the profits for different quality comparisons in the item.profit_array if ignore_maxAgeCity is false.
+  if it is true instead puts them in the profits_array_ignored_maxAgeCity array. also logs the number of profitable and fresh trades
+  item.profit_array format (assuming masterpiece item quality, cityQ-BMQ):
+  [masterpiece-normal, masterpiece-good, masterpiece-outstanding, masterpiece-excellent, masterpiece-masterpiece, 0]
+  last index is the profit if the item is not sold. if the trade is unprofitable a 0 will be put in place.
+*/
+function compareQualities(cities, i, j, ignore_maxAgeCity) {
         var item = cities[i][j];
         item.bmPrice = cities[0][j].buy_price_max;
         item.cityPrice = item.sell_price_min;
 
-        item.profit = -696969;
-        item.highestProfitBM_Quality = -696969;  // has to always be <= item.quality since you can only sell higher quality items to lower quality buy orders in BM
-        item.highestProfitBM_Price = -696969;
-        item.highestProfitBM_Age = 696969;
+        ignore_maxAgeCity ? item.profits_array_ignored_maxAgeCity = [] : item.profits_array = [];
+
             for (var k = 0; k < item.quality; k++) {
               /*
               Assuming item.quality == 5 (masterpiece):
@@ -552,30 +656,39 @@ function compareQualities(cities, i, j) {
               var tax_modifier = document.getElementById("premium").checked ? 0.97 : 0.94;
               var qualityProfit = (cities[0][j-k].buy_price_max*tax_modifier) - item.sell_price_min;
 
-              if (item.profit < qualityProfit && cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity) {
-                item.profit = qualityProfit;
-                item.highestProfitBM_Quality = item.quality - k;
-                item.highestProfitBM_Price = cities[0][j-k].buy_price_max;
-                item.highestProfitBM_Age = cities[i][j-k].bm_age;
+              if(ignore_maxAgeCity) {
+
+                  if (qualityProfit > 0 && cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= ONE_WEEK) {
+                    item.profits_array_ignored_maxAgeCity.splice(0,0,qualityProfit);
+                  } else {
+                    item.profits_array_ignored_maxAgeCity.splice(0,0,0);
+                  }
+
+                  if (k == (item.quality - 1)) {
+                    item.profits_array_ignored_maxAgeCity.push(0);
+                  }
+
+              } else {
+
+                if (qualityProfit > 0 && cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity) {
+                  item.profits_array.splice(0,0,qualityProfit);
+                } else {
+                  item.profits_array.splice(0,0,0); // adds a zero if the quality comparison is outdated or not profitable
+                }
+
+                if (k == (item.quality - 1)) {
+                  item.profits_array.push(0); // adds an extra zero to get all possible combinations later
+                }
+
+                if(qualityProfit >= minProfit && !ignore_maxAgeCity)
+                  profitableTrades++;
+                if(cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity && !ignore_maxAgeCity)
+                  freshTrades++;
+
               }
+
             }
 }
-
-/*
-  finds duplicates and returns their indices:
-  https://stackoverflow.com/questions/18417728/get-the-array-index-of-duplicates
-*/
-Array.prototype.getDuplicates = function () {
-    var duplicates = {};
-    for (var i = 0; i < this.length; i++) {
-        if(duplicates.hasOwnProperty(this[i])) {
-            duplicates[this[i]].push(i);
-        } else if (this.lastIndexOf(this[i]) !== i) {
-            duplicates[this[i]] = [i];
-        }
-    }
-    return duplicates;
-};
 
 // OBS! has to happen before filterDataByParameters() relies on BM data and city data being parallel
 function calculateAge(cities) {
@@ -595,42 +708,36 @@ function calculateAge(cities) {
 // cities: must have profit calculated and added into each item of each city
 // returns true if items was filitered profitable, false if all items was removed
 function filterDataByParameters(cities) {
-  var profitableItems = 0;
-  var freshItems = 0;
-  var totalApprovedItemCount = 0;
   // cities[0] is the blackMarket first for loop then starts from 1
   for(var i = 1; i < cities.length; i++) { // Loop through every city
     for(var j = 0; j < cities[i].length; j++) { // Loop through every item
-      var age_bm = cities[i][j].bm_age;
-      var age_city = cities[i][j].city_age;
-      var age_bm_highestQualityProfit = cities[i][j].highestProfitBM_Age;
+      var item = cities[i][j];
 
-      if(cities[i][j].profit >= minProfit)
-        profitableItems++;
-      if( (age_bm <= maxAgeBM || age_bm_highestQualityProfit <= maxAgeBM) && age_city <= maxAgeCity)
-        freshItems++;
-      if(cities[i][j].profit < minProfit || (age_bm > maxAgeBM && age_bm_highestQualityProfit > maxAgeBM) || age_city > maxAgeCity) {
+      // the reason for 2 item.profit comparisons even though < minProfit would be enough is because
+      // some weird entries can show up if you enter a negative value in Min Profit
+      if(item.profit < minProfit || item.profit <= 0 || item.highestProfitBM_Age > maxAgeBM || item.city_age > maxAgeCity) {
           cities[i].splice(j, 1);
           j--;
       }
+
     }
-    totalApprovedItemCount += cities[i].length;
+    totalApprovedTrades += cities[i].length;
   }
 
   // only true if all the items from all the cities have been spliced
-  if (totalApprovedItemCount == 0) {
-    if(freshItems == 0) {
-      printToConsole("Data too old. Pick bigger max age or update the market via the Data Client).\n");
-    } else if(profitableItems == 0) {
-      printToConsole("Data below the miminal profit. Increase Min Profit.\n");
-    } else if (profitableItems != 0 && freshItems != 0) {
-      printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
+  if (totalApprovedTrades == 0) {
+    if(freshTrades == 0) {
+      printToConsole("Data too old. Pick bigger max age or update the market via the Data Client.\n");
+    } else if(profitableTrades == 0) {
+      printToConsole("No profitable trades found. Try decreasing Min Profit.\n");
+    } else if (profitableTrades != 0 && freshTrades != 0) {
+      printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.")
     }
   } else {
     printToConsole("Profitable and fresh items found!\n");
   }
 
-  return totalApprovedItemCount;
+  return totalApprovedTrades;
 }
 
 function printToConsole(text) {
