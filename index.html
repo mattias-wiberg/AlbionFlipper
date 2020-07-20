@@ -93,6 +93,8 @@ input {
               <th>BM Buy Price</th>
               <th>BM Quality</th>
               <th>BM Age</th>
+              <th>BM Order Diff.</th>
+              <th>BM Order Diff. Age</th>
               <th>City Sell Price</th>
               <th>City Quality</th>
               <th>City Age</th>
@@ -198,8 +200,8 @@ Got any suggestions or bugs that you would like to report? Send us an email
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Buy Price</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Quality</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Difference</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Difference Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Diff.</th>
+      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Diff. Age</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Sell Price</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Quality</th>
       <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Age</th>
@@ -796,7 +798,7 @@ function fetchData(type, cities, selected_items, quality, callback) {
 function addToTable(id, ...cells) {
     //var table = document.getElementById(id).getElementsByTagName('tbody')[0];
     //var row = table.insertRow(0);
-    var colColors = ["", "", "", "", "#E5FFCD","#E5FFCD","#E5FFCD","#E5FFCD","#E5FFCD", "#CDFFF3","#CDFFF3","#CDFFF3","#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
+    var colColors = ["", "", "", "", "#E5FFCD","#E5FFCD","#E5FFCD","#E7EDEF","#E7EDEF", "#CDFFF3","#CDFFF3","#CDFFF3","#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
     var append = "<tr>";
     for(var i = 0; i < cells.length; i++) {
       append += '<td style="background-color:'+colColors[i]+'" copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
