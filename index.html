@@ -76,7 +76,7 @@ input {
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" style="float:left;" id="exampleModalLabel">Shopping cart</h5>
+        <h5 class="modal-title" style="float:left;" id="exampleModalLabel">Shopping Cart</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -85,22 +85,22 @@ input {
         <table id="cart" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
           <thead>
             <tr>
-              <th>Tier</th>
-              <th>Name</th>
-              <th>Profit (with tax)</th>
-              <th>% Profit</th>
-              <th>BM Buy Price</th>
-              <th>BM Quality</th>
-              <th>BM Age</th>
-              <th>BM Order Diff.</th>
-              <th>BM Order Diff. Age</th>
-              <th>City Sell Price</th>
-              <th>City Quality</th>
-              <th>City Age</th>
-              <th>City</th>
-              <th>Caerleon Profit</th>
-              <th>Caerleon Quality</th>
-              <th>Caerleon Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="Tier and enchantment of the item in the format: TIER.ENCHANTMENT">Tier</th>
+              <th data-toggle="tooltip" data-placement="top" title="Name of the item to flip">Name</th>
+              <th data-toggle="tooltip" data-placement="top" title="Profit of the trade with tax included">Profit (with tax)</th>
+              <th data-toggle="tooltip" data-placement="top" title="Profit in percent calculated as (profit/city price)*100">% Profit</th>
+              <th data-toggle="tooltip" data-placement="top" title="The price of the buy order in the Black Market">BM Buy Price</th>
+              <th data-toggle="tooltip" data-placement="top" title="The quality of the buy order in the Black Market">BM Quality</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the buy order in the Black Market was updated by the Albion Data Client. Will always be less or equal to Max BM Age. If the age is large it can mean that the order has already been filled">BM Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="The difference between buy and sell order in the Black Market. If it is small there is a risk that the buy order will be filled by the sell order before you can flip the item, especially if flipping between BM and other cities">BM Order Diff.</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the Black Market was updated by the Albion Data Client">BM Order Diff. Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="Price of the item in the city">City Sell Price</th>
+              <th data-toggle="tooltip" data-placement="top" title="Quality of the item in the city. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">City Quality</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the city was updated by the Albion Data Client. Will always be less or equal to Max City Age. If the age is large it can mean that the order has already been filled">City Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="The city where the item can be bought">City</th>
+              <th data-toggle="tooltip" data-placement="top" title="If the Black Market buy order can be filled by an item in the Caerleon market. If you are flipping between BM and another city this serves as a warning since the same buy order can be filled much quicker by a Caerleon flipper">Caerleon Profit</th>
+              <th data-toggle="tooltip" data-placement="top" title="Quality of the item in Caerleon. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">Caerleon Quality</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in Caerleon was updated by the Albion Data Client. Displays items up to one week old as Caerleon prices do not fluctuate much">Caerleon Age</th>
             </tr>
           </thead>
           <tbody>
@@ -162,7 +162,7 @@ Quality:
   <div style="width:50%; position:block;float:left;">
     <label for="Min Profit">Min Profit</label><br>
     <input style="width: 90%;" type="number" id="minProfit" name="Min Profit" value=1>
-    <button onclick="getPrices()" style="margin-top: 10px; width: 90%; padding-top:8px; padding-bottom:8px">Get Prices</button>
+    <button onclick="getPrices()" style="margin-top: 10px; width: 90%; padding-top:8px; padding-bottom:8px">Get Flips!</button>
   </div>
   <div style="width:50%; position:block;float:right;">
     <label for="Max BM Age">Max BM Age</label><br>
@@ -192,23 +192,23 @@ Got any suggestions or bugs that you would like to report? Send us an email
 <table id="table" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tier</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Name</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Profit (with tax)</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">% Profit</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Buy Price</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Quality</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Diff.</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Order Diff. Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Sell Price</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Quality</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Caerleon Profit</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Caerleon Quality</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Caerleon Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Add the item to the shopping cart">Cart</th>
+      <th data-toggle="tooltip" data-placement="top" title="Tier and enchantment of the item in the format: TIER.ENCHANTMENT">Tier</th>
+      <th data-toggle="tooltip" data-placement="top" title="Name of the item to flip">Name</th>
+      <th data-toggle="tooltip" data-placement="top" title="Profit of the trade with tax included">Profit (with tax)</th>
+      <th data-toggle="tooltip" data-placement="top" title="Profit in percent calculated as (profit/city price)*100">% Profit</th>
+      <th data-toggle="tooltip" data-placement="top" title="The price of the buy order in the Black Market">BM Buy Price</th>
+      <th data-toggle="tooltip" data-placement="top" title="The quality of the buy order in the Black Market">BM Quality</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the buy order in the Black Market was updated by the Albion Data Client. Will always be less or equal to Max BM Age. If the age is large it can mean that the order has already been filled">BM Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="The difference between buy and sell order in the Black Market. If it is small there is a risk that the buy order will be filled by the sell order before you can flip the item, especially if flipping between BM and other cities">BM Order Diff.</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the Black Market was updated by the Albion Data Client">BM Order Diff. Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="Price of the item in the city">City Sell Price</th>
+      <th data-toggle="tooltip" data-placement="top" title="Quality of the item in the city. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">City Quality</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the city was updated by the Albion Data Client. Will always be less or equal to Max City Age. If the age is large it can mean that the order has already been filled">City Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="The city where the item can be bought">City</th>
+      <th data-toggle="tooltip" data-placement="top" title="If the Black Market buy order can be filled by an item in the Caerleon market. If you are flipping between BM and another city this serves as a warning since the same buy order can be filled much quicker by a Caerleon flipper">Caerleon Profit</th>
+      <th data-toggle="tooltip" data-placement="top" title="Quality of the item in Caerleon. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">Caerleon Quality</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in Caerleon was updated by the Albion Data Client. Displays items up to one week old as Caerleon prices do not fluctuate much">Caerleon Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="Add the flip to the shopping cart">Cart</th>
     </tr>
   </thead>
   <tbody>
