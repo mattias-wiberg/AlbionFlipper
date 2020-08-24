@@ -59,19 +59,56 @@ input {
         </button>
       </div>
       <div class="modal-body">
-        <!-- TODO Add info -->
         <p>For the best possible results, it is strongly suggested to use the Albion Data Client together with this tool. The API has no way of telling when an item has been sold, so it is therefore best to assume that if either the <strong>BM Age</strong> or <strong>City Age</strong> are high, the buy order has already been filled.</p>
         <p><br />As the best results are achieved by using the Albion Data Client, this tutorial will explain how to use Flipper in conjunction with the Albion Data Client. Start by downloading the data client from: <a href="http://www.albion-online-data.com">www.albion-online-data.com</a></p>
         <ol>
-        <li>Make sure the Albion Data Client is running in the background:<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /></li>
-        <li>Login to Albion Online and update the location of your character by switching locations (e.g. go out of the bank and then back into the bank). Example of how the Data Client should respond:<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /><br /><br /></li>
-        <li>Go to whatever market you want to flip from and select the <strong>Category</strong>, <strong>Tier</strong>, <strong>Enchantment</strong> and <strong>Quality</strong> of the items you want to flip. An efficient way of updating many items is to, for example, choose <strong>Tier 8</strong> and category: <strong>Accessories.</strong><br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /><br /><br /></li>
-        <li>Keep pressing the next page arrow (marked with a red box in the image below) until you either hit page 20 or there are no more pages with items left. In the image below we hit the maximum page 20 meaning that there are still more items we can update.<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /><br /><br /></li>
-        <li>Click the <strong>Price</strong> column (marked with a red box in the image below) to sort the items in the opposite order (if previously they were sorted in ascending order, now they will be sorted in descending order). In our example the items are now in descending order (by price), meaning that they get cheaper as we go.<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /><br /><br /></li>
-        <li>Repeat <strong>Step 4</strong>. Here you can stop once you reach the same prices as on the last page 20 in <strong>Step 4</strong>. In the image below we can see that the prices on page 10 are descending from 1&nbsp;289&nbsp;999. This means that the range of prices we updated is 79&nbsp;995 &ndash; 1&nbsp;332&nbsp;999 (price of the first and last item in <strong>Step 3</strong> and <strong>4</strong> respectively) and 30&nbsp;000&nbsp;000 &ndash; 1&nbsp;279 998 (price of the first and last item in <strong>Step 5</strong> and <strong>6</strong> respectively). In other words, we have updated all the <strong>Tier 8 Accessories</strong> in the <strong>Fort Sterling</strong> market. Now repeat <strong>steps 3 &ndash; 6</strong> for <strong>Armor</strong>, <strong>Magic</strong>, <strong>Melee</strong>, <strong>Off-Hand</strong>, <strong>Ranged</strong> and <strong>Tool</strong> categories.<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /><br /><br />While you are updating the items make sure the Albion Data Client is sending the updates (see the image below for how it looks when the items are being updated). If you are getting errors, try updating your location (leave and enter the market for example).<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /><br /><br /></li>
-        <li>Fast travel to the <strong>Black Market</strong> and update the same items as you did in the previous market (repeat <strong>steps 3 &ndash; 6</strong>). <strong>Hint: have one of your characters be in the Black Market so you can quickly switch characters and update the Black Market without fast travel!<br /></strong></li>
-        <li>Choose the appropriate parameters in Flipper and click the &ldquo;Find Flips!&rdquo; button. Make sure the <strong>Max BM Age</strong> and <strong>Max City Age</strong> are as low as possible. The API has no way of knowing when an item has been sold, so if you choose a too large age there is a chance the buy order has already been filled. In our example we choose the following parameters:<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /><br /><br /></li>
-        <li>Sort the table by profits by clicking the <strong>Profit (with tax)</strong> column title (marked with red box) and execute the top trades. If there are a lot of different entries feel free to add the ones you want to execute into the cart by pressing the plus button in the cart column (marked with red box). <strong>Hint: you can click on any cell in the table to copy its content. You can then, for example, paste the name of the item in the market search to find it and buy it faster!<br /><br /><img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" /></strong><br /><br /></li>
+           <li>Make sure the Albion Data Client is running in the background:
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
+           <li>Login to Albion Online and update the location of your character by switching locations (e.g. go out of the bank and then back into the bank). Example of how the Data Client should respond:
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
+           <li>Go to whatever market you want to flip from and select the <strong>Category</strong>, <strong>Tier</strong>, <strong>Enchantment</strong> and <strong>Quality</strong> of the items you want to flip. An efficient way of updating many items is to, for example, choose <strong>Tier 8</strong> and category: <strong>Accessories.</strong>
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
+           <li>Keep pressing the next page arrow (marked with a red box in the image below) until you either hit page 20 or there are no more pages with items left. In the image below we hit the maximum page 20 meaning that there are still more items we can update.
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
+           <li>Click the <strong>Price</strong> column (marked with a red box in the image below) to sort the items in the opposite order (if previously they were sorted in ascending order, now they will be sorted in descending order). In our example the items are now in descending order (by price), meaning that they get cheaper as we go.
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
+           <li>Repeat <strong>Step 4</strong>. Here you can stop once you reach the same prices as on the last page 20 in <strong>Step 4</strong>. In the image below we can see that the prices on page 10 are descending from 1&nbsp;289&nbsp;999. This means that the range of prices we updated is 79&nbsp;995 &ndash; 1&nbsp;332&nbsp;999 (price of the first and last item in <strong>Step 3</strong> and <strong>4</strong> respectively) and 30&nbsp;000&nbsp;000 &ndash; 1&nbsp;279 998 (price of the first and last item in <strong>Step 5</strong> and <strong>6</strong> respectively). In other words, we have updated all the <strong>Tier 8 Accessories</strong> in the <strong>Fort Sterling</strong> market. Now repeat <strong>steps 3 &ndash; 6</strong> for <strong>Armor</strong>, <strong>Magic</strong>, <strong>Melee</strong>, <strong>Off-Hand</strong>, <strong>Ranged</strong> and <strong>Tool</strong> categories.
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+             While you are updating the items make sure the Albion Data Client is sending the updates (see the image below for how it looks when the items are being updated). If you are getting errors, try updating your location (leave and enter the market for example).
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
+           <li>Fast travel to the <strong>Black Market</strong> and update the same items as you did in the previous market (repeat <strong>steps 3 &ndash; 6</strong>). <strong>Hint: have one of your characters be in the Black Market so you can quickly switch characters and update the Black Market without fast travel!</strong>
+             <br /><br />
+           </li>
+           <li>Choose the appropriate parameters in Flipper and click the &ldquo;Find Flips!&rdquo; button. Make sure the <strong>Max BM Age</strong> and <strong>Max City Age</strong> are as low as possible. The API has no way of knowing when an item has been sold, so if you choose a too large age there is a chance the buy order has already been filled. In our example we choose the following parameters:
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
+           <li>Sort the table by profits by clicking the <strong>Profit (with tax)</strong> column title (marked with red box) and execute the top trades. If there are a lot of different entries feel free to add the ones you want to execute into the cart by pressing the plus button in the cart column (marked with red box). <strong>Hint: you can click on any cell in the table to copy its content. You can then, for example, paste the name of the item in the market search to find it and buy it faster!</strong>
+             <br /><br />
+             <img src="https://via.placeholder.com/350x150" alt="" width="350" height="150" />
+             <br /><br />
+           </li>
         </ol>
         <p><strong>Some Last Words and Tips</strong></p>
         <p><br />This is merely a suggestion on how to get started with Flipper. Updating items in this manner will usually not work for lower tiers that have a lot more items for sale than tier 8. In that case you will for example have to update each quality or enchantment one by one. If you know which items are usually profitable then you can only update these.</p>
