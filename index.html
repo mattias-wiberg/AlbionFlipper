@@ -9,7 +9,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <!-- MDBootstrap Datatables  -->
   <title>Flipper</title>
-   <link rel="icon" href="icon.png" type="image/gif">
 </head>
 <body>
 <style>
@@ -135,7 +134,7 @@ Enchantment:
   <option value="3">3</option>
 </select>
 Quality:
-<select id="quality">
+<select id="quality" disabled>
   <option value="0" selected>All</option>
   <option value="1">Normal</option>
   <option value="2">Good</option>
@@ -150,14 +149,13 @@ Quality:
     <input type="checkbox" value="Thetford" checked>Thetford<br>
     <input type="checkbox" value="Lymhurst" checked>Lymhurst<br>
   </div>
-  <img src="Flipper.png" width="150px" style="float:right; position:block;">
   <div style="margin-left: 100px;margin-top: 10px;">
     <input type="checkbox" value="Bridgewatch" checked>Bridgewatch<br>
     <input type="checkbox" value="Martlock" checked>Martlock<br>
     <input type="checkbox" value="Caerleon" checked disabled>Caerleon<br>
   </div>
 </fieldset>
-<input id="premium" type="checkbox" checked><img src="crown.png" height="30px"></img><br>
+<input id="premium" type="checkbox" checked>Premium<br>
 <div style="width:100%;">
   <div style="width:50%; position:block;float:left;">
     <label for="Min Profit">Min Profit</label><br>
