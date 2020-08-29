@@ -68,8 +68,8 @@ function getPrices() {
             printToConsole("API data received!\n");
             // Begin accessing JSON data here
             var data = JSON.parse(this.response);
-            console.log('API object response: ');
-            console.log(data);
+            //console.log('API object response: ');
+            //console.log(data);
 
             br();
             var cities = splitDataByCity(data);
@@ -126,8 +126,8 @@ function addProgress(progress) {
   document.getElementById("progress").attributes[3] = Math.round(overallProgress * 100);
   if(Math.round(overallProgress*100)/100 == 1) //it can be a little bit over and under cause of calculation errors
     document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped"; //Turn of active
-  console.log(totalProgress);
-  console.log(overallProgress);
+  //console.log(totalProgress);
+  //console.log(overallProgress);
 }
 
 function resetProgress() {
@@ -151,7 +151,7 @@ function formatMoney(amount, decimalCount = 0, decimal = ".", thousands = " ") {
 
     return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
   } catch (e) {
-    console.log(e)
+    //console.log(e)
   }
 }
 
