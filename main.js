@@ -28,8 +28,6 @@ function getAllItems() {
 
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
-    if(location.host != "albionflipper.ml" && location.host != "www.albionflipper.ml")
-      return;
     tier = document.getElementById("tier").value;
     enchantment = document.getElementById("enchantment").value;
     quality = document.getElementById("quality").value;
@@ -602,6 +600,7 @@ function addToTable(id, ...cells) {
 // without the button that was pressed to add it (no add button in the shopping cart)
 function addToCart(id, element) {
   element.disabled = true; // Diable the add button that was pressed (<button>)
+  $('#cart tr:last').remove(); // Remove last row with the totals in the cart.
   //console.log(element);
   var table_row = element.parentElement.parentElement; // The row (<tr>) of the pressed button
   var tr = element.parentElement;
@@ -610,7 +609,59 @@ function addToCart(id, element) {
   table_row.appendChild(tr);
   //table_row.removeChild(element) // Remove the <td> where the button is from the row
   //console.log(clone);
-  $('#cart').append(clone.outerHTML)
+  $('#cart').append(clone.outerHTML); // Add item to table
+
+  var rows = $("#cart tr");
+  var profit = 0;
+  var bm_buy_price = 0;
+  var bm_age_avg = 0;
+  var bm_order_avg = 0;
+  var city_sell = 0;
+  var city_age_avg = 0;
+  var caerleon_profit = 0;
+  var caerleon_age_avg = 0;
+
+  // Sum and calc interesting vars up
+  for (var i = 1; i < rows.length; i++) { // Start at one (skip table head)
+    var row = rows[i];
+    profit += parseFloat(row.cells[2].attributes["data-value"].value);
+    bm_buy_price += parseFloat(row.cells[4].attributes["data-value"].value);
+    bm_age_avg += parseFloat(row.cells[6].attributes["data-value"].value) / (rows.length - 1);
+
+    if(!isNaN(row.cells[7].attributes["data-value"].value))
+      bm_order_avg += parseFloat(row.cells[7].attributes["data-value"].value) / (rows.length - 1);
+
+    if(!isNaN(row.cells[9].attributes["data-value"].value))
+      city_sell += parseFloat(row.cells[9].attributes["data-value"].value);
+
+    city_age_avg += parseFloat(row.cells[11].attributes["data-value"].value) / (rows.length - 1);
+
+    if(!isNaN(parseFloat(row.cells[13].attributes["data-value"].value.replace(/[^0-9]/g,''))))
+        caerleon_profit += parseFloat(row.cells[13].attributes["data-value"].value.replace(/[^0-9]/g,''));
+
+    if(!isNaN(row.cells[15].attributes["data-value"].value))
+      caerleon_age_avg += parseFloat(row.cells[15].attributes["data-value"].value) / (rows.length - 1);
+  }
+  $('#cart').append(
+    `<tr>
+      <td>Total</td>
+      <td></td>
+      <td>` + formatMoney(profit) + `</td>
+      <td>`+Math.round(1000*(profit / city_sell))/10+`</td>
+      <td>` + formatMoney(bm_buy_price) + `</td>
+      <td></td>
+      <td>` + Math.round(bm_age_avg) + `</td>
+      <td>` + `</td>
+      <td></td>
+      <td>` + formatMoney(city_sell) + `</td>
+      <td></td>
+      <td>` + Math.round(city_age_avg) + `</td>
+      <td></td>
+      <td>` + formatMoney(caerleon_profit) + `</td>
+      <td></td>
+      <td>` + `</td>
+    </tr>`
+  );
 }
 
 function clearTable(id) {
@@ -618,6 +669,8 @@ function clearTable(id) {
   var new_body = document.createElement('tbody'); // Empty body
   var body = table.getElementsByTagName("tbody")[0]; // First body
   table.replaceChild(new_body, body);
+  if(id == "cart")
+    $('#cart').append("<tr></tr>");
 }
 
 function replaceAll(str, needle, replace) {
