@@ -648,18 +648,18 @@ function addToCart(id, element) {
     `<tr>
       <td>Total</td>
       <td></td>
-      <td>` + formatMoney(profit) + `</td>
-      <td>`+Math.round(1000*(profit / city_sell))/10+`</td>
-      <td>` + formatMoney(bm_buy_price) + `</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="Total profit">` + formatMoney(profit) + `</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="Total % of the profit (profit/cost)">`+Math.round(1000*(profit / city_sell))/10+`</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="Items should be sold for this total in the Black Market">` + formatMoney(bm_buy_price) + `</td>
       <td></td>
-      <td>` + Math.round(bm_age_avg) + `</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="Average of the Black Market">` + Math.round(bm_age_avg) + `</td>
       <td>` + `</td>
       <td></td>
-      <td>` + formatMoney(city_sell) + `</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="This is the total cost of the cart">` + formatMoney(city_sell) + `</td>
       <td></td>
-      <td>` + Math.round(city_age_avg) + `</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="Average city age">` + Math.round(city_age_avg) + `</td>
       <td></td>
-      <td>` + formatMoney(caerleon_profit) + `</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="Total potential Caerleon profit (might be outdated)">` + formatMoney(caerleon_profit) + `</td>
       <td></td>
       <td>` + `</td>
     </tr>`
