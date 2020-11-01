@@ -14,6 +14,7 @@ const ONE_WEEK = 10080; // change this to maxAgeCity if you don't want Caerleon 
 var profitableTrades = 0;
 var freshTrades = 0;
 var totalApprovedTrades = 0;
+var currentUTCTime;
 
 
 //Takes the raw items string and converts it into array of an objects
@@ -26,6 +27,20 @@ function getAllItems() {
   return items;
 }
 
+// somewhere from stackoverflow. used to calculate the age from a 3rd party
+function getTime(url) {
+    return new Promise((resolve, reject) => {
+        const req = new XMLHttpRequest();
+        req.open("GET", url);
+        req.onload = () =>
+            req.status === 200
+                ? resolve(req.response)
+                : reject(Error(req.statusText));
+        req.onerror = (e) => reject(Error(`Network Error: ${e}`));
+        req.send();
+    });
+}
+
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
     if(location.hostname != "www.albionflipper.ml" && location.hostname != "albionflipper.ml")
@@ -36,6 +51,22 @@ function getPrices() {
     maxAgeBM = document.getElementById("maxAgeBM").value;
     maxAgeCity = document.getElementById("maxAgeCity").value;
     minProfit = document.getElementById("minProfit").value;
+
+    // sets currentUTCTime to UTC time from a 3rd party
+    // found this somewhere on stackoverflow
+    // don't put it inside any loops as this will make too many requests
+    getTime("https://worldtimeapi.org/api/timezone/Etc/UTC")
+        .then((response) => {
+            let dateObj = JSON.parse(response);
+            let dateTime = dateObj.datetime;
+            //console.log(dateObj);
+            //console.log(dateTime);
+      currentUTCTime = dateTime;
+        })
+        .catch((err) => {
+            //console.log(err);
+        });
+
 
     var city = [];
     var checkboxes = document.getElementById("cities").elements;
@@ -523,19 +554,9 @@ function clearConsole() {
     document.getElementById("console").textContent = "";
 }
 
-// returns minutes since 01/01/1970 00:00:00 UTC and age
-function get_UTC_time_since(age) {
-  return Math.round(Date.parse(new Date(age).toISOString()))/60000 - new Date().getTimezoneOffset();
-}
-
-// returns minutes since 01/01/1970 00:00:00 UTC and now
-function get_UTC_time_current() {
-  return Math.round(new Date().getTime()/60000);
-}
-
-// returns minutes since now and age
-function getAge(age) {
-  return get_UTC_time_current() - get_UTC_time_since(age);
+// returns minutes since currentUTCTime and itemAge
+function getAge(itemAge) {
+  return Math.round((Date.parse(currentUTCTime)-Date.parse(new Date(itemAge.concat('Z'))))/60000);
 }
 
 // Returns the parsed json response from the API
