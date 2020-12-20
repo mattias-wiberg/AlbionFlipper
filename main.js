@@ -43,8 +43,6 @@ function getTime(url) {
 
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
-    if(location.hostname != "www.albionflipper.ml" && location.hostname != "albionflipper.ml")
-      return;
     tier = document.getElementById("tier").value;
     enchantment = document.getElementById("enchantment").value;
     quality = document.getElementById("quality").value;
