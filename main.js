@@ -8,8 +8,8 @@ var quality;
 var maxAgeBM;
 var maxAgeCity;
 var minProfit;
-const POSITIVE_VALUE_LARGE = 696969;
-const NEGATIVE_VALUE_LARGE = -696969;
+const POSITIVE_VALUE_LARGE = 2147483647;
+const NEGATIVE_VALUE_LARGE = -2147483647;
 const ONE_WEEK = 10080; // change this to maxAgeCity if you don't want Caerleon properties to ignore maxAgeCity
 var profitableTrades = 0;
 var freshTrades = 0;
