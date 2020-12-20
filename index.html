@@ -50,16 +50,75 @@ input {
 </div>
 <!-- Info modal -->
 <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" style="float:left;" id="exampleModalLabel">Information</h5>
+        <h5 class="modal-title" style="float:left;" id="exampleModalLabel">Flipper - How to Use</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!-- TODO Add info -->
+        <p>For the best possible results, it is strongly suggested to use the Albion Data Client together with this tool. The API has no way of telling when an item has been sold, so it is therefore best to assume that if either the <strong>BM Age</strong> or <strong>City Age</strong> are high, the buy order has already been filled.</p>
+        <p><br />As the best results are achieved by using the Albion Data Client, this tutorial will explain how to use Flipper in conjunction with the Albion Data Client. Start by downloading the data client from: <a href="http://www.albion-online-data.com"  target="_blank">www.albion-online-data.com</a></p>
+        <ol>
+           <li>Make sure the Albion Data Client is running in the background:
+             <br /><br />
+             <img src="images\1.png" alt="" width="100%">
+             <br /><br />
+           </li>
+           <li>Login to Albion Online and update the location of your character by switching locations (e.g. go out of the bank and then back into the bank). Example of how the Data Client should respond:
+             <br /><br />
+             <img src="images\2.png" alt="" width="100%"/>
+             <br /><br />
+           </li>
+           <li>Go to whatever market you want to flip from and select the <strong>Category</strong>, <strong>Tier</strong>, <strong>Enchantment</strong> and <strong>Quality</strong> of the items you want to flip. An efficient way of updating many items is to, for example, choose <strong>Tier 8</strong> and category: <strong>Accessories.</strong>
+             <br /><br />
+             <img src="images\3.png" alt=""/>
+             <br /><br />
+           </li>
+           <li>Keep pressing the next page arrow (marked with a red box in the image below) until you either hit page 20 or there are no more pages with items left. In the image below we hit the maximum page 20 meaning that there are still more items we can update.
+             <br /><br />
+             <img src="images\4.png" alt="" />
+             <br /><br />
+           </li>
+           <li>Click the <strong>Price</strong> column (marked with a red box in the image below) to sort the items in the opposite order (if previously they were sorted in ascending order, now they will be sorted in descending order). In our example the items are now in descending order (by price), meaning that they get cheaper as we go.
+             <br /><br />
+             <img src="images\5.png" alt="" />
+             <br /><br />
+           </li>
+           <li>Repeat <strong>Step 4</strong>. Here you can stop once you reach the same prices as on the last page 20 in <strong>Step 4</strong>. In the image below we can see that the prices on page 10 are descending from 1&nbsp;289&nbsp;999. This means that the range of prices we updated is 79&nbsp;995 &ndash; 1&nbsp;332&nbsp;999 (price of the first and last item in <strong>Step 3</strong> and <strong>4</strong> respectively) and 30&nbsp;000&nbsp;000 &ndash; 1&nbsp;279 998 (price of the first and last item in <strong>Step 5</strong> and <strong>6</strong> respectively). In other words, we have updated all the <strong>Tier 8 Accessories</strong> in the <strong>Fort Sterling</strong> market. Now repeat <strong>steps 3 &ndash; 6</strong> for <strong>Armor</strong>, <strong>Magic</strong>, <strong>Melee</strong>, <strong>Off-Hand</strong>, <strong>Ranged</strong> and <strong>Tool</strong> categories.
+             <br /><br />
+             <img src="images\6.png" alt="" />
+             <br /><br />
+             While you are updating the items make sure the Albion Data Client is sending the updates (see the image below for how it looks when the items are being updated). If you are getting errors, try updating your location (leave and enter the market for example).
+             <br /><br />
+             <img src="images\6_2.png" alt="" width="100%"/>
+             <br /><br />
+           </li>
+           <li>Fast travel to the <strong>Black Market</strong> and update the same items as you did in the previous market (repeat <strong>steps 3 &ndash; 6</strong>). <strong>Hint: have one of your characters be in the Black Market so you can quickly switch characters and update the Black Market without fast travel!</strong>
+             <br /><br />
+           </li>
+           <li>Choose the appropriate parameters in Flipper and click the &ldquo;Find Flips!&rdquo; button. Make sure the <strong>Max BM Age</strong> and <strong>Max City Age</strong> are as low as possible. The API has no way of knowing when an item has been sold, so if you choose a too large age there is a chance the buy order has already been filled. In our example we choose the following parameters:
+             <br /><br />
+             <img src="images\8.png" alt="" />
+             <br /><br />
+           </li>
+           <li>Sort the table by profits by clicking the <strong>Profit (with tax)</strong> column title (marked with red box) and execute the top trades. If there are a lot of different entries feel free to add the ones you want to execute into the cart by pressing the plus button in the cart column (marked with red box). <strong>Hint: you can click on any cell in the table to copy its content. You can then, for example, paste the name of the item in the market search to find it and buy it faster!</strong>
+             <br /><br />
+             <img src="images\9.png" alt="" width="100%"/>
+             <br /><br />
+             <img src="images\9_2.png" alt="" width="100%"/>
+             <br /><br />
+           </li>
+        </ol>
+        <p><strong>Some Last Words and Tips</strong></p>
+        <p>This is merely a suggestion on how to get started with Flipper. Updating items in this manner will usually not work for lower tiers that have a lot more items for sale than tier 8. In that case you will for example have to update each quality or enchantment one by one. If you know which items are usually profitable then you can only update these. </p>
+        <p>If you wish to only flip items between the Caerleon market and the Black Market, then you can uncheck all the other cities. Caerleon is always checked as the program uses the Caerleon item data to warn users flipping from other cities if the same buy order can be filled by the Caerleon market. This causes Caerleon trades to also appear in the table, so sort first by profit and then by city if you only want to flip from another city and ignore Caerleon. </p>
+        <p>The reason why quality is set to all and cannot be changed is because the program compares the different combinations of trades and qualities that can be made and displays the trades that would give the highest net profit if all the trades for the same item were executed.  </p>
+        <p>The key in market flipping is speed. The item data that you are sending is public and other people using Flipper will also see the same trades as you. You need to therefore be fast in updating the items and then executing the trades. If you don’t make a trade in time you can usually recover most of the money by putting it up for sale on one of the markets or on the Black Market, albeit it will take time to sell.</p>
+        <p>On that note, we wish you good luck and happy flipping!</p>
+        <iframe width="100%" src="https://www.youtube.com/embed/cz4VEmaDG7k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn btn-primary">
@@ -75,7 +134,7 @@ input {
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" style="float:left;" id="exampleModalLabel">Shopping cart</h5>
+        <h5 class="modal-title" style="float:left;" id="exampleModalLabel">Shopping Cart</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -84,23 +143,43 @@ input {
         <table id="cart" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
           <thead>
             <tr>
-              <th>Tier</th>
-              <th>Name</th>
-              <th>Profit (with tax)</th>
-              <th>% Profit</th>
-              <th>BM Buy Price</th>
-              <th>BM Quality</th>
-              <th>BM Age</th>
-              <th>City Sell Price</th>
-              <th>City Quality</th>
-              <th>City Age</th>
-              <th>City</th>
-              <th>Caerleon Profit</th>
-              <th>Caerleon Quality</th>
-              <th>Caerleon Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="Tier and enchantment of the item in the format: TIER.ENCHANTMENT">Tier</th>
+              <th data-toggle="tooltip" data-placement="top" title="Name of the item to flip">Name</th>
+              <th data-toggle="tooltip" data-placement="top" title="Profit of the trade with tax included">Profit (with tax)</th>
+              <th data-toggle="tooltip" data-placement="top" title="Profit in percent calculated as (profit/city price)*100">% Profit</th>
+              <th data-toggle="tooltip" data-placement="top" title="The price of the buy order in the Black Market">BM Buy Price</th>
+              <th data-toggle="tooltip" data-placement="top" title="The quality of the buy order in the Black Market">BM Quality</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the buy order in the Black Market was updated by the Albion Data Client. Will always be less or equal to Max BM Age. If the age is large it can mean that the order has already been filled">BM Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="The difference between buy and sell order in the Black Market. If it is small there is a risk that the buy order will be filled by the sell order before you can flip the item, especially if flipping between BM and other cities">BM Order Diff.</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the Black Market was updated by the Albion Data Client">BM Order Diff. Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="Price of the item in the city">City Sell Price</th>
+              <th data-toggle="tooltip" data-placement="top" title="Quality of the item in the city. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">City Quality</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the city was updated by the Albion Data Client. Will always be less or equal to Max City Age. If the age is large it can mean that the order has already been filled">City Age</th>
+              <th data-toggle="tooltip" data-placement="top" title="The city where the item can be bought">City</th>
+              <th data-toggle="tooltip" data-placement="top" title="If the Black Market buy order can be filled by an item in the Caerleon market. If you are flipping between BM and another city this serves as a warning since the same buy order can be filled much quicker by a Caerleon flipper">Caerleon Profit</th>
+              <th data-toggle="tooltip" data-placement="top" title="Quality of the item in Caerleon. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">Caerleon Quality</th>
+              <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in Caerleon was updated by the Albion Data Client. Displays items up to one week old as Caerleon prices do not fluctuate much">Caerleon Age</th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -132,8 +211,13 @@ Enchantment:
   <option value="3">3</option>
 </select>
 Quality:
-<select id="quality">
-  <option value="0" selected disabled>All</option>
+<select id="quality" disabled>
+  <option value="0" selected>All</option>
+  <option value="1">Normal</option>
+  <option value="2">Good</option>
+  <option value="3">Outstanding</option>
+  <option value="4">Excellent</option>
+  <option value="5">Masterpiece</option>
 </select>
 <br>
 <fieldset id="cities" style="margin-top: 10px;">
@@ -152,14 +236,14 @@ Quality:
 <div style="width:100%;">
   <div style="width:50%; position:block;float:left;">
     <label for="Min Profit">Min Profit</label><br>
-    <input style="width: 90%;" type="number" id="minProfit" name="Min Profit" value=0>
-    <button onclick="getPrices()" style="margin-top: 10px; width: 90%; padding-top:8px; padding-bottom:8px">Get Prices</button>
+    <input style="width: 90%;" type="number" id="minProfit" name="Min Profit" value=1 min="0">
+    <button onclick="getPrices()" style="margin-top: 10px; width: 90%; padding-top:8px; padding-bottom:8px">Find Flips!</button>
   </div>
   <div style="width:50%; position:block;float:right;">
     <label for="Max BM Age">Max BM Age</label><br>
-    <input style="width: 90%;" type="number" id="maxAgeBM" name="Max BM Age" value=60><br>
+    <input style="width: 90%;" type="number" id="maxAgeBM" name="Max BM Age" value=20><br>
     <label for="Max City Age">Max City Age</label><br>
-    <input style="width: 90%;" type="number" id="maxAgeCity" name="Max City Age" value=60><br>
+    <input style="width: 90%;" type="number" id="maxAgeCity" name="Max City Age" value=20><br>
   </div>
 </div>
 <br>
@@ -175,29 +259,31 @@ Quality:
   <span class="glyphicon glyphicon-question-sign"></span> Tutorial
 </button>
 <div style="position: absolute;margin-top: 10px;margin-left: 10px;">
-Got any suggestions or bugs that you would like to report? Send us an email
-<a href="mailto:info@flipper.tk?subject=Info/Bug%20Report">info@flipper.tk</a>
+Got any suggestions or bugs that you would like to report? Join us on discord
+<a href="https://discord.gg/2ySkAuX">https://discord.gg/2ySkAuX</a>
 </div>
 <br>
 <br>
 <table id="table" class="table table-bordered table-striped sortable" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tier</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Name</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Profit (with tax)</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">% Profit</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Buy Price</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Quality</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">BM Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Sell Price</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Quality</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">City</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Caerleon Profit</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Caerleon Quality</th>
-      <th data-toggle="tooltip" data-placement="top" title="Tooltip on top">Caerleon Age</th>
-      <th data-toggle="tooltip" data-placement="top" title="Add the item to the shopping cart">Cart</th>
+      <th data-toggle="tooltip" data-placement="top" title="Tier and enchantment of the item in the format: TIER.ENCHANTMENT">Tier</th>
+      <th data-toggle="tooltip" data-placement="top" title="Name of the item to flip">Name</th>
+      <th data-toggle="tooltip" data-placement="top" title="Profit of the trade with tax included">Profit (with tax)</th>
+      <th data-toggle="tooltip" data-placement="top" title="Profit in percent calculated as (profit/city price)*100">% Profit</th>
+      <th data-toggle="tooltip" data-placement="top" title="The price of the buy order in the Black Market">BM Buy Price</th>
+      <th data-toggle="tooltip" data-placement="top" title="The quality of the buy order in the Black Market">BM Quality</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the buy order in the Black Market was updated by the Albion Data Client. Will always be less or equal to Max BM Age. If the age is large it can mean that the order has already been filled">BM Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="The difference between buy and sell order in the Black Market. If it is small there is a risk that the buy order will be filled by the sell order before you can flip the item, especially if flipping between BM and other cities">BM Order Diff.</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the Black Market was updated by the Albion Data Client">BM Order Diff. Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="Price of the item in the city">City Sell Price</th>
+      <th data-toggle="tooltip" data-placement="top" title="Quality of the item in the city. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">City Quality</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in the city was updated by the Albion Data Client. Will always be less or equal to Max City Age. If the age is large it can mean that the order has already been filled">City Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="The city where the item can be bought">City</th>
+      <th data-toggle="tooltip" data-placement="top" title="If the Black Market buy order can be filled by an item in the Caerleon market. If you are flipping between BM and another city this serves as a warning since the same buy order can be filled much quicker by a Caerleon flipper">Caerleon Profit</th>
+      <th data-toggle="tooltip" data-placement="top" title="Quality of the item in Caerleon. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">Caerleon Quality</th>
+      <th data-toggle="tooltip" data-placement="top" title="The time (in minutes) since the sell order in Caerleon was updated by the Albion Data Client. Displays items up to one week old as Caerleon prices do not fluctuate much">Caerleon Age</th>
+      <th data-toggle="tooltip" data-placement="top" title="Add the flip to the shopping cart">Cart</th>
     </tr>
   </thead>
   <tbody>
@@ -207,562 +293,6 @@ Got any suggestions or bugs that you would like to report? Send us an email
 <script type="text/javascript" src="bootstrap-sortable.js"></script>
 <script type="text/javascript" src="moment.js"></script>
 <script type="text/javascript" src="items.js"></script>
-<script>
-//Global values
-const items = getAllItems();
-var totalProgress = 0; //All fetches add to this a value of 0.0-1.0 for their progress in fetching.
-var totalFetches = 0; //Fetches running or consecutively started
-var tier;
-var enchantment;
-var quality;
-var maxAgeBM;
-var maxAgeCity;
-var minProfit;
-
-//Takes the raw items string and converts it into array of an objects
-function getAllItems() {
-  var a = raw_items.split(";");
-  var items = new Array(a.length - 1);
-  for(var i  = 0; i < a.length - 1; i++) {
-      items[i] = {item_id:a[i].split(":")[0],tier:a[i].split(":")[0][1],enchantment:a[i].split(":")[1],name:a[i].split(":")[2]};
-  }
-  return items;
-}
-
-// Main function (Called when "Get Prices" button is pressed)
-function getPrices() {
-    tier = document.getElementById("tier").value;
-    enchantment = document.getElementById("enchantment").value;
-    quality = document.getElementById("quality").value;
-    maxAgeBM = document.getElementById("maxAgeBM").value;
-    maxAgeCity = document.getElementById("maxAgeCity").value;
-    minProfit = document.getElementById("minProfit").value;
-
-    var city = [];
-    var checkboxes = document.getElementById("cities").elements;
-    for(var i = 0; i < checkboxes.length; i++) {
-      if(checkboxes[i].checked)
-        city.push(checkboxes[i].value);
-    }
-
-
-    var tierStart = parseInt(tier);
-    var tierEnd = parseInt(tier);
-    var enchantmentStart = parseInt(enchantment);
-    var enchantmentEnd = parseInt(enchantment);
-
-    if(tier == -1) {
-      tierStart = 4;
-      tierEnd = 8;
-    }
-    if(enchantment == -1) {
-      enchantmentStart = 0;
-      enchantmentEnd = 3;
-    }
-
-    resetProgress(); //Reset progress total and progressbar
-    totalFetches = (tierEnd - tierStart + 1) * (enchantmentEnd - enchantmentStart + 1);
-    for(var i = tierStart; i < tierEnd + 1; i++) {
-      for(var j = enchantmentStart; j < enchantmentEnd + 1; j++) {
-        var selected_items;
-        selected_items = getItems(i, j);
-
-        fetchData("Prices", city, selected_items, quality, function() {
-            printToConsole("API data received!\n");
-            // Begin accessing JSON data here
-            var data = JSON.parse(this.response);
-            console.log('API object response: ');
-            console.log(data);
-
-            br();
-            var cities = splitDataByCity(data);
-            if(!calculateAge(cities))
-              return;
-            if(!calculateProfits(cities))
-              return;
-            if(!filterDataByParameters(cities))
-              return;
-
-            var item;
-            for(var i = 1; i < cities.length; i++) {
-              for(var j = 0; j < cities[i].length; j++) {
-                item = cities[i][j];
-                addItemProperties(item);
-                addToTable("table",
-                  (item.tier+"."+item.enchantment),
-                  item.name,
-                  formatMoney(item.profit),
-                  item.percentileProfit,
-                  formatMoney(item.highestProfitBM_Price==-696969 ? item.bmPrice : item.highestProfitBM_Price),
-                  qualityToString(item.highestProfitBM_Quality==-696969 ? item.quality : item.highestProfitBM_Quality),
-                  item.highestProfitBM_Age != 696969 ? item.highestProfitBM_Age: item.bm_age,
-                  formatMoney(item.cityPrice),
-                  qualityToString(item.quality),
-                  item.city_age,
-                  item.city,
-                  profitableInCaerleon(item, maxAgeCity),
-                  qualityToString(item.caerleonQuality==-696969 ? item.quality : item.caerleonQuality),
-                  item.caerleonAge > maxAgeCity*10 ? "Very Old" : item.caerleonAge
-                );
-              }
-            }
-        });
-      }
-    }
-}
-
-function addProgress(progress) {
-  totalProgress += progress;
-  var overallProgress = (totalProgress/totalFetches);
-  document.getElementById("progress").style.width = Math.round(overallProgress * 100) + "%";
-  document.getElementById("progress").attributes[3] = Math.round(overallProgress * 100);
-  if(Math.round(overallProgress*100)/100 == 1) //it can be a little bit over and under cause of calculation errors
-    document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped"; //Turn of active
-  console.log(totalProgress);
-  console.log(overallProgress);
-}
-
-function resetProgress() {
-  totalProgress = 0;
-  document.getElementById("progress").style.width = 0 + "%";
-  document.getElementById("progress").attributes[3] = 0;
-  document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped active";
-}
-
-function formatMoney(amount, decimalCount = 0, decimal = ".", thousands = " ") {
-  // it just works
-  // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
-  try {
-    decimalCount = Math.abs(decimalCount);
-    decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-
-    const negativeSign = amount < 0 ? "-" : "";
-
-    let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
-    let j = (i.length > 3) ? i.length % 3 : 0;
-
-    return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-
-function addItemProperties(item) {
-  // searches through the items array to find and add properties to the item (name, enchantment, tier)
-  for (var i = 0; i < items.length; i++) {
-    if(item.item_id == getId(items[i])) {
-        item.tier = items[i].tier;
-        item.name = items[i].name;
-        item.enchantment = items[i].enchantment;
-    }
-  }
-  return true;
-}
-
-// Returns the item id's in a string array
-function getItems(tier, enchantment) {
-  var selected_items = [];
-  for(var i = 0; i < items.length; i++) {
-    // the user chosen items are pulled from the
-    // raw_items and stored in pulled_items
-      if(items[i].tier == tier && items[i].enchantment == enchantment) {
-          selected_items.push(getId(items[i]));
-      }
-  }
-  return selected_items;
-}
-
-// Returns the representing string to the numerical quality number
-function qualityToString(num) {
-  var names = ["Normal", "Good", "Outstanding", "Excellent", "Masterpiece"];
-  return names[num-1];
-}
-
-// Parses through and splits the data array into 7 city arrays and returns it (returns one array containign 7 arrays)
-function splitDataByCity(data) {
-  printToConsole("Splitting data to cities\n");
-  var blackMarket = [];
-  var fortSterling = [];
-  var thetford = [];
-  var lymhurst = [];
-  var bridgewatch = [];
-  var martlock = [];
-  var caerleon = [];
-
-  for (var i = 0; i <data.length; i++) {
-    switch (data[i].city) {
-      case "Black Market":
-        blackMarket.push(data[i]);
-        break;
-      case "Fort Sterling":
-        fortSterling.push(data[i]);
-        break;
-      case "Thetford":
-        thetford.push(data[i]);
-        break;
-      case "Lymhurst":
-        lymhurst.push(data[i]);
-        break;
-      case "Bridgewatch":
-        bridgewatch.push(data[i]);
-        break;
-      case "Martlock":
-        martlock.push(data[i]);
-        break;
-      case "Caerleon":
-        caerleon.push(data[i]);
-        break;
-    }
-  }
-
-  return [blackMarket, fortSterling, thetford, lymhurst, bridgewatch, martlock, caerleon];
-}
-
-function profitableInCaerleon(item, maxAgeCity) {
-  // checks if there is profit to be made of the item in Caerleon
-  if (item.caerleonAge == undefined) {
-    return "Caerleon not selected.";
-  }
-
-  if (item.caerleonAge <= maxAgeCity) {
-    return item.caerleonProfit>0 ? formatMoney(item.caerleonProfit) : "No";
-  } else {
-    return item.caerleonProfit>0 ? formatMoney(item.caerleonProfit) + " (outdated)" : "No (outdated)";
-  }
-}
-
-/*
-  OBS: HAS TO HAPPEN BEFORE THE FILTERING
-  loops through all the cities and adds profit properties to every item object in every city.
-  the profit calculations also takes into account different qualities since you can sell higher qualities to lower qualities buy orders in BM
-*/
-function calculateProfits(cities) {
-  printToConsole("Calculating profits...\n");
-  var item;
-  // starts from the last city (6: Caerleon) so the profit properites for Caerleon are calculated before looping
-  // through the other cities in descending order. does not loop through i=0 because BM is the first index (0)
-  for (var i = cities.length-1; i > 0; i--) { // loops through all the cities starting with fortSterling
-    for (var j = 0; j < cities[i].length; j++) { // loops throught all the items in a city
-      /*
-        i: city [BM, FS, Th, Ly, Br, Ma, Ca]
-        j: item
-      */
-      item = cities[i][j];
-
-      // adds profit parameters for most profitable quality buy orders to the item object
-      compareQualities(cities, i, j);
-
-      item.percentileProfit = Math.round(1000*(item.profit / item.cityPrice))/10;
-
-      if (item.quality == 5) {
-        removeDuplicateQualities(cities, i, j);
-      }
-
-      // adds the Caerleon properties to the items
-      if (cities[6].length != 0 && cities[6][0].city=="Caerleon") { // check if Caerleon is checked
-        item.caerleonProfit = cities[6][j].profit;
-        item.caerleonAge = cities[6][j].highestProfitBM_Age == 696969 ? cities[6][j].city_age : cities[6][j].highestProfitBM_Age;
-        item.caerleonQuality = cities[6][j].quality;
-      }
-
-    }
-  }
-  return true;
-}
-
-/*
-  changes the profit parameter of the less profitable duplicate qualities to -969696.
-  OBS: THE FUNCTION IS POORLY IMPLEMENTED BECAUSE OF SEVERAL FOR LOOPS AND SHOULD BE IMPROVED IF POSSIBLE
-*/
-function removeDuplicateQualities(cities, i, j) {
-  var item = cities[i][j];
-
-  // loops through all the different qualities and stores their highestProfitBM_Quality:
-  // [masterpiece, excellent, outstanding, good, normal]
-  var highestProfitBMQualities = [];
-  for (var k = 0; k < item.quality; k++) {
-    highestProfitBMQualities.push(cities[i][j-k].highestProfitBM_Quality);
-  }
-
-  // finds the duplicates
-  var duplicates = Object.entries(highestProfitBMQualities.getDuplicates());
-
-  // loops through the duplicates
-  for (var z = 0; z < duplicates.length; z++) {
-
-    if (duplicates[z][0]!="-696969") {  // z is the different duplicates arrays and 0 is the key
-
-      // if a duplicate has other value than -696969 stores the indices and executes the code below
-      var duplicateIndices = duplicates[z][1];  // 1 is the array of the duplicate indices
-
-      // loops to find the highestProfit and highestProfitIndex using the duplicateIndices array
-      var highestProfit = -999999;
-      var highestProfitIndex = -999999;
-        for (var a = 0; a < duplicateIndices.length; a++) {
-          if (cities[i][j-duplicateIndices[a]].profit > highestProfit) {
-            highestProfit = cities[i][j-duplicateIndices[a]].profit;
-            highestProfitIndex = duplicateIndices[a];
-          }
-      }
-
-      // loops another time to "remove" all the duplicate highestProfitBM_Quality
-      for (var b = 0; b < duplicateIndices.length; b++) {
-        if (cities[i][j-duplicateIndices[b]].profit < highestProfit) {
-          cities[i][j-duplicateIndices[b]].profit = -969696;
-        }
-      }
-    }
-  }
-}
-
-/*
-  finds which quality in BM gives the best profit and sets the profit parameter to that.
-  also sets highestProfitBM_Quality to the most profitable quality and highestProfitBM_Price
-  to the price of that quality in the BM.
-
-  when comparing qualities only "fresh" items are compared, so if the item is "old" or has a profit
-  below -696969, its parameters will be set to -696969 (default)
-*/
-function compareQualities(cities, i, j) {
-        var item = cities[i][j];
-        item.bmPrice = cities[0][j].buy_price_max;
-        item.cityPrice = item.sell_price_min;
-
-        item.profit = -696969;
-        item.highestProfitBM_Quality = -696969;  // has to always be <= item.quality since you can only sell higher quality items to lower quality buy orders in BM
-        item.highestProfitBM_Price = -696969;
-        item.highestProfitBM_Age = 696969;
-            for (var k = 0; k < item.quality; k++) {
-              /*
-              Assuming item.quality == 5 (masterpiece):
-               k = 0: masterpiece vs masterpiece
-               k = 1: masterpiece vs excellent
-               k = 2: masterpiece vs outstanding
-               k = 3: masterpiece vs good
-               k = 4: masterpiece vs normal
-              */
-              var tax_modifier = document.getElementById("premium").checked ? 0.97 : 0.94;
-              var qualityProfit = (cities[0][j-k].buy_price_max*tax_modifier) - item.sell_price_min;
-
-              if (item.profit < qualityProfit && cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity) {
-                item.profit = qualityProfit;
-                item.highestProfitBM_Quality = item.quality - k;
-                item.highestProfitBM_Price = cities[0][j-k].buy_price_max;
-                item.highestProfitBM_Age = cities[i][j-k].bm_age;
-              }
-            }
-}
-
-/*
-  finds duplicates and returns their indices:
-  https://stackoverflow.com/questions/18417728/get-the-array-index-of-duplicates
-*/
-Array.prototype.getDuplicates = function () {
-    var duplicates = {};
-    for (var i = 0; i < this.length; i++) {
-        if(duplicates.hasOwnProperty(this[i])) {
-            duplicates[this[i]].push(i);
-        } else if (this.lastIndexOf(this[i]) !== i) {
-            duplicates[this[i]] = [i];
-        }
-    }
-    return duplicates;
-};
-
-// OBS! has to happen before filterDataByParameters() relies on BM data and city data being parallel
-function calculateAge(cities) {
-  printToConsole("Calculating age...\n")
-  var item;
-  // Start from 1 because blackmarket is in first index
-  for(var i = 1; i < cities.length; i++) { // Loop through all the cities starting with fortSterling
-    for(var j = 0; j < cities[i].length; j++) { // Loop throught all the items in a city
-      item = cities[i][j];
-      item.bm_age = getAge(cities[0][j].buy_price_max_date);
-      item.city_age = getAge(cities[i][j].sell_price_min_date);
-    }
-  }
-  return true;
-}
-
-// cities: must have profit calculated and added into each item of each city
-// returns true if items was filitered profitable, false if all items was removed
-function filterDataByParameters(cities) {
-  var profitableItems = 0;
-  var freshItems = 0;
-  var totalApprovedItemCount = 0;
-  // cities[0] is the blackMarket first for loop then starts from 1
-  for(var i = 1; i < cities.length; i++) { // Loop through every city
-    for(var j = 0; j < cities[i].length; j++) { // Loop through every item
-      var age_bm = cities[i][j].bm_age;
-      var age_city = cities[i][j].city_age;
-      var age_bm_highestQualityProfit = cities[i][j].highestProfitBM_Age;
-
-      if(cities[i][j].profit >= minProfit)
-        profitableItems++;
-      if( (age_bm <= maxAgeBM || age_bm_highestQualityProfit <= maxAgeBM) && age_city <= maxAgeCity)
-        freshItems++;
-      if(cities[i][j].profit < minProfit || (age_bm > maxAgeBM && age_bm_highestQualityProfit > maxAgeBM) || age_city > maxAgeCity) {
-          cities[i].splice(j, 1);
-          j--;
-      }
-    }
-    totalApprovedItemCount += cities[i].length;
-  }
-
-  // only true if all the items from all the cities have been spliced
-  if (totalApprovedItemCount == 0) {
-    if(freshItems == 0) {
-      printToConsole("Data too old. Pick bigger max age or update the market via the Data Client).\n");
-    } else if(profitableItems == 0) {
-      printToConsole("Data below the miminal profit. Increase Min Profit.\n");
-    } else if (profitableItems != 0 && freshItems != 0) {
-      printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
-    }
-  } else {
-    printToConsole("Profitable and fresh items found!\n");
-  }
-
-  return totalApprovedItemCount;
-}
-
-function printToConsole(text) {
-  document.getElementById("console").append(text);
-  document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
-}
-
-function clearConsole() {
-    document.getElementById("console").textContent = "";
-}
-
-// returns minutes since 01/01/1970 00:00:00 UTC and age
-function get_UTC_time_since(age) {
-  return Math.round(Date.parse(new Date(age).toISOString()))/60000 - new Date().getTimezoneOffset();
-}
-
-// returns minutes since 01/01/1970 00:00:00 UTC and now
-function get_UTC_time_current() {
-  return Math.round(new Date().getTime()/60000);
-}
-
-// returns minutes since now and age
-function getAge(age) {
-  return get_UTC_time_current() - get_UTC_time_since(age);
-}
-
-// Returns the parsed json response from the API
-//
-// Type: has following different types {Charts, history, Gold, View, Prices} should be a string
-// City: array of cities names to fetch from
-// Selected_Items: array of items to fetch (max about 300)
-// Quality: {0,1,2,3,4,5} if 0 will fetch all qualities 1 = Normal and so on
-function fetchData(type, cities, selected_items, quality, callback) {
-  // Create a request variable and assign a new XMLHttpRequest object to it.
-  var request = new XMLHttpRequest();
-
-  var url = "https://www.albion-online-data.com/";
-  var view = "api/v2/stats/"+type+"/";
-  var locations = [cities.join(",") , "Black Market"]
-  var link = url+view+selected_items.join(",")+"?locations="+locations.join(",")+"&qualities="+quality;
-  //console.log("API link is "+link);
-  printToConsole("Requesting API for " + type + " with " + selected_items.length + " items" + " with quality " + quality + "\n");
-  // Open a new connection, using the GET request on the URL endpoint
-  request.open('GET', link, true)
-
-  request.onload = callback;
-  var old = 0;
-  var fresh = 0;
-  request.onprogress = function(e) {
-    if (e.lengthComputable) {
-      old = fresh;
-      fresh = e.loaded/e.total;
-      addProgress(fresh-old); // add the progress that was made since last check
-    }
-  }
-
-  // Send request
-  request.send();
-
-  printToConsole("Fetching data from API...\n");
-}
-
-// Add a row of data to the id table
-function addToTable(id, ...cells) {
-    //var table = document.getElementById(id).getElementsByTagName('tbody')[0];
-    //var row = table.insertRow(0);
-    var colColors = ["", "", "", "", "#E5FFCD","#E5FFCD","#E5FFCD", "#CDFFF3","#CDFFF3","#CDFFF3","#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
-    var append = "<tr>";
-    for(var i = 0; i < cells.length; i++) {
-      append += '<td style="background-color:'+colColors[i]+'" copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
-      //var cell = row.insertCell(i);
-      //cell.innerHTML = cells[i];
-    }
-    if(id == "table") {
-      append += `
-      <td>
-        <button type="button" onClick="addToCart(\'cart\', this)" class="btn btn-default btn-sm">
-          <span class="glyphicon glyphicon glyphicon-plus"></span>
-        </button>
-      </td>
-      `;
-    }
-    append += "</tr>";
-    $('#table').append(append);
-}
-
-// Add the table row to the shop table of the id
-// without the button that was pressed to add it (no add button in the shopping cart)
-function addToCart(id, element) {
-  element.disabled = true; // Diable the add button that was pressed (<button>)
-  //console.log(element);
-  var table_row = element.parentElement.parentElement; // The row (<tr>) of the pressed button
-  var tr = element.parentElement;
-  table_row.removeChild(tr); // Remove button so it is not in the clone
-  var clone = table_row.cloneNode(true);
-  table_row.appendChild(tr);
-  //table_row.removeChild(element) // Remove the <td> where the button is from the row
-  //console.log(clone);
-  $('#cart').append(clone.outerHTML)
-}
-
-function clearTable(id) {
-  var table = document.getElementById(id);
-  var new_body = document.createElement('tbody'); // Empty body
-  var body = table.getElementsByTagName("tbody")[0]; // First body
-  table.replaceChild(new_body, body);
-}
-
-function replaceAll(str, needle, replace) {
-  while(str != str.replace(needle, replace)) {
-    str = str.replace(needle, replace)
-  }
-  return str
-}
-
-// Appends a new row to the body
-function br() {
-    document.getElementById('console').append(document.createElement("br"));
-}
-
-// Returns the id of a item object. matching the raw items data
-function getId(item) {
-  // gets the id of an item
-    return item.enchantment == 0 ? item.item_id : item.item_id + "@" + item.enchantment;
-}
-
-// Sets the copy for the user to the copy-data of the element when clicked
-function copyToClipboard() {
-  const el = document.createElement('textarea');
-  el.value = event.target.getAttribute('copy-data');
-  el.setAttribute('readonly', '');
-  el.style.position = 'absolute';
-  el.style.left = '-9999px';
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
-}
-
-</script>
+<script type="text/javascript" src="main_ob.js"></script>
 </body>
 </html>
