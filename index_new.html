@@ -116,134 +116,132 @@
             <!-- Form start -->
             <div class="col-md-5 col-sm-6">
               <h3 class="pt-2">Settings</h3>
-              <form action="#">
-                <div class="form-row mb-0">
-                  <div class="form-group col-sm-3">
-                    <label for="tier">Tier</label>
-                    <select name="" id="tier" class="custom-select form-control">
-                      <option value="-1">All</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8" selected>8</option>
-                    </select>
+              <div class="form-row mb-0">
+                <div class="form-group col-sm-3">
+                  <label for="tier">Tier</label>
+                  <select name="" id="tier" class="custom-select form-control">
+                    <option value="-1">All</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8" selected>8</option>
+                  </select>
+                </div>
+                <div class="form-group col-sm-5">
+                  <label for="enchantment">Enchantment</label>
+                  <select name="" id="enchantment" class="custom-select form-control">
+                    <option value="-1" selected>All</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+                <div class="form-group col-sm-4">
+                  <label for="quality">Quality</label>
+                  <select name="" id="quality" class="custom-select form-control" disabled>
+                    <option value="0" selected>All</option>
+                    <option value="1">Normal</option>
+                    <option value="2">Good</option>
+                    <option value="3">Outstanding</option>
+                    <option value="4">Excellent</option>
+                    <option value="5">Masterpiece</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cities">Cities</label>
+                <fieldset id="cities">
+                  <div class="form-check form-check-inline">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" value="Fort Sterling" id="FS" checked>
+                      <label class="custom-control-label" for="FS" translate="no">
+                        Fort Sterling
+                      </label>
+                    </div>
                   </div>
-                  <div class="form-group col-sm-5">
-                    <label for="enchantment">Enchantment</label>
-                    <select name="" id="enchantment" class="custom-select form-control">
-                      <option value="-1" selected>All</option>
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
+                  <div class="form-check form-check-inline">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" value="Thetford" id="TF" checked>
+                      <label class="custom-control-label" for="TF" translate="no">
+                        Thetford
+                      </label>
+                    </div>
                   </div>
-                  <div class="form-group col-sm-4">
-                    <label for="quality">Quality</label>
-                    <select name="" id="quality" class="custom-select form-control" disabled>
-                      <option value="0" selected>All</option>
-                      <option value="1">Normal</option>
-                      <option value="2">Good</option>
-                      <option value="3">Outstanding</option>
-                      <option value="4">Excellent</option>
-                      <option value="5">Masterpiece</option>
-                    </select>
+                  <div class="form-check form-check-inline">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" value="Lymhurst" id="LH" checked>
+                      <label class="custom-control-label" for="LH" translate="no">
+                        Lymhurst
+                      </label>
+                    </div>
                   </div>
-                </div>
+                  <div class="form-check form-check-inline">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" value="Bridgewatch" id="BW" checked>
+                      <label class="custom-control-label" for="BW" translate="no">
+                        Bridgewatch
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" value="Martlock" id="ML" checked>
+                      <label class="custom-control-label" for="ML" translate="no">
+                        Martlock
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" value="Caerleon" id="CL" checked disabled>
+                      <label class="custom-control-label" for="CL" translate="no">
+                        Caerleon
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
 
-                <div class="form-group">
-                  <label for="cities">Cities</label>
-                  <fieldset id="cities">
-                    <div class="form-check form-check-inline">
-                      <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" type="checkbox" value="Fort Sterling" id="FS" checked>
-                        <label class="custom-control-label" for="FS" translate="no">
-                          Fort Sterling
-                        </label>
-                      </div>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" type="checkbox" value="Thetford" id="TF" checked>
-                        <label class="custom-control-label" for="TF" translate="no">
-                          Thetford
-                        </label>
-                      </div>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" type="checkbox" value="Lymhurst" id="LH" checked>
-                        <label class="custom-control-label" for="LH" translate="no">
-                          Lymhurst
-                        </label>
-                      </div>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" type="checkbox" value="Bridgewatch" id="BW" checked>
-                        <label class="custom-control-label" for="BW" translate="no">
-                          Bridgewatch
-                        </label>
-                      </div>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" type="checkbox" value="Martlock" id="ML" checked>
-                        <label class="custom-control-label" for="ML" translate="no">
-                          Martlock
-                        </label>
-                      </div>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" type="checkbox" value="Caerleon" id="CL" checked disabled>
-                        <label class="custom-control-label" for="CL" translate="no">
-                          Caerleon
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
+              <div class="form-group">
+                <label for="minProfitRange">Minimum Profit</label>
+                <input type="range" class="custom-range" value=1 min="1" max="500000" id="minProfitRange">
+                <input type="number" class="text-center text-sm-right form-control col-sm-4 ml-auto" id="minProfit"
+                  value=1>
+              </div>
+              <div class="form-group">
+                <label for="maxAgeBMRange">Maximum <span translate="no">Black Market</span> Age</label>
+                <input type="range" class="custom-range" value=20 min="0" max="120" id="maxAgeBMRange">
+                <input type="number" class="text-center text-sm-right form-control col-sm-2 ml-auto" id="maxAgeBM"
+                  value=20>
+              </div>
+              <div class="form-group">
+                <label for="maxAgeCityRange">Maximum City Age</label>
+                <input type="range" class="custom-range" value=20 min="0" max="120" id="maxAgeCityRange">
+                <input type="number" class="text-center text-sm-right form-control col-sm-2 ml-auto" id="maxAgeCity"
+                  value=20>
+              </div>
 
-                <div class="form-group">
-                  <label for="minProfitRange">Minimum Profit</label>
-                  <input type="range" class="custom-range" value=0 min="0" max="500000" id="minProfitRange">
-                  <input type="number" class="text-center text-sm-right form-control col-sm-4 ml-auto" id="minProfit"
-                    value=0>
-                </div>
-                <div class="form-group">
-                  <label for="maxAgeBMRange">Maximum <span translate="no">Black Market</span> Age</label>
-                  <input type="range" class="custom-range" value=0 min="0" max="120" id="maxAgeBMRange">
-                  <input type="number" class="text-center text-sm-right form-control col-sm-2 ml-auto" id="maxAgeBM"
-                    value=0>
-                </div>
-                <div class="form-group">
-                  <label for="maxAgeCityRange">Maximum City Age</label>
-                  <input type="range" class="custom-range" value=0 min="0" max="120" id="maxAgeCityRange">
-                  <input type="number" class="text-center text-sm-right form-control col-sm-2 ml-auto" id="maxAgeCity"
-                    value=0>
-                </div>
+              <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="premium" checked>
+                <label class="custom-control-label" for="premium">
+                  Premium Account
+                </label>
+              </div>
+              <div class="form-group pt-3 mb-0">
+                <button onclick="getPrices()" class="btn btn-outline-primary w-100" translate="no">Find
+                  Flips!</button>
+              </div>
 
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" id="premium" checked>
-                  <label class="custom-control-label" for="premium">
-                    Premium Account
-                  </label>
-                </div>
-                <div class="form-group pt-3 mb-0">
-                  <button onclick="getPrices()" class="btn btn-outline-primary w-100" type="button" translate="no">Find
-                    Flips!</button>
-                </div>
-
-              </form>
             </div>
             <!-- Form End -->
 
             <div class="col-md-5 col-sm-6">
               <h3 class="pt-2">Logs</h3>
               <textarea id="console" class="w-100 text-monospace" rows="20" cols="50" disabled
-                style="height: 557px;box-sizing:border-box;resize: none;overflow-y: scroll;"></textarea>
+                style="height: 534px;box-sizing:border-box;resize: none;overflow-y: scroll;"></textarea>
               <a onclick="clearConsole()" href="#" class="btn btn-outline-danger w-100 mt-1"><i
                   class="fas fa-eraser"></i></a>
             </div>
