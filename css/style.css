@@ -1,0 +1,47 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+body {
+    margin-bottom: 120px !important;
+}
+
+.footer {
+    position: fixed;
+    height: 72px;
+    bottom: 0;
+}
+
+#tutorial li {
+    padding-bottom: 18px;
+}
+
+#tutorial img {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.vertical-text {
+    transform: rotate(90deg);
+    transform-origin: left top 0;
+}
+
+.table th {
+    border-top: 0 !important;
+}
+
+@media (max-width: 576px) {
+    .border-sm-0-reverse {
+        border-top: 0 !important;
+        border-bottom: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+    }
+}

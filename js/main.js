@@ -21,149 +21,156 @@ var currentUTCTime;
 function getAllItems() {
   var a = raw_items.split(";");
   var items = new Array(a.length - 1);
-  for(var i  = 0; i < a.length - 1; i++) {
-      items[i] = {item_id:a[i].split(":")[0],tier:a[i].split(":")[0][1],enchantment:a[i].split(":")[1],name:a[i].split(":")[2]};
+  for (var i = 0; i < a.length - 1; i++) {
+    items[i] = {
+      item_id: a[i].split(":")[0],
+      tier: a[i].split(":")[0][1],
+      enchantment: a[i].split(":")[1],
+      name: a[i].split(":")[2]
+    };
   }
   return items;
 }
 
 // somewhere from stackoverflow. used to calculate the age from a 3rd party
 function getTime(url) {
-    return new Promise((resolve, reject) => {
-        const req = new XMLHttpRequest();
-        req.open("GET", url);
-        req.onload = () =>
-            req.status === 200
-                ? resolve(req.response)
-                : reject(Error(req.statusText));
-        req.onerror = (e) => reject(Error(`Network Error: ${e}`));
-        req.send();
-    });
+  return new Promise((resolve, reject) => {
+    const req = new XMLHttpRequest();
+    req.open("GET", url);
+    req.onload = () =>
+      req.status === 200 ?
+      resolve(req.response) :
+      reject(Error(req.statusText));
+    req.onerror = (e) => reject(Error(`Network Error: ${e}`));
+    req.send();
+  });
 }
 
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
-    tier = document.getElementById("tier").value;
-    enchantment = document.getElementById("enchantment").value;
-    quality = document.getElementById("quality").value;
-    maxAgeBM = document.getElementById("maxAgeBM").value;
-    maxAgeCity = document.getElementById("maxAgeCity").value;
-    minProfit = document.getElementById("minProfit").value;
+  tier = document.getElementById("tier").value;
+  enchantment = document.getElementById("enchantment").value;
+  quality = document.getElementById("quality").value;
+  maxAgeBM = document.getElementById("maxAgeBM").value;
+  maxAgeCity = document.getElementById("maxAgeCity").value;
+  minProfit = document.getElementById("minProfit").value;
 
-    // sets currentUTCTime to UTC time from a 3rd party
-    // found this somewhere on stackoverflow
-    // don't put it inside any loops as this will make too many requests
-    getTime("https://worldtimeapi.org/api/timezone/Etc/UTC")
-        .then((response) => {
-            let dateObj = JSON.parse(response);
-            let dateTime = dateObj.datetime;
-            //console.log(dateObj);
-            //console.log(dateTime);
+  // sets currentUTCTime to UTC time from a 3rd party
+  // found this somewhere on stackoverflow
+  // don't put it inside any loops as this will make too many requests
+  getTime("https://worldtimeapi.org/api/timezone/Etc/UTC")
+    .then((response) => {
+      let dateObj = JSON.parse(response);
+      let dateTime = dateObj.datetime;
+      //console.log(dateObj);
+      //console.log(dateTime);
       currentUTCTime = dateTime;
-        })
-        .catch((err) => {
-            //console.log(err);
-        });
+    })
+    .catch((err) => {
+      //console.log(err);
+    });
 
 
-    var city = [];
-    var checkboxes = document.getElementById("cities").elements;
-    for(var i = 0; i < checkboxes.length; i++) {
-      if(checkboxes[i].checked)
-        city.push(checkboxes[i].value);
-    }
+  var city = [];
+  var checkboxes = document.getElementById("cities").getElementsByTagName("input");
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked)
+      city.push(checkboxes[i].value);
+  }
 
 
-    var tierStart = parseInt(tier);
-    var tierEnd = parseInt(tier);
-    var enchantmentStart = parseInt(enchantment);
-    var enchantmentEnd = parseInt(enchantment);
+  var tierStart = parseInt(tier);
+  var tierEnd = parseInt(tier);
+  var enchantmentStart = parseInt(enchantment);
+  var enchantmentEnd = parseInt(enchantment);
 
-    if(tier == -1) {
-      tierStart = 4;
-      tierEnd = 8;
-    }
-    if(enchantment == -1) {
-      enchantmentStart = 0;
-      enchantmentEnd = 3;
-    }
+  if (tier == -1) {
+    tierStart = 4;
+    tierEnd = 8;
+  }
+  if (enchantment == -1) {
+    enchantmentStart = 0;
+    enchantmentEnd = 3;
+  }
 
-    resetProgress(); //Reset progress total and progressbar
-    totalFetches = (tierEnd - tierStart + 1) * (enchantmentEnd - enchantmentStart + 1);
-    for(var i = tierStart; i < tierEnd + 1; i++) {
-      for(var j = enchantmentStart; j < enchantmentEnd + 1; j++) {
-        var selected_items;
-        selected_items = getItems(i, j);
+  resetProgress(); //Reset progress total and progressbar
+  totalFetches = (tierEnd - tierStart + 1) * (enchantmentEnd - enchantmentStart + 1);
+  for (var i = tierStart; i < tierEnd + 1; i++) {
+    for (var j = enchantmentStart; j < enchantmentEnd + 1; j++) {
+      var selected_items;
+      selected_items = getItems(i, j);
 
-        fetchData("Prices", city, selected_items, quality, function() {
-            printToConsole("API data received!\n");
-            // Begin accessing JSON data here
-            var data = JSON.parse(this.response);
-            //console.log('API object response: ');
-            //console.log(data);
+      fetchData("Prices", city, selected_items, quality, function () {
+        printToConsole("API data received!\n");
+        // Begin accessing JSON data here
+        var data = JSON.parse(this.response);
+        //console.log('API object response: ');
+        //console.log(data);
 
-            br();
-            var cities = splitDataByCity(data);
-            if(!calculateAge(cities))
-              return;
-            if(!calculateProfits(cities))
-              return;
-            if(!filterDataByParameters(cities))
-              return;
+        br();
+        var cities = splitDataByCity(data);
+        if (!calculateAge(cities))
+          return;
+        if (!calculateProfits(cities))
+          return;
+        if (!filterDataByParameters(cities))
+          return;
 
-            var item;
-            for(var i = 1; i < cities.length; i++) {
-              for(var j = 0; j < cities[i].length; j++) {
-                item = cities[i][j];
-                addItemProperties(item);
+        var item;
+        for (var i = 1; i < cities.length; i++) {
+          for (var j = 0; j < cities[i].length; j++) {
+            item = cities[i][j];
+            addItemProperties(item);
 
-                if (item.BM_order_difference > 0 && item.BM_order_difference_age > maxAgeCity) {
-                    item.BM_order_difference = formatMoney(item.BM_order_difference) +  " (Outdated)";
-                } else if (item.BM_order_difference > 0) {
-                    item.BM_order_difference = formatMoney(item.BM_order_difference);
-                } else {
-                    item.BM_order_difference = "Outdated";
-                }
-
-                addToTable("table",
-                  (item.tier+"."+item.enchantment),
-                  item.name,
-                  formatMoney(item.profit),
-                  item.percentileProfit,
-                  formatMoney(item.highestProfitBM_Price),
-                  qualityToString(item.highestProfitBM_Quality),
-                  item.highestProfitBM_Age,
-                  item.BM_order_difference,
-                  item.BM_order_difference_age > maxAgeCity*10 ? "Very Old" : item.BM_order_difference_age,
-                  formatMoney(item.cityPrice),
-                  qualityToString(item.quality),
-                  item.city_age,
-                  item.city,
-                  item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
-                  item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
-                  item.caerleonProfit < 1 ? "-" : item.caerleonAge  // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
-                );
-              }
+            if (item.BM_order_difference > 0 && item.BM_order_difference_age > maxAgeCity) {
+              item.BM_order_difference = formatMoney(item.BM_order_difference) + " (Outdated)";
+            } else if (item.BM_order_difference > 0) {
+              item.BM_order_difference = formatMoney(item.BM_order_difference);
+            } else {
+              item.BM_order_difference = "Outdated";
             }
-        });
-      }
+
+            addToTable("table",
+              (item.tier + "." + item.enchantment),
+              item.name,
+              formatMoney(item.profit),
+              item.percentileProfit,
+              formatMoney(item.highestProfitBM_Price),
+              qualityToString(item.highestProfitBM_Quality),
+              item.highestProfitBM_Age,
+              item.BM_order_difference,
+              item.BM_order_difference_age > maxAgeCity * 10 ? "Very Old" : item.BM_order_difference_age,
+              formatMoney(item.cityPrice),
+              qualityToString(item.quality),
+              item.city_age,
+              item.city,
+              item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
+              item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
+              item.caerleonProfit < 1 ? "-" : item.caerleonAge // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
+            );
+          }
+        }
+      });
     }
+  }
 }
 
 function addProgress(progress) {
   totalProgress += progress;
-  var overallProgress = (totalProgress/totalFetches);
+  var overallProgress = (totalProgress / totalFetches);
   document.getElementById("progress").style.width = Math.round(overallProgress * 100) + "%";
   document.getElementById("progress").attributes[3] = Math.round(overallProgress * 100);
-  if(Math.round(overallProgress*100)/100 == 1) //it can be a little bit over and under cause of calculation errors
-    document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped"; //Turn of active
+  document.getElementById("progress-text").innerText = Math.round(overallProgress * 100) + " %";
+  if (Math.round(overallProgress * 100) / 100 == 1) //it can be a little bit over and under cause of calculation errors
+    document.getElementById("progress").attributes.class.value = "progress-bar"; //Turn off active
   //console.log(totalProgress);
   //console.log(overallProgress);
 }
 
 function resetProgress() {
   totalProgress = 0;
-  document.getElementById("progress").style.width = 0 + "%";
+  document.getElementById("progress-text").innerText = "0 %";
+  document.getElementById("progress").style.width = "0%";
   document.getElementById("progress").attributes[3] = 0;
   document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped active";
 }
@@ -190,10 +197,10 @@ function formatMoney(amount, decimalCount = 0, decimal = ".", thousands = " ") {
 function addItemProperties(item) {
   // searches through the items array to find and add properties to the item (name, enchantment, tier)
   for (var i = 0; i < items.length; i++) {
-    if(item.item_id == getId(items[i])) {
-        item.tier = items[i].tier;
-        item.name = items[i].name;
-        item.enchantment = items[i].enchantment;
+    if (item.item_id == getId(items[i])) {
+      item.tier = items[i].tier;
+      item.name = items[i].name;
+      item.enchantment = items[i].enchantment;
     }
   }
   return true;
@@ -202,12 +209,12 @@ function addItemProperties(item) {
 // Returns the item id's in a string array
 function getItems(tier, enchantment) {
   var selected_items = [];
-  for(var i = 0; i < items.length; i++) {
+  for (var i = 0; i < items.length; i++) {
     // the user chosen items are pulled from the
     // raw_items and stored in pulled_items
-      if(items[i].tier == tier && items[i].enchantment == enchantment) {
-          selected_items.push(getId(items[i]));
-      }
+    if (items[i].tier == tier && items[i].enchantment == enchantment) {
+      selected_items.push(getId(items[i]));
+    }
   }
   return selected_items;
 }
@@ -215,7 +222,7 @@ function getItems(tier, enchantment) {
 // Returns the representing string to the numerical quality number
 function qualityToString(num) {
   var names = ["Normal", "Good", "Outstanding", "Excellent", "Masterpiece"];
-  return names[num-1];
+  return names[num - 1];
 }
 
 // Parses through and splits the data array into 7 city arrays and returns it (returns one array containign 7 arrays)
@@ -229,7 +236,7 @@ function splitDataByCity(data) {
   var martlock = [];
   var caerleon = [];
 
-  for (var i = 0; i <data.length; i++) {
+  for (var i = 0; i < data.length; i++) {
     switch (data[i].city) {
       case "Black Market":
         blackMarket.push(data[i]);
@@ -281,7 +288,7 @@ function calculateProfits(cities) {
   var item;
   // starts from the last city (6: Caerleon) so the profit properites for Caerleon are calculated before looping
   // through the other cities in descending order. does not loop through i=0 because BM is the first index (0)
-  for (var i = cities.length-1; i > 0; i--) { // loops through all the cities starting with fortSterling
+  for (var i = cities.length - 1; i > 0; i--) { // loops through all the cities starting with fortSterling
     for (var j = 0; j < cities[i].length; j++) { // loops throught all the items in a city
       /*
         i: city [BM, FS, Th, Ly, Br, Ma, Ca]
@@ -289,9 +296,9 @@ function calculateProfits(cities) {
       */
       item = cities[i][j];
 
-      compareQualities(cities, i, j, ignore_maxAgeCity=false);
-      if (item.city == "Caerleon")  // for later Caerleon properties comparison
-        compareQualities(cities, i, j, ignore_maxAgeCity=true);
+      compareQualities(cities, i, j, ignore_maxAgeCity = false);
+      if (item.city == "Caerleon") // for later Caerleon properties comparison
+        compareQualities(cities, i, j, ignore_maxAgeCity = true);
 
       // needs to calculate profit arrays for all qualities before it can find the optimal combination and add the Caerleon properties
       if (item.quality == 5) {
@@ -311,20 +318,20 @@ function calculateProfits(cities) {
   maxAgeCity for Caerleon properties is increased to ONE_WEEK since the prices don't fluctuate that much.
 */
 function addCaerleonProperties(cities, i, j) {
-  for (var m = 0; m < cities[i][j].quality; m++) {  // loop through every item quality
-    cities[i][j-4+m].caerleonProfit = NEGATIVE_VALUE_LARGE;
-    cities[i][j-4+m].caerleonAge = POSITIVE_VALUE_LARGE;
-    cities[i][j-4+m].caerleonQuality = NEGATIVE_VALUE_LARGE;
+  for (var m = 0; m < cities[i][j].quality; m++) { // loop through every item quality
+    cities[i][j - 4 + m].caerleonProfit = NEGATIVE_VALUE_LARGE;
+    cities[i][j - 4 + m].caerleonAge = POSITIVE_VALUE_LARGE;
+    cities[i][j - 4 + m].caerleonQuality = NEGATIVE_VALUE_LARGE;
 
-    if (cities[i][j-4+m].highestProfitBM_Quality == NEGATIVE_VALUE_LARGE) // if the item isn't going to be displayed then it doesn't need to be compared either
+    if (cities[i][j - 4 + m].highestProfitBM_Quality == NEGATIVE_VALUE_LARGE) // if the item isn't going to be displayed then it doesn't need to be compared either
       continue;
 
-    for (var n = cities[i][j-4+m].highestProfitBM_Quality-1; n < cities[i][j].quality; n++) { // loop through all the higher qualities
+    for (var n = cities[i][j - 4 + m].highestProfitBM_Quality - 1; n < cities[i][j].quality; n++) { // loop through all the higher qualities
       // if any profit for the same quality as highestProfitBM_Quality is bigger than caerleonProfit, reassign Caerleon properties as that item in Caerleon can be sold to the same buy order
-      if (cities[i][j-4+m].caerleonProfit < cities[6][j-4+n].profits_array_ignored_maxAgeCity[cities[i][j-4+m].highestProfitBM_Quality-1]) {
-        cities[i][j-4+m].caerleonProfit = cities[6][j-4+n].profits_array_ignored_maxAgeCity[cities[i][j-4+m].highestProfitBM_Quality-1];
-        cities[i][j-4+m].caerleonQuality = cities[6][j-4+n].quality;
-        cities[i][j-4+m].caerleonAge = cities[6][j-4+n].city_age;
+      if (cities[i][j - 4 + m].caerleonProfit < cities[6][j - 4 + n].profits_array_ignored_maxAgeCity[cities[i][j - 4 + m].highestProfitBM_Quality - 1]) {
+        cities[i][j - 4 + m].caerleonProfit = cities[6][j - 4 + n].profits_array_ignored_maxAgeCity[cities[i][j - 4 + m].highestProfitBM_Quality - 1];
+        cities[i][j - 4 + m].caerleonQuality = cities[6][j - 4 + n].quality;
+        cities[i][j - 4 + m].caerleonAge = cities[6][j - 4 + n].city_age;
       }
     }
   }
@@ -338,7 +345,7 @@ function addCaerleonProperties(cities, i, j) {
 function assignOptimalCombination(cities, i, j) {
 
   for (var k = 0; k < cities[i][j].optimal_combination.length; k++) {
-    var item = cities[i][j-4+k];
+    var item = cities[i][j - 4 + k];
 
     // if it is equal to itself's quality then it means that the item is not sold (indices start at 0
     // whereas qualities start at 1, look at "findOptimalCombination()" function for more info)
@@ -351,13 +358,13 @@ function assignOptimalCombination(cities, i, j) {
       item.BM_order_difference_age = POSITIVE_VALUE_LARGE;
       item.percentileProfit = NEGATIVE_VALUE_LARGE;
     } else {
-      item.highestProfitBM_Quality = cities[i][j].optimal_combination[k]+1; // indices start at 0 but qualities at 1, so need to add 1
-      item.highestProfitBM_Price = cities[i][j-5+item.highestProfitBM_Quality].bmPrice; // indices start at 0 but qualities at 1, so need to subtract 1
-      item.highestProfitBM_Age = cities[i][j-5+item.highestProfitBM_Quality].bm_age;
-      item.profit = Math.round(item.profits_array[item.highestProfitBM_Quality-1]);
-      item.BM_order_difference = cities[0][j-5+item.highestProfitBM_Quality].sell_price_min - cities[0][j-5+item.highestProfitBM_Quality].buy_price_max;
-      item.BM_order_difference_age = getAge(cities[0][j-5+item.highestProfitBM_Quality].sell_price_min_date);
-      item.percentileProfit = Math.round(1000*(item.profit / item.cityPrice))/10;
+      item.highestProfitBM_Quality = cities[i][j].optimal_combination[k] + 1; // indices start at 0 but qualities at 1, so need to add 1
+      item.highestProfitBM_Price = cities[i][j - 5 + item.highestProfitBM_Quality].bmPrice; // indices start at 0 but qualities at 1, so need to subtract 1
+      item.highestProfitBM_Age = cities[i][j - 5 + item.highestProfitBM_Quality].bm_age;
+      item.profit = Math.round(item.profits_array[item.highestProfitBM_Quality - 1]);
+      item.BM_order_difference = cities[0][j - 5 + item.highestProfitBM_Quality].sell_price_min - cities[0][j - 5 + item.highestProfitBM_Quality].buy_price_max;
+      item.BM_order_difference_age = getAge(cities[0][j - 5 + item.highestProfitBM_Quality].sell_price_min_date);
+      item.percentileProfit = Math.round(1000 * (item.profit / item.cityPrice)) / 10;
     }
 
   }
@@ -381,13 +388,13 @@ function assignOptimalCombination(cities, i, j) {
 function findOptimalCombination(cities, i, j) {
 
   var m_profits = cities[i][j].profits_array;
-  var e_profits = cities[i][j-1].profits_array;
-  var o_profits = cities[i][j-2].profits_array;
-  var g_profits = cities[i][j-3].profits_array;
-  var n_profits = cities[i][j-4].profits_array;
+  var e_profits = cities[i][j - 1].profits_array;
+  var o_profits = cities[i][j - 2].profits_array;
+  var g_profits = cities[i][j - 3].profits_array;
+  var n_profits = cities[i][j - 4].profits_array;
 
   var biggest_sum = 0;
-  var optimal_combination = [0,0,0,0,0];
+  var optimal_combination = [0, 0, 0, 0, 0];
 
   var new_sum;
 
@@ -404,12 +411,12 @@ function findOptimalCombination(cities, i, j) {
             new_sum = m_profits[m] + e_profits[e] + o_profits[o] + g_profits[g] + n_profits[n];
 
             if (
-                (new_sum > biggest_sum) &&
-                ( (m!=e || e==4) && (m!=o || o==3) && (m!=g || g==2) && (m!=n || n==1) ) &&
-                ( (e!=o || o==3) && (e!=g || g==2) && (e!=n || n==1) ) &&
-                ( (o!=g || g==2) && (o!=n || n==1) ) &&
-                ( (g!=n || n==1) )
-              ) {
+              (new_sum > biggest_sum) &&
+              ((m != e || e == 4) && (m != o || o == 3) && (m != g || g == 2) && (m != n || n == 1)) &&
+              ((e != o || o == 3) && (e != g || g == 2) && (e != n || n == 1)) &&
+              ((o != g || g == 2) && (o != n || n == 1)) &&
+              ((g != n || n == 1))
+            ) {
               biggest_sum = new_sum;
               optimal_combination[4] = m;
               optimal_combination[3] = e;
@@ -441,56 +448,56 @@ function findOptimalCombination(cities, i, j) {
   last index is the profit if the item is not sold. if the trade is unprofitable a 0 will be put in place.
 */
 function compareQualities(cities, i, j, ignore_maxAgeCity) {
-        var item = cities[i][j];
-        item.bmPrice = cities[0][j].buy_price_max;
-        item.cityPrice = item.sell_price_min;
+  var item = cities[i][j];
+  item.bmPrice = cities[0][j].buy_price_max;
+  item.cityPrice = item.sell_price_min;
 
-        ignore_maxAgeCity ? item.profits_array_ignored_maxAgeCity = [] : item.profits_array = [];
+  ignore_maxAgeCity ? item.profits_array_ignored_maxAgeCity = [] : item.profits_array = [];
 
-            for (var k = 0; k < item.quality; k++) {
-              /*
-              Assuming item.quality == 5 (masterpiece):
-               k = 0: masterpiece vs masterpiece
-               k = 1: masterpiece vs excellent
-               k = 2: masterpiece vs outstanding
-               k = 3: masterpiece vs good
-               k = 4: masterpiece vs normal
-              */
-              var tax_modifier = document.getElementById("premium").checked ? 0.97 : 0.94;
-              var qualityProfit = (cities[0][j-k].buy_price_max*tax_modifier) - item.sell_price_min;
+  for (var k = 0; k < item.quality; k++) {
+    /*
+    Assuming item.quality == 5 (masterpiece):
+     k = 0: masterpiece vs masterpiece
+     k = 1: masterpiece vs excellent
+     k = 2: masterpiece vs outstanding
+     k = 3: masterpiece vs good
+     k = 4: masterpiece vs normal
+    */
+    var tax_modifier = document.getElementById("premium").checked ? 0.97 : 0.94;
+    var qualityProfit = (cities[0][j - k].buy_price_max * tax_modifier) - item.sell_price_min;
 
-              if(ignore_maxAgeCity) {
+    if (ignore_maxAgeCity) {
 
-                  if (qualityProfit > 0 && cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= ONE_WEEK) {
-                    item.profits_array_ignored_maxAgeCity.splice(0,0,qualityProfit);
-                  } else {
-                    item.profits_array_ignored_maxAgeCity.splice(0,0,0);
-                  }
+      if (qualityProfit > 0 && cities[i][j - k].bm_age <= maxAgeBM && item.city_age <= ONE_WEEK) {
+        item.profits_array_ignored_maxAgeCity.splice(0, 0, qualityProfit);
+      } else {
+        item.profits_array_ignored_maxAgeCity.splice(0, 0, 0);
+      }
 
-                  if (k == (item.quality - 1)) {
-                    item.profits_array_ignored_maxAgeCity.push(0);
-                  }
+      if (k == (item.quality - 1)) {
+        item.profits_array_ignored_maxAgeCity.push(0);
+      }
 
-              } else {
+    } else {
 
-                if (qualityProfit > 0 && cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity) {
-                  item.profits_array.splice(0,0,qualityProfit);
-                } else {
-                  item.profits_array.splice(0,0,0); // adds a zero if the quality comparison is outdated or not profitable
-                }
+      if (qualityProfit > 0 && cities[i][j - k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity) {
+        item.profits_array.splice(0, 0, qualityProfit);
+      } else {
+        item.profits_array.splice(0, 0, 0); // adds a zero if the quality comparison is outdated or not profitable
+      }
 
-                if (k == (item.quality - 1)) {
-                  item.profits_array.push(0); // adds an extra zero to get all possible combinations later
-                }
+      if (k == (item.quality - 1)) {
+        item.profits_array.push(0); // adds an extra zero to get all possible combinations later
+      }
 
-                if(qualityProfit >= minProfit && !ignore_maxAgeCity)
-                  profitableTrades++;
-                if(cities[i][j-k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity && !ignore_maxAgeCity)
-                  freshTrades++;
+      if (qualityProfit >= minProfit && !ignore_maxAgeCity)
+        profitableTrades++;
+      if (cities[i][j - k].bm_age <= maxAgeBM && item.city_age <= maxAgeCity && !ignore_maxAgeCity)
+        freshTrades++;
 
-              }
+    }
 
-            }
+  }
 }
 
 // OBS! has to happen before filterDataByParameters() relies on BM data and city data being parallel
@@ -498,8 +505,8 @@ function calculateAge(cities) {
   printToConsole("Calculating age...\n")
   var item;
   // Start from 1 because blackmarket is in first index
-  for(var i = 1; i < cities.length; i++) { // Loop through all the cities starting with fortSterling
-    for(var j = 0; j < cities[i].length; j++) { // Loop throught all the items in a city
+  for (var i = 1; i < cities.length; i++) { // Loop through all the cities starting with fortSterling
+    for (var j = 0; j < cities[i].length; j++) { // Loop throught all the items in a city
       item = cities[i][j];
       item.bm_age = getAge(cities[0][j].buy_price_max_date);
       item.city_age = getAge(cities[i][j].sell_price_min_date);
@@ -512,15 +519,15 @@ function calculateAge(cities) {
 // returns true if items was filitered profitable, false if all items was removed
 function filterDataByParameters(cities) {
   // cities[0] is the blackMarket first for loop then starts from 1
-  for(var i = 1; i < cities.length; i++) { // Loop through every city
-    for(var j = 0; j < cities[i].length; j++) { // Loop through every item
+  for (var i = 1; i < cities.length; i++) { // Loop through every city
+    for (var j = 0; j < cities[i].length; j++) { // Loop through every item
       var item = cities[i][j];
 
       // the reason for 2 item.profit comparisons even though < minProfit would be enough is because
       // some weird entries can show up if you enter a negative value in Min Profit
-      if(item.profit < minProfit || item.profit <= 0 || item.highestProfitBM_Age > maxAgeBM || item.city_age > maxAgeCity) {
-          cities[i].splice(j, 1);
-          j--;
+      if (item.profit < minProfit || item.profit <= 0 || item.highestProfitBM_Age > maxAgeBM || item.city_age > maxAgeCity) {
+        cities[i].splice(j, 1);
+        j--;
       }
 
     }
@@ -529,9 +536,9 @@ function filterDataByParameters(cities) {
 
   // only true if all the items from all the cities have been spliced
   if (totalApprovedTrades == 0) {
-    if(freshTrades == 0) {
+    if (freshTrades == 0) {
       printToConsole("Data too old. Pick bigger max age or update the market via the Data Client.\n");
-    } else if(profitableTrades == 0) {
+    } else if (profitableTrades == 0) {
       printToConsole("No profitable trades found. Try decreasing Min Profit.\n");
     } else if (profitableTrades != 0 && freshTrades != 0) {
       printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
@@ -549,12 +556,12 @@ function printToConsole(text) {
 }
 
 function clearConsole() {
-    document.getElementById("console").textContent = "";
+  document.getElementById("console").textContent = "";
 }
 
 // returns minutes since currentUTCTime and itemAge
 function getAge(itemAge) {
-  return Math.round((Date.parse(currentUTCTime)-Date.parse(new Date(itemAge.concat('Z'))))/60000);
+  return Math.round((Date.parse(currentUTCTime) - Date.parse(new Date(itemAge.concat('Z')))) / 60000);
 }
 
 // Returns the parsed json response from the API
@@ -568,9 +575,9 @@ function fetchData(type, cities, selected_items, quality, callback) {
   var request = new XMLHttpRequest();
 
   var url = "https://www.albion-online-data.com/";
-  var view = "api/v2/stats/"+type+"/";
-  var locations = [cities.join(",") , "Black Market"]
-  var link = url+view+selected_items.join(",")+"?locations="+locations.join(",")+"&qualities="+quality;
+  var view = "api/v2/stats/" + type + "/";
+  var locations = [cities.join(","), "Black Market"]
+  var link = url + view + selected_items.join(",") + "?locations=" + locations.join(",") + "&qualities=" + quality;
   //console.log("API link is "+link);
   printToConsole("Requesting API for " + type + " with " + selected_items.length + " items" + " with quality " + quality + "\n");
   // Open a new connection, using the GET request on the URL endpoint
@@ -579,11 +586,11 @@ function fetchData(type, cities, selected_items, quality, callback) {
   request.onload = callback;
   var old = 0;
   var fresh = 0;
-  request.onprogress = function(e) {
+  request.onprogress = function (e) {
     if (e.lengthComputable) {
       old = fresh;
-      fresh = e.loaded/e.total;
-      addProgress(fresh-old); // add the progress that was made since last check
+      fresh = e.loaded / e.total;
+      addProgress(fresh - old); // add the progress that was made since last check
     }
   }
 
@@ -595,26 +602,26 @@ function fetchData(type, cities, selected_items, quality, callback) {
 
 // Add a row of data to the id table
 function addToTable(id, ...cells) {
-    //var table = document.getElementById(id).getElementsByTagName('tbody')[0];
-    //var row = table.insertRow(0);
-    var colColors = ["", "", "", "", "#E5FFCD","#E5FFCD","#E5FFCD","#E7EDEF","#E7EDEF", "#CDFFF3","#CDFFF3","#CDFFF3","#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
-    var append = "<tr>";
-    for(var i = 0; i < cells.length; i++) {
-      append += '<td style="background-color:'+colColors[i]+'" copy-data="'+cells[i]+'" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i]+""), " ", "") + '">' + cells[i] + '</td>';
-      //var cell = row.insertCell(i);
-      //cell.innerHTML = cells[i];
-    }
-    if(id == "table") {
-      append += `
+  //var table = document.getElementById(id).getElementsByTagName('tbody')[0];
+  //var row = table.insertRow(0);
+  var colColors = ["", "", "", "", "#E5FFCD", "#E5FFCD", "#E5FFCD", "#E7EDEF", "#E7EDEF", "#CDFFF3", "#CDFFF3", "#CDFFF3", "#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
+  var append = "<tr>";
+  for (var i = 0; i < cells.length; i++) {
+    append += '<td style="background-color:' + colColors[i] + '" copy-data="' + cells[i] + '" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i] + ""), " ", "") + '">' + cells[i] + '</td>';
+    //var cell = row.insertCell(i);
+    //cell.innerHTML = cells[i];
+  }
+  if (id == "table") {
+    append += `
       <td>
         <button type="button" onClick="addToCart(\'cart\', this)" class="btn btn-default btn-sm">
-          <span class="glyphicon glyphicon glyphicon-plus"></span>
+         <i class="fas fa-plus-circle"></i>
         </button>
       </td>
       `;
-    }
-    append += "</tr>";
-    $('#table').append(append);
+  }
+  append += "</tr>";
+  $('#table').append(append);
 }
 
 // Add the table row to the shop table of the id
@@ -649,18 +656,18 @@ function addToCart(id, element) {
     bm_buy_price += parseFloat(row.cells[4].attributes["data-value"].value);
     bm_age_avg += parseFloat(row.cells[6].attributes["data-value"].value) / (rows.length - 1);
 
-    if(!isNaN(row.cells[7].attributes["data-value"].value))
+    if (!isNaN(row.cells[7].attributes["data-value"].value))
       bm_order_avg += parseFloat(row.cells[7].attributes["data-value"].value) / (rows.length - 1);
 
-    if(!isNaN(row.cells[9].attributes["data-value"].value))
+    if (!isNaN(row.cells[9].attributes["data-value"].value))
       city_sell += parseFloat(row.cells[9].attributes["data-value"].value);
 
     city_age_avg += parseFloat(row.cells[11].attributes["data-value"].value) / (rows.length - 1);
 
-    if(!isNaN(parseFloat(row.cells[13].attributes["data-value"].value.replace(/[^0-9]/g,''))))
-        caerleon_profit += parseFloat(row.cells[13].attributes["data-value"].value.replace(/[^0-9]/g,''));
+    if (!isNaN(parseFloat(row.cells[13].attributes["data-value"].value.replace(/[^0-9]/g, ''))))
+      caerleon_profit += parseFloat(row.cells[13].attributes["data-value"].value.replace(/[^0-9]/g, ''));
 
-    if(!isNaN(row.cells[15].attributes["data-value"].value))
+    if (!isNaN(row.cells[15].attributes["data-value"].value))
       caerleon_age_avg += parseFloat(row.cells[15].attributes["data-value"].value) / (rows.length - 1);
   }
   $('#cart').append(
@@ -668,7 +675,7 @@ function addToCart(id, element) {
       <td>Total</td>
       <td></td>
       <td data-toggle="tooltip" data-placement="bottom" title="Total profit">` + formatMoney(profit) + `</td>
-      <td data-toggle="tooltip" data-placement="bottom" title="Total % of the profit (profit/cost)">`+Math.round(1000*(profit / city_sell))/10+`</td>
+      <td data-toggle="tooltip" data-placement="bottom" title="Total % of the profit (profit/cost)">` + Math.round(1000 * (profit / city_sell)) / 10 + `</td>
       <td data-toggle="tooltip" data-placement="bottom" title="Items should be sold for this total in the Black Market">` + formatMoney(bm_buy_price) + `</td>
       <td></td>
       <td data-toggle="tooltip" data-placement="bottom" title="Average of the Black Market">` + Math.round(bm_age_avg) + `</td>
@@ -690,12 +697,12 @@ function clearTable(id) {
   var new_body = document.createElement('tbody'); // Empty body
   var body = table.getElementsByTagName("tbody")[0]; // First body
   table.replaceChild(new_body, body);
-  if(id == "cart")
+  if (id == "cart")
     $('#cart').append("<tr></tr>");
 }
 
 function replaceAll(str, needle, replace) {
-  while(str != str.replace(needle, replace)) {
+  while (str != str.replace(needle, replace)) {
     str = str.replace(needle, replace)
   }
   return str
@@ -703,13 +710,13 @@ function replaceAll(str, needle, replace) {
 
 // Appends a new row to the body
 function br() {
-    document.getElementById('console').append(document.createElement("br"));
+  document.getElementById('console').append(document.createElement("br"));
 }
 
 // Returns the id of a item object. matching the raw items data
 function getId(item) {
   // gets the id of an item
-    return item.enchantment == 0 ? item.item_id : item.item_id + "@" + item.enchantment;
+  return item.enchantment == 0 ? item.item_id : item.item_id + "@" + item.enchantment;
 }
 
 // Sets the copy for the user to the copy-data of the element when clicked
