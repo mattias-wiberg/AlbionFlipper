@@ -265,6 +265,18 @@
             </div>
           </div>
         </div>
+        <div class="container-fluid bg-light text-light py-3">
+          <div class="progress">
+            <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0"
+              aria-valuemin="0" aria-valuemax="100" style="width: 0%; "></div>
+          </div>
+          <span id="progress-text" class="text-muted">0 %</span>
+          <div class="float-right text-muted">
+            <a class="ml-1 text-body" href="https://github.com/klutten99/AlbionFlipper" target="_blank"><i
+                class="fab fa-github-alt"></i></a>
+            <a class="ml-1 text-info" href="https://discord.gg/2ySkAuX" target="_blank"><i class="fab fa-discord"></i></a>
+          </div>
+        </div>
       </div>
 
 
@@ -451,20 +463,14 @@
   </main>
 
 
-  <footer class="fixed-bottom container-fluid bg-light text-light py-3">
-    <div class="progress">
-      <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0"
-        aria-valuemin="0" aria-valuemax="100" style="width: 0%; "></div>
-    </div>
-    <span id="progress-text" class="text-muted">0 %</span>
-    <div class="float-right text-muted">
-      <a class="ml-1 text-body" href="https://github.com/klutten99/AlbionFlipper" target="_blank"><i
-          class="fab fa-github-alt"></i></a>
-      <a class="ml-1 text-info" href="https://discord.gg/2ySkAuX" target="_blank"><i class="fab fa-discord"></i></a>
-    </div>
-  </footer>
 
 
+<script type="text/javascript">
+var currentUTCTime="<?php
+$timezone = -1; //GMT -01:00
+echo(gmdate("d M Y G:i:s e", time()+3600*($timezone+date("I"))));
+?>";
+</script>
   <script type="text/javascript" src="js/items.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
@@ -480,6 +486,7 @@
   <script type="text/javascript" src="js/bootstrap/bootstrap-sortable.js"></script>
   <script type="text/javascript" src="js/moment.js"></script>
   <script>
+
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'en'

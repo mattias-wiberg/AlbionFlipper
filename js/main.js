@@ -58,17 +58,17 @@ function getPrices() {
   // sets currentUTCTime to UTC time from a 3rd party
   // found this somewhere on stackoverflow
   // don't put it inside any loops as this will make too many requests
-  getTime("https://worldtimeapi.org/api/timezone/Etc/UTC")
-    .then((response) => {
-      let dateObj = JSON.parse(response);
-      let dateTime = dateObj.datetime;
-      //console.log(dateObj);
-      //console.log(dateTime);
-      currentUTCTime = dateTime;
-    })
-    .catch((err) => {
-      //console.log(err);
-    });
+  //getTime("http://worldtimeapi.org/api/timezone/Etc/UTC")
+  //  .then((response) => {
+  //    let dateObj = JSON.parse(response);
+  //    let dateTime = dateObj.datetime;
+  //    //console.log(dateObj);
+  //    //console.log(dateTime);
+  //    currentUTCTime = dateTime;
+  //  })
+  //  .catch((err) => {
+  //    //console.log(err);
+  //  });
 
 
   var city = [];
@@ -574,7 +574,7 @@ function fetchData(type, cities, selected_items, quality, callback) {
   // Create a request variable and assign a new XMLHttpRequest object to it.
   var request = new XMLHttpRequest();
 
-  var url = "https://www.albion-online-data.com/";
+  var url = "https://www.albionflipper.ml/";
   var view = "api/v2/stats/" + type + "/";
   var locations = [cities.join(","), "Black Market"]
   var link = url + view + selected_items.join(",") + "?locations=" + locations.join(",") + "&qualities=" + quality;

@@ -9,16 +9,6 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-body {
-    margin-bottom: 120px !important;
-}
-
-.footer {
-    position: fixed;
-    height: 72px;
-    bottom: 0;
-}
-
 #tutorial li {
     padding-bottom: 18px;
 }
