@@ -1,3 +1,17 @@
+# 🥳 Flipper V2 is live in Closed Alpha! 🎊
+You will need an token to start using it so let me know if you want to try it out over on [the discord server](https://discord.gg/2ySkAuX). Should hopefully not have any major bugs. :)
+
+New features include :rocket: 
+- Private database
+- No waiting for data to upload it is instant
+- Enchantment upgrade flips
+- Quality upgrade flips
+- Improved algorithm performance
+
+:coin: https://flipper.mattiaswiberg.com/ :coin:
+
+🗒️If you have any feedback please create a thread on [the discord server](https://discord.gg/2ySkAuX) and I will try to include it in the tool!
+
 # Flipper - Quick Overview
 AlbionFlipper is a Black Market flipping tool for the sandbox MMORPG Albion Online.
 
