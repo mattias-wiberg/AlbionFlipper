@@ -1,4 +1,4 @@
-# 🥳 Flipper V2 is live in Closed Alpha! 🎊
+# 🥳 Flipper V2 is live in Open Alpha! 🎊
 You will need an token to start using it so let me know if you want to try it out over on [the discord server](https://discord.gg/2ySkAuX). Should hopefully not have any major bugs. :)
 
 New features include :rocket: 
